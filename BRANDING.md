@@ -77,6 +77,11 @@ clients, servers, store accounts, or third-party contracts:
   longer renders it.
 - Historical engineering notes under `docs/plans/` and `docs/superpowers/`.
 
+- The pinned Windows browser engine build input (`server/browser-engine-release.ts`) still
+  downloads `agent-browser-win32-x64-0.36.0-omb.1.exe` from the upstream release, verified by its
+  pinned SHA-256. This fork has no such release yet. Follow-up: mirror it to a fork release and
+  repoint the URL. This is a build input, not the updater feed.
+
 ## Legal
 
 - `LICENSE` is unchanged. The core stays Apache-2.0.
