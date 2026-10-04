@@ -35,7 +35,7 @@ Recording requires `ffmpeg` on the server's PATH, with `libvpx` for WebM or
 `libx264` for MP4. `agent-browser doctor` reports these optional dependencies.
 They are not bundled or required for normal browsing. Higher frame rates use
 more CPU and disk space; the actual distinct frames depend on page repaints.
-There is no recording control in OMB's browser panel.
+There is no recording control in SocialCoffeeAgent's browser panel.
 
 ## Linux sandbox
 

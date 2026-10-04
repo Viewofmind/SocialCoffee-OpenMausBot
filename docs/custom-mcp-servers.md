@@ -55,7 +55,7 @@ your computer, while SocialCoffeeAgent is on the server. No extra port forwardin
 public callback address is needed. **Open sign-in page** reopens the approval
 page if your browser blocked the first attempt.
 
-Keep the redirect URL private. Complete the flow in the same OMB browser/session
+Keep the redirect URL private. Complete the flow in the same SocialCoffeeAgent browser/session
 that started it, within five minutes. Cancellation or logging out ends the
 pending flow; a URL cannot be reused. Existing same-machine sign-in still
 finishes automatically. This works with dynamically registered and

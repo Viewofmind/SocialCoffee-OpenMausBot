@@ -1,4 +1,4 @@
-// The setup checklist on an OMB Cloud home (docs/cloud-pro.md, "Setup
+// The setup checklist on an SocialCoffeeAgent Cloud home (docs/cloud-pro.md, "Setup
 // checklist"): one quiet card from the Cloud's first open until an engine is
 // signed in and a bot has finished a turn there, or until the person hides
 // it. Each step's state is read from the Cloud or this app (lib/cloud-setup),

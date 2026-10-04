@@ -80,7 +80,7 @@ const sessionSchema = z.object({
   membershipAuthority: z.literal("portal").optional(),
   /** A browser sign-in (PairingCode `browser`): accepted only as its browser's cookie, never as a bearer token. */
   cookieOnly: z.literal(true).optional(),
-  /** Whose OMB Cloud a browser sign-in signed in to (its PairingCode `owner`). */
+  /** Whose SocialCoffeeAgent Cloud a browser sign-in signed in to (its PairingCode `owner`). */
   owner: z.string().max(254).optional(),
 });
 
@@ -98,7 +98,7 @@ export interface PublicSession {
   expiresAt: number;
   /** The account that signed in, when it was an account and not a code. */
   email?: string;
-  /** Whose OMB Cloud a browser sign-in signed in to. */
+  /** Whose SocialCoffeeAgent Cloud a browser sign-in signed in to. */
   owner?: string;
 }
 
@@ -112,11 +112,11 @@ export interface PairingCode {
   label: string;
   createdAt: number;
   expiresAt: number;
-  /** A browser sign-in (an OMB Cloud page's "Use in your browser"): only a
+  /** A browser sign-in (an SocialCoffeeAgent Cloud page's "Use in your browser"): only a
    * browser sign-in redeems it, only by its credential, and a browser sign-in
    * redeems no other window. */
   browser?: true;
-  /** A browser sign-in's owner, the OMB Cloud account's email, which the
+  /** A browser sign-in's owner, the SocialCoffeeAgent Cloud account's email, which the
    * sign-in page shows before anything is redeemed. */
   owner?: string;
 }
@@ -226,7 +226,7 @@ export class SessionRegistry {
   private readonly options: SessionStoreOptions;
   private readonly openMarker: string;
   private closed = false;
-  /** Set on an OMB Cloud home (requireAdmin): only admin scope, anywhere. */
+  /** Set on an SocialCoffeeAgent Cloud home (requireAdmin): only admin scope, anywhere. */
   private adminOnly: string | null = null;
 
   // No parameter properties: the server runs this file under Node's

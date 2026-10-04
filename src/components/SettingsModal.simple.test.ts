@@ -146,7 +146,7 @@ describe("Settings in Simple mode", () => {
     expect(html).toContain('aria-label="Enable the built-in browser"');
   });
 
-  it("stacks OMB Cloud and Organization on Account in the desktop app", () => {
+  it("stacks SocialCoffeeAgent Cloud and Organization on Account in the desktop app", () => {
     fixture.section = "cloudAccount";
     const html = render();
     expect(currentPage(html)).toBe("account");
@@ -164,7 +164,7 @@ describe("Settings in Simple mode", () => {
   });
 
   it("drops Account when nothing on it is shown", () => {
-    // an OMB Cloud home in a browser: no desktop account pages, nobody to invite, not an admin
+    // an SocialCoffeeAgent Cloud home in a browser: no desktop account pages, nobody to invite, not an admin
     vi.stubGlobal("window", {});
     fixture.config = { ...fixture.config, cloudHome: true };
     expect(pages(render())).toEqual(["general", "appearance", "ai", "computers"]);

@@ -149,23 +149,23 @@ it("names every plan's price and that tax is added at checkout", () => {
   for (const text of ["$49/month", "Also Personal at $29/month and Max at $99/month.", "Prices are plus applicable tax, shown at checkout.", "See all plans"]) expect(html).toContain(text);
   f.values = [signedOut]; f.index = 0;
   const settings = renderToStaticMarkup(createElement(ProSettingsCard));
-  for (const text of ["OMB Cloud plans from $29/month, plus applicable tax.", "Already have a Cloud plan?", "Get Pro", "See all plans"]) expect(settings).toContain(text);
+  for (const text of ["SocialCoffeeAgent Cloud plans from $29/month, plus applicable tax.", "Already have a Cloud plan?", "Get Pro", "See all plans"]) expect(settings).toContain(text);
 });
 it("in Settings, someone with a plan sees that plan and the way to it, never Get Pro", () => {
   const card = (state: CloudAccountState) => { f.values = [state]; f.index = 0; return renderToStaticMarkup(createElement(ProSettingsCard)); };
   for (const [state, text] of [
-    [plan({ entitlement: paid("max") }), "Max active · verified by OMB Cloud"],
+    [plan({ entitlement: paid("max") }), "Max active · verified by SocialCoffeeAgent Cloud"],
     [plan({ entitlement: paid("pro", "inactive") }), "Pro · not active right now"],
     [plan({ purchase: { state: "confirming", tier: "personal" } }), "Personal · payment received"],
-    [{ status: "unavailable", lastPlan: { tier: "personal", active: true } }, "Personal · checking with OMB Cloud…"],
+    [{ status: "unavailable", lastPlan: { tier: "personal", active: true } }, "Personal · checking with SocialCoffeeAgent Cloud…"],
     [{ status: "reauth-required", message: "expired", lastPlan: { tier: "max", active: true } }, "Sign in again to use your Cloud on this computer"],
   ] as const) {
     const html = card(state as CloudAccountState);
-    expect(html).toContain(text); expect(html).toContain("OMB Cloud settings"); expect(html).not.toContain("Get Pro"); expect(html).not.toContain("$29");
+    expect(html).toContain(text); expect(html).toContain("SocialCoffeeAgent Cloud settings"); expect(html).not.toContain("Get Pro"); expect(html).not.toContain("$29");
   }
   for (const state of [{ status: "unavailable" }, { status: "connecting" }, { status: "signed-out", message: "restoring" }] as CloudAccountState[]) expect(card(state)).toBe("");
   f.values = [plan({ entitlement: paid("max") })]; f.index = 0;
   let tree: ReactNode; function Capture() { tree = ProSettingsCard(); return tree; } renderToStaticMarkup(createElement(Capture));
-  nodes(tree).find(node => node.type === "button" && node.props.children === "OMB Cloud settings")!.props.onClick!();
+  nodes(tree).find(node => node.type === "button" && node.props.children === "SocialCoffeeAgent Cloud settings")!.props.onClick!();
   expect(f.dispatch).toHaveBeenCalledWith({ type: "toggleAppSettings", open: true, section: "cloudAccount" });
 });

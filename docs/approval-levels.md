@@ -5,14 +5,14 @@ when that provider resumes an existing native thread. Each level is one of the
 provider's own permission modes, passed through. SocialCoffeeAgent does not judge an
 action itself: there is no app-side allowlist, classifier, or pattern rule. A
 native tool request that reaches you is one the provider left for you. In Full
-Access, OMB also applies its own configuration tools without another approval.
+Access, SocialCoffeeAgent also applies its own configuration tools without another approval.
 
 | Level | Behavior |
 | --- | --- |
 | **Ask for approval** | Requests approval for commands and file changes, the way the provider's supervised mode does. |
 | **Auto-accept edits** | Approves file edits automatically; other actions can still require approval. Offered where the provider has such a mode (Claude, Grok, Antigravity). |
 | **Approve for me** | Uses the provider's automatic review on Codex, Claude, Cursor, and Grok to approve routine actions and ask about others. Providers without an equivalent fall back to asking. |
-| **Full access** | Enables the provider's permissive mode for commands, edits, and selected-computer actions, including potentially destructive or sensitive work. Residual native permission prompts are answered for you. OMB profile changes, routine actions, team setup, bot deletion, and enabled skill authoring apply without a second approval. Peer-review prompts are skipped within the bot's authorized scope. Delegation uses the receiving bot's setting, never the sender's — except from a Chief of Staff, whose level flows down (below). Actual questions and missing credentials still need your input. |
+| **Full access** | Enables the provider's permissive mode for commands, edits, and selected-computer actions, including potentially destructive or sensitive work. Residual native permission prompts are answered for you. SocialCoffeeAgent profile changes, routine actions, team setup, bot deletion, and enabled skill authoring apply without a second approval. Peer-review prompts are skipped within the bot's authorized scope. Delegation uses the receiving bot's setting, never the sender's — except from a Chief of Staff, whose level flows down (below). Actual questions and missing credentials still need your input. |
 | **Custom (`config.toml`)** | Codex only. SocialCoffeeAgent reads and reapplies the effective approval and sandbox settings from your Codex configuration. |
 
 Full access is an elevated-risk standing approval. Full and Custom can only be
@@ -27,7 +27,7 @@ or grant another bot access to a different workspace.
 The effective setting belongs to the source conversation. An existing Ask
 thread remains Ask even if the bot default is Full; a Full thread works without
 these extra prompts even if the bot default is Ask. Ask, Auto, and Custom retain
-their existing OMB configuration review cards. Full actions return an applied
+their existing SocialCoffeeAgent configuration review cards. Full actions return an applied
 result and leave a settled receipt, so the bot continues in the same turn.
 Invalid input, unavailable services, or failed writes return errors, not a
 request to approve again. An expired native permission request is not turned

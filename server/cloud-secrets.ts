@@ -1,4 +1,4 @@
-// The OMB Cloud home's secrets, and how the server gets them
+// The SocialCoffeeAgent Cloud home's secrets, and how the server gets them
 // (docs/cloud-pro.md). This module imports nothing but node:fs, so the
 // server can read them before anything else it loads can start a process
 // (cloud-secrets-boot.ts, the server's first import).

@@ -726,7 +726,7 @@ test("production IPC: this computer's page names a saved server or the Cloud, an
 test("production IPC: the Cloud is the Cloud even before its address is known, and nothing is local until this computer's origin is", async () => {
   const { context, handlers, calls } = mainIpc();
   const local = { sender: localContents, senderFrame: localFrame };
-  // Signed out of OMB Cloud, or not ready: still the Admin's way in, which then says why it cannot.
+  // Signed out of SocialCoffeeAgent Cloud, or not ready: still the Admin's way in, which then says why it cannot.
   context.cloudAccount = { homeTarget: () => null };
   context.environmentsState = { environments: [SAVED[0]], activeId: "local" };
   await handlers.get("cloud-move:start")(local, "cloud");
@@ -748,7 +748,7 @@ test("production IPC: a server's own page gets only itself, never starts a copy 
   assert.deepEqual(JSON.parse(JSON.stringify(await handlers.get("cloud-move:start")(page))), { phase: "idle" });
   await handlers.get("cloud-move:dismiss")(page);
   assert.deepEqual(calls, [["overview", VPS_DEST, true], ["openSettings", "vps", "copy"], ["dismiss", VPS_DEST.origin], ["overview", VPS_DEST, true]]);
-  // A server at the Cloud's address that this app has not verified (signed out of OMB Cloud): the same.
+  // A server at the Cloud's address that this app has not verified (signed out of SocialCoffeeAgent Cloud): the same.
   calls.length = 0;
   context.mainWindow.webContents = cloudContents;
   context.environmentsState = { environments: SAVED, activeId: "cloud-entry" };
@@ -845,7 +845,7 @@ test("the Cloud's setup checklist can open the lending switch here, and nothing 
   const page = preload({ remote: true });
   assert.ok(page.bridge.cloudLending);
   assert.deepEqual(Object.keys(page.bridge.cloudLending), ["open"]);
-  // Main opens Settings → OMB Cloud for this window's local page or the
+  // Main opens Settings → SocialCoffeeAgent Cloud for this window's local page or the
   // person's verified Cloud in it, and refuses any other page.
   const source = readFileSync(new URL("./main.mjs", import.meta.url), "utf8").replace(/\r\n/g, "\n");
   const start = source.indexOf(IPC_START), end = source.indexOf(IPC_END, start);

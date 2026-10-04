@@ -20,7 +20,7 @@ export const PRO_DISMISSED = "pro-introduction-dismissed-v2";
  * the EU 30-day prior-price rule). */
 export const PRO_LAUNCH_PRICE = "$49";
 export const PRO_LATER_PRICE = "$89";
-/** The other OMB Cloud plans, monthly. Every price is plus applicable tax. */
+/** The other SocialCoffeeAgent Cloud plans, monthly. Every price is plus applicable tax. */
 export const CLOUD_PERSONAL_PRICE = "$29";
 export const CLOUD_MAX_PRICE = "$99";
 

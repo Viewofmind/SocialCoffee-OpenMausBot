@@ -7,7 +7,7 @@ exact merge commit. Review and publish the draft when it is ready.
 
 The existing **Actions → Release → Run workflow** button remains available for
 reruns and recovery. It
-builds macOS (arm64 + x64, signed, notarized, stapled), Windows, and Ubuntu
+builds macOS (arm64 + x64; signing and notarization are not configured on this fork), Windows, and Ubuntu
 from a single pinned commit, verifies every artifact the way a user would
 receive it, and assembles the canonical draft in
 [SocialCoffeeAgent releases](https://github.com/Viewofmind/SocialCoffee-OpenMausBot/releases).
