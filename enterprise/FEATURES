@@ -1,0 +1,8 @@
+# SocialCoffeeAgent Enterprise entitlement ids (checked by core through
+# entitled() in server/enterprise.ts). Keys may carry other ids; an id core
+# does not check grants nothing.
+# id           unlocks
+whitelabel     product name, tagline, accent, logo and support link from brand.json
+admin          Settings → Installations and Workspaces
+budgets        a monthly spend limit for the workspace, refusing turns at the cap
+billing        sell prices per model; a billable column in Usage and its CSV

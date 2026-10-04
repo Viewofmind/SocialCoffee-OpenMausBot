@@ -1,0 +1,35 @@
+SocialCoffeeAgent Enterprise License
+
+Copyright (c) 2026 SocialCoffee DigiTech Pvt Ltd. All rights reserved.
+
+This directory ("enterprise") is maintained by SocialCoffee DigiTech Pvt Ltd
+for SocialCoffeeAgent users. It was written by SocialCoffee DigiTech Pvt Ltd
+for this distribution. It is not the upstream project's enterprise product,
+does not contain it, and is not affiliated with it; upstream maintains its
+own enterprise build separately.
+
+The Apache License 2.0 that covers the rest of this repository does not apply
+to this directory. The following terms do.
+
+1. Viewing. You may read this code to understand what a SocialCoffeeAgent
+   build runs.
+
+2. Use. Enabling enterprise features requires a license key issued to your
+   organization by SocialCoffee DigiTech Pvt Ltd under a separate written
+   agreement. That agreement sets the features, term and any other conditions.
+
+3. Restrictions. Unless a written agreement with SocialCoffee DigiTech Pvt Ltd
+   allows it, you may not copy, modify, distribute, sublicense, sell, rent, or
+   offer as a hosted service this directory or any work based on it, and you
+   may not remove, disable or work around the license-key check.
+
+4. Open-source edition. Removing this directory leaves the open-source
+   edition of SocialCoffeeAgent, which is governed only by the Apache License
+   2.0 and has no obligations under this license.
+
+5. No warranty. Unless a written agreement says otherwise, this code is
+   provided "as is", without warranty of any kind, and SocialCoffee DigiTech
+   Pvt Ltd is not liable for any damages arising from its use, to the extent
+   permitted by law.
+
+Licensing: gunjan@socialcoffee.in
