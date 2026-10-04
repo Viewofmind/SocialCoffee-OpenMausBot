@@ -50,7 +50,7 @@ export type RoutineScheduleInput =
   | RoutineIntervalScheduleInput;
 
 /** `cloud` runs the agent itself inside the bot's Boat VM. `scagent` keeps
- * using the provider selected on the MAUS and only borrows its configured
+ * using the provider selected on the bot and only borrows its configured
  * computer tools, if any. */
 export type RoutineRunOn = "maus" | "cloud";
 export type RoutineTarget = "bot" | "room-goal";
@@ -1281,7 +1281,7 @@ export class RoutineManager {
     const existing = this.webhookRunReceipt(input.webhookId, input.deliveryId);
     if (existing) return existing;
     if (this.options.botState(input.botId) === "missing") {
-      throw Object.assign(new Error("The assigned MAUS no longer exists"), { status: 410 });
+      throw Object.assign(new Error("The assigned bot no longer exists"), { status: 410 });
     }
     const run: RoutineRun = {
       id: randomUUID(),

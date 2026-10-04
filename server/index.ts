@@ -11807,7 +11807,7 @@ function resolveAndSendModel(
 
 // Webhook definitions are independent from calendar schedules, but every
 // delivery joins the same RoutineManager queue. That keeps unattended work
-// ordered behind a busy MAUS and gives webhook runs the same durable receipts.
+// ordered behind a busy bot and gives webhook runs the same durable receipts.
 const webhooks = new WebhookManager({
   emit: broadcast,
   botState: unattendedDispatchState,
