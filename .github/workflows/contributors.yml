@@ -1,7 +1,8 @@
 # enterprise/ is proprietary to SocialCoffee DigiTech Pvt Ltd (enterprise/LICENSE)
 # and is maintained in-house: outside pull requests may not change it.
 # Runs on pull_request_target so it can report on fork pull requests; it never
-# checks out or executes pull-request code.
+# checks out or executes pull-request code. Branches pushed to this repository
+# need write access, so only pull requests from forks by non-members are checked.
 name: contributors
 
 on:
@@ -13,7 +14,9 @@ permissions: {}
 jobs:
   enterprise:
     name: enterprise/ is maintained in-house
-    if: ${{ !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.pull_request.author_association) }}
+    if: >-
+      ${{ github.event.pull_request.head.repo.full_name != github.repository &&
+      !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.pull_request.author_association) }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
