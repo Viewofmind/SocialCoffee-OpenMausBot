@@ -64,7 +64,7 @@ describe("pairing devices from a hosted server's settings", () => {
     expect(member).not.toContain("sc-agent pair");
   });
 
-  it("on an SocialCoffeeAgent Cloud home, which is personal, offers no chat-only choice, lists only the owner's devices, and says why in one line", () => {
+  it("on a SocialCoffeeAgent Cloud home, which is personal, offers no chat-only choice, lists only the owner's devices, and says why in one line", () => {
     const admin = { kind: "session" as const, id: "s", label: "Mac", scopes: ["admin", "client"], expiresAt: 1 };
     const cloud = renderToStaticMarkup(createElement(ServerPairingCard, { initialSession: admin, cloudHome: true }));
     expect(cloud).toContain("Create pairing code");

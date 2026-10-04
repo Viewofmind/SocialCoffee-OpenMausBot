@@ -178,7 +178,7 @@ describe("AccessSection Works on", () => {
     expect(places(render(makeBot()))).toEqual(["Auto", "Cloud", "Local VM", "This computer", "Browser", "Off"]);
   });
 
-  it("never offers them on an SocialCoffeeAgent Cloud home", () => {
+  it("never offers them on a SocialCoffeeAgent Cloud home", () => {
     fixture.config = { cloudHome: true } as Partial<ConfigStatus>;
     expect(places(render(makeBot()))).toEqual(["Auto", "Cloud", "Browser", "Off"]);
   });

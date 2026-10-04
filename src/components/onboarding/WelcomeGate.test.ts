@@ -90,7 +90,7 @@ describe("who gets the welcome flow", () => {
     expect(tree?.props.hosted).toBe(true);
   });
 
-  it("leaves an SocialCoffeeAgent Cloud home's first run to its engine sign-in", () => {
+  it("leaves a SocialCoffeeAgent Cloud home's first run to its engine sign-in", () => {
     vi.stubGlobal("window", REMOTE_PAGE);
     expect(gate({ hosted: false, canSave: true, cloudHome: true }).tree).toBeNull();
     // Settings → Replay welcome tour still opens it there

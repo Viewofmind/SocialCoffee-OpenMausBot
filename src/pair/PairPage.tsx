@@ -27,7 +27,7 @@ export function pairsAutomatically(initialCode: string | null, desktop = typeof 
   return Boolean(initialCode) && desktop;
 }
 
-/** What the page says above the form. An SocialCoffeeAgent Cloud has no server screen to
+/** What the page says above the form. A SocialCoffeeAgent Cloud has no server screen to
  * read a code from: it says where its connection starts instead. */
 export function pairIntro({ mode, sent, email, cloudHome }: { mode: "email" | "code" | null; sent: boolean; email: string; cloudHome: boolean }): string {
   if (mode === "email") return sent ? `We emailed an 8-digit code to ${email}. It works once and expires in ten minutes.` : "Enter your email and we will send you a one-time code.";

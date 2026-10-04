@@ -137,7 +137,7 @@ without starting a server. Completed installs and sign-ins remain; run
 
 For a service, use \`serve --tunnel\` after \`login\` for managed HTTPS,
 \`serve --tailscale\` for your tailnet, or your own reverse proxy. The
-\`login\` command signs in to an SocialCoffeeAgent account, not an AI provider;
+\`login\` command signs in to a SocialCoffeeAgent account, not an AI provider;
 it does not start the tunnel itself.
 
 [Setup guide](https://github.com/Viewofmind/SocialCoffee-OpenMausBot/blob/main/docs/cli-onboarding.md)

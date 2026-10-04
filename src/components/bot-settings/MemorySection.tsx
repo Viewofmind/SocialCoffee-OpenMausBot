@@ -70,7 +70,7 @@ interface Conflict {
 
 const errorText = (e: unknown) => (e instanceof Error ? e.message : String(e));
 
-/** On an SocialCoffeeAgent Cloud home: this bot's memory changed in a conversation the
+/** On a SocialCoffeeAgent Cloud home: this bot's memory changed in a conversation the
  * owner did not write, so its turns cannot use the owner's lent Mac until
  * the owner has looked. It names the files that changed; one click accepts
  * them as shown (no confirmation), and the server refuses it if anything

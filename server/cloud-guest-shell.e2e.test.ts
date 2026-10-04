@@ -1,4 +1,4 @@
-// A guest's turn on an SocialCoffeeAgent Cloud home gets no shell, and no process a bot
+// A guest's turn on a SocialCoffeeAgent Cloud home gets no shell, and no process a bot
 // runs finds the Cloud's secrets (docs/cloud-pro.md). Real server booted the
 // way the image's launcher boots it (secrets over a pipe, never the
 // environment: server/cloud-home-start.ts), synthetic engines. A Cloud home

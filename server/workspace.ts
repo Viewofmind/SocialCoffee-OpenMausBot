@@ -76,7 +76,7 @@ export function workspaceDir(botId: string): string {
   return join(WORKSPACES_DIR, botId);
 }
 
-/** On an SocialCoffeeAgent Cloud home a bot's memory is read only from regular files,
+/** On a SocialCoffeeAgent Cloud home a bot's memory is read only from regular files,
  * never through a link: server/lending-memory.ts judges a link by where it
  * points, not by what is there, so a turn must never read through one.
  * Elsewhere memory reads exactly as it always did. */

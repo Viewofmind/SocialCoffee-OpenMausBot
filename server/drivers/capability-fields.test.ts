@@ -63,7 +63,7 @@ describe("typed capability fields for the cloud computer", () => {
 
   it("lets host-harness drivers with computer tools use the cloud computer on their own engine", async () => {
     // These ran on a swapped-in Computer engine before, which could not sign
-    // in on an SocialCoffeeAgent Cloud (provider_not_configured).
+    // in on a SocialCoffeeAgent Cloud (provider_not_configured).
     const claude = await keep(ClaudeDriver.create({
       instanceId: "caps-claude", displayName: "Caps Claude", environment: {}, enabled: true,
       config: ClaudeDriver.defaultConfig(),

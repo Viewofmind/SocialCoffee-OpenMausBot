@@ -1,4 +1,4 @@
-// The full server as an SocialCoffeeAgent Cloud home machine, over its real HTTP boundary,
+// The full server as a SocialCoffeeAgent Cloud home machine, over its real HTTP boundary,
 // with the settings an Admin from before Cloud Pro dropped included AI still
 // sent (OMB_HOSTED_*). Cloud Pro includes no AI: the machine boots, says once
 // that it ignores them, serves no gateway models, never hands them (or its

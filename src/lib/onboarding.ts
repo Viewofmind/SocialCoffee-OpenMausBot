@@ -35,7 +35,7 @@ export interface WelcomeViewer {
   /** This session may write the workspace config. Finishing the welcome
    * flow is such a write, and `PUT /api/config` is admin-only. */
   canSave: boolean;
-  /** An SocialCoffeeAgent Cloud home (docs/cloud-pro.md): its first run is the engine
+  /** A SocialCoffeeAgent Cloud home (docs/cloud-pro.md): its first run is the engine
    * sign-in, not the welcome flow, which describes the person's computer. */
   cloudHome?: boolean;
 }

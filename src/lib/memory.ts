@@ -24,7 +24,7 @@ export interface MemoryFileInfo {
 }
 
 export interface MemoryOverview {
-  /** On an SocialCoffeeAgent Cloud home: this bot's memory changed in a conversation the
+  /** On a SocialCoffeeAgent Cloud home: this bot's memory changed in a conversation the
    * owner did not write; its turns cannot use a lent Mac until reviewed.
    * `changed` names the files (memory, or instruction files in its working
    * folders); `token` is exactly what was shown, and a review is refused

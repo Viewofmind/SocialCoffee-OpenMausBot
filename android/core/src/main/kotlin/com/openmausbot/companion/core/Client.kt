@@ -103,7 +103,7 @@ class ServerPairingRetryError(cause: IOException) : IOException(
 )
 
 /**
- * The server's public descriptor did not answer as an SocialCoffeeAgent server, so the pairing code
+ * The server's public descriptor did not answer as a SocialCoffeeAgent server, so the pairing code
  * never left the phone: the same code and attempt id stay usable once the address, the network
  * or the phone is fixed. The message names the address, since that is what the person can check.
  */
@@ -116,7 +116,7 @@ class ServerAddressError private constructor(
     companion object {
         /** Nothing at the descriptor: something answers at [address], and it is not a server. */
         fun notAServer(address: String, cause: IOException) = ServerAddressError(
-            "$address isn't an SocialCoffeeAgent server. Check the address and try again.",
+            "$address isn't a SocialCoffeeAgent server. Check the address and try again.",
             cause,
             notAServer = true,
         )

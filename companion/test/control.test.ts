@@ -286,7 +286,7 @@ describe("hosted endpoint advertisement", () => {
     expect(published.body.endpoints[0]).toEqual({
       kind: "hosted",
       priority: 0,
-      url: "https://c-opaque.socialcoffee-agent.test",
+      url: "https://c-opaque.socialcoffeeagent.test",
     });
 
     expect(

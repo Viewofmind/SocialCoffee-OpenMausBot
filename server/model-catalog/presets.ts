@@ -38,7 +38,7 @@ export type CodexSupport =
   | { kind: "unsupported"; reason: CodexUnsupportedReason };
 
 export interface ProviderPreset {
-  /** models.dev id, or an SocialCoffeeAgent-only id when models.dev has no entry. */
+  /** models.dev id, or a SocialCoffeeAgent-only id when models.dev has no entry. */
   id: string;
   /** The models.dev provider this row describes; absent for SocialCoffeeAgent-only rows. */
   catalogId?: string;

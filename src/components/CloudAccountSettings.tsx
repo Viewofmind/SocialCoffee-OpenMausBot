@@ -212,7 +212,7 @@ export function CloudAccountSettings({ linkRequest = 0, cloudHome = false, onCon
     if (action === "connect") { link.current.connected = true; connectHome(); }
   }, [bridge, linkRequest, account, busy]);
   if (!bridge) {
-    // Only on an SocialCoffeeAgent Cloud home: any other server open in this window (a VPS,
+    // Only on a SocialCoffeeAgent Cloud home: any other server open in this window (a VPS,
     // a hosted workspace, someone else's) has no plan of this person's to show.
     const plan = window.ogb?.remoteClient?.active || !cloudHome ? undefined : window.ogb?.cloudPlan;
     return plan ? <CloudPlanOnCloud bridge={plan} onConnectPhone={onConnectPhone} /> : <p className="text-[13px] text-ink-secondary">{t("cloudAccount.desktopOnly")}</p>;

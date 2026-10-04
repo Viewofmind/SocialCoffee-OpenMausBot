@@ -42,7 +42,7 @@ export function currentPhonePairingTarget(cloudHome: boolean): PhonePairingTarge
 /** Where a phone pairs from this window. `companion`: this window has the
  * desktop's phone bridge (the local app, not a remote server's page);
  * `remoteClient`: this desktop is a client of another server, whose phones
- * pair there; `cloudHome`: the server is an SocialCoffeeAgent Cloud home. */
+ * pair there; `cloudHome`: the server is a SocialCoffeeAgent Cloud home. */
 export function phonePairingTarget(input: { companion: boolean; remoteClient: boolean; cloudHome: boolean }): PhonePairingTarget {
   if (input.cloudHome) return "cloud";
   return input.companion && !input.remoteClient ? "computer" : "server";

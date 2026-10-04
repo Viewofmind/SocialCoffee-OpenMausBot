@@ -1,6 +1,6 @@
 // Keeping a test's children honest about SocialCoffeeAgent configuration.
 //
-// A shell that already exports OMB_* or SC_AGENT_* — an SocialCoffeeAgent-hosted
+// A shell that already exports OMB_* or SC_AGENT_* — a SocialCoffeeAgent-hosted
 // terminal, or a server running in another window — leaks those values into
 // every child a suite spawns and into modules that snapshot process.env at
 // import time. The suite then asserts against a "configured" runtime the test

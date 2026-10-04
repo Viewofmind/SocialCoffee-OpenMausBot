@@ -13,7 +13,7 @@ export interface EnvironmentDescriptor {
 export type SessionState =
   // `service`: a shared server that does not treat this machine as its owner
   | { kind: "loopback"; trust?: "service" }
-  // `cloudGuest`: on an SocialCoffeeAgent Cloud home, a device that is not one of the
+  // `cloudGuest`: on a SocialCoffeeAgent Cloud home, a device that is not one of the
   // owner's own; it writes only in `openedThreads`, the conversations it opened.
   | { kind: "session"; id: string; label: string; scopes: string[]; expiresAt: number; cloudGuest?: true; openedThreads?: string[] }
   | { kind: "unauthenticated"; error: string }

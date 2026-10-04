@@ -1040,7 +1040,7 @@ export function ChatView({ bot: profile }: { bot: Bot }) {
   const { dragStyle: headerDragStyle, noDragStyle: headerNoDragStyle, controlsShiftStyle } = useCaptionChrome();
   const composerDockRef = useRef<HTMLDivElement>(null);
   const composerDock = useComposerDockPad(composerDockRef);
-  // A guest on an SocialCoffeeAgent Cloud home writes only in conversations it opened.
+  // A guest on a SocialCoffeeAgent Cloud home writes only in conversations it opened.
   const canWrite = useCanWriteIn(bot.threadId);
 
   const provisioning = state.provisioning[bot.id];
@@ -1549,7 +1549,7 @@ export function ChatView({ bot: profile }: { bot: Bot }) {
   );
 }
 
-/** In place of the composer, for a guest on an SocialCoffeeAgent Cloud home in a
+/** In place of the composer, for a guest on a SocialCoffeeAgent Cloud home in a
  * conversation it did not open: it can only start its own. One click, no
  * dialog. */
 export function NewConversationInstead({ onNew }: { onNew: () => void }) {

@@ -50,7 +50,7 @@ it("a browser keeps the code in the form for the person to confirm", () => {
   f.effects[0]?.(); expect(f.pair).not.toHaveBeenCalled();
 });
 
-it("an SocialCoffeeAgent Cloud says where its connection starts, never 'the code shown on the server'", () => {
+it("a SocialCoffeeAgent Cloud says where its connection starts, never 'the code shown on the server'", () => {
   const cloud = pairIntro({ mode: "code", sent: false, email: "", cloudHome: true });
   expect(cloud).toContain("Connect to my Cloud in the SocialCoffeeAgent app");
   expect(cloud).toContain("Settings → SocialCoffeeAgent Cloud");

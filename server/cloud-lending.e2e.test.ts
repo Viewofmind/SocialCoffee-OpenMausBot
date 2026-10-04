@@ -1,4 +1,4 @@
-// "Let my Cloud use this Mac" on an SocialCoffeeAgent Cloud home (docs/cloud-pro.md): the
+// "Let my Cloud use this Mac" on a SocialCoffeeAgent Cloud home (docs/cloud-pro.md): the
 // real server booted as a Cloud home, with NO maintainer flag, over its real
 // HTTP boundary. Lending is on there; only the person's own admin devices (the
 // Admin's signed pairing) may lend; every turn on the home acts for that one

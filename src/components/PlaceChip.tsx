@@ -24,7 +24,7 @@ export function usePlaceAvailability(bot: Bot): PlaceAvailability {
   const boxAgent = instance?.driverKind === "boxAgent";
   const backend = bot.cloudBackend === "vps" ? "vps" : "box";
   // Places the enrolled organisation disallows, or this server never
-  // offers (an SocialCoffeeAgent Cloud home), are not reachable.
+  // offers (a SocialCoffeeAgent Cloud home), are not reachable.
   const allowed = state.config?.managedPolicy?.computers ?? { thisComputer: true, localVm: true, box: true, vps: true };
   return {
     cloud: canWorkOnCloud(cloudEngineOf(instance), backend) && allowed[backend],

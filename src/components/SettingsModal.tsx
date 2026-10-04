@@ -802,7 +802,7 @@ export function SettingsModal() {
     // the operator's screen for other workspaces exists only where a fleet agent does
     .filter((entry) => entry.id !== "workspaces" || workspacesAvailable(state.config))
     // sign-in by email is a hosted server's; the desktop app pairs devices under Remote access,
-    // and an SocialCoffeeAgent Cloud home is personal: nobody is invited to it
+    // and a SocialCoffeeAgent Cloud home is personal: nobody is invited to it
     .filter((entry) => entry.id !== "people" || (!window.ogb && state.config?.cloudHome !== true))
     // the activity log belongs to a workspace served to a browser, and to its admins
     .filter((entry) => entry.id !== "activity" || (!window.ogb && ownerOrAdmin === true));

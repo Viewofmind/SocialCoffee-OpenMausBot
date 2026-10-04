@@ -61,7 +61,7 @@ export function useBotSettingsDerived(bot: Bot) {
   const { state, dispatch } = useStore();
   const { capabilities } = useDesktopCapabilities();
   const providerSupportsLocal = instanceSupportsLocalComputer(state.instances, bot);
-  // An SocialCoffeeAgent Cloud home never offers this computer (shared/cloud-home.ts).
+  // A SocialCoffeeAgent Cloud home never offers this computer (shared/cloud-home.ts).
   const localSelectable = placeOffered("local", state.config) && localComputerSelectable({ capabilities, providerSupportsLocal });
   const localDisabledReason = localComputerDisabledReason({ capabilities, providerSupportsLocal });
   const patch = (p: BotPatch) => dispatch({ type: "updateBot", botId: bot.id, patch: p });

@@ -493,7 +493,7 @@ private val localizedCopyResources = mapOf(
     "Text" to R.string.mobile_share_text,
     "That computer did not answer with an address. Enter the address shown in Phone settings instead." to R.string.mobile_pairing_no_address,
     "That image is larger than 10 MB." to R.string.mobile_that_image_is_larger_than_10_mb_baaf657b,
-    "That is not an SocialCoffeeAgent pairing QR code." to R.string.mobile_pairing_invalid_qr,
+    "That is not a SocialCoffeeAgent pairing QR code." to R.string.mobile_pairing_invalid_qr,
     "That link couldn't be opened on this phone." to R.string.mobile_file_open_link_failed,
     "That text is too large to share. Send a shorter selection." to R.string.mobile_share_too_much_text,
     "The authorization page could not be opened. Check your browser restrictions and try again." to R.string.mobile_connected_apps_auth_page_failed,

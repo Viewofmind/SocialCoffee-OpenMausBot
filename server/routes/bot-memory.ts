@@ -42,7 +42,7 @@ export interface BotMemoryRouteDeps {
   upkeep: Pick<MemoryUpkeep, "status" | "tidy">;
   aboutMe(): string;
   saveAboutMe(text: string): void;
-  /** On an SocialCoffeeAgent Cloud home (server/lending-memory.ts), absent elsewhere:
+  /** On a SocialCoffeeAgent Cloud home (server/lending-memory.ts), absent elsewhere:
    * - `needed`: when this bot's memory was changed where the owner did not
    *   write, which files changed and a token for exactly what is there now;
    * - `accept`: the owner accepts it exactly as the token describes (false

@@ -391,7 +391,7 @@ describe("screen reader announcements", () => {
   });
 });
 
-// On an SocialCoffeeAgent Cloud home a guest writes only in conversations it opened: in
+// On a SocialCoffeeAgent Cloud home a guest writes only in conversations it opened: in
 // any other, one button starts its own instead of a send that fails.
 describe("a guest's composer on a Cloud home", () => {
   it("offers a new conversation in one click, with no dialog", () => {

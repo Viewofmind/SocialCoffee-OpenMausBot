@@ -909,7 +909,7 @@ descriptor's `capabilities.cloudHome`).
 On the person's own Cloud, open in the app's window, **Settings → SocialCoffeeAgent Cloud**
 shows the plan read only (`cloud-plan:*`: its name and whether it is active,
 **Manage in your browser** and **Switch to this computer**). It is listed only
-on an SocialCoffeeAgent Cloud home (`config.cloudHome`), never on another server open in the
+on a SocialCoffeeAgent Cloud home (`config.cloudHome`), never on another server open in the
 window. Main answers it for the Cloud this account verified, or last verified
 while a check is failing or the sign-in has ended, so that page says
 "checking" or "sign in again on your computer" rather than an error; where the

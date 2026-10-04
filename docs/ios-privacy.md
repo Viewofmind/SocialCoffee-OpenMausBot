@@ -1,7 +1,7 @@
 # OpenMausMobile privacy
 
-OpenMausMobile is a companion for an SocialCoffeeAgent service chosen and operated
-by the user. Local Wi-Fi and Tailscale connections work without an SocialCoffeeAgent
+OpenMausMobile is a companion for a SocialCoffeeAgent service chosen and operated
+by the user. Local Wi-Fi and Tailscale connections work without a SocialCoffeeAgent
 account. A user may separately sign in on the desktop to enable the optional
 **Use your phone anywhere** HTTPS connection.
 

@@ -100,7 +100,7 @@ export function resolveLoopbackTrust(input: {
   env?: NodeJS.ProcessEnv;
   desktopManaged: boolean;
   hostedWorkspace: boolean;
-  /** An SocialCoffeeAgent Cloud home: every request from the network arrives through its
+  /** A SocialCoffeeAgent Cloud home: every request from the network arrives through its
    * edge proxy, so a bare loopback request is only ever a process on the
    * machine (a bot's shell). Always `service`, whatever the setting. */
   cloudHome?: boolean;
@@ -108,7 +108,7 @@ export function resolveLoopbackTrust(input: {
   const raw = (input.env ?? process.env).OMB_LOOPBACK_TRUST;
   const requested = raw?.trim().toLowerCase();
   if (input.cloudHome) {
-    return { trust: "service", reason: "SocialCoffeeAgent Cloud home", ...(raw !== undefined && requested !== "service" ? { warning: "OMB_LOOPBACK_TRUST is ignored on an SocialCoffeeAgent Cloud home: a local request is always a service" } : {}) };
+    return { trust: "service", reason: "SocialCoffeeAgent Cloud home", ...(raw !== undefined && requested !== "service" ? { warning: "OMB_LOOPBACK_TRUST is ignored on a SocialCoffeeAgent Cloud home: a local request is always a service" } : {}) };
   }
   if (input.desktopManaged) {
     return { trust: "owner", reason: "desktop app", ...(raw !== undefined ? { warning: "OMB_LOOPBACK_TRUST is ignored in the desktop app" } : {}) };

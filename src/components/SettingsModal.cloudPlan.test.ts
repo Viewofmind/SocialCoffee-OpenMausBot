@@ -6,7 +6,7 @@ import { SettingsModal } from "./SettingsModal";
 
 // Every main window of the packaged app has the read-only plan bridge
 // (cloudPlan), on any server it opens. Settings → SocialCoffeeAgent Cloud shows it only on
-// an SocialCoffeeAgent Cloud home: on a VPS, a hosted workspace or someone else's server
+// a SocialCoffeeAgent Cloud home: on a VPS, a hosted workspace or someone else's server
 // there is no plan of this person's to show, and main would refuse it.
 const fixture = vi.hoisted(() => ({ section: "cloudAccount" as AppSettingsSection, config: undefined as { cloudHome?: boolean } | undefined, advanced: false }));
 vi.mock("@/lib/interface-mode", () => ({ useAdvancedMode: () => fixture.advanced, setAdvancedMode: vi.fn() }));
@@ -29,7 +29,7 @@ const render = () => renderToStaticMarkup(createElement(SettingsModal));
 describe.each(["Simple", "Advanced"] as const)("%s Settings → SocialCoffeeAgent Cloud on a server open in the app's window", (mode) => {
   beforeEach(() => { fixture.advanced = mode === "Advanced"; });
   const reachable = () => fixture.advanced ? 'data-settings-section="cloudAccount"' : 'data-settings-block="cloudAccount"';
-  it("is not offered on a server that is not an SocialCoffeeAgent Cloud home", () => {
+  it("is not offered on a server that is not a SocialCoffeeAgent Cloud home", () => {
     vi.stubGlobal("window", { ogb: { cloudPlan: plan } });
     const html = render();
     expect(html).not.toContain("CLOUD_PLAN_MARKER"); expect(html).not.toContain(reachable());

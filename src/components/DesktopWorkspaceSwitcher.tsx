@@ -3,7 +3,7 @@ import { ChevronDown, Cloud, Laptop } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { t } from "@/lib/i18n";
 
-/** "· always on" after the server's name while the window shows an SocialCoffeeAgent Cloud
+/** "· always on" after the server's name while the window shows a SocialCoffeeAgent Cloud
  * home (config.cloudHome), so people know which computer they are on. */
 function AlwaysOn() {
   return <span className="font-normal text-ink-secondary"> · {t("cloudSetup.alwaysOn")}</span>;

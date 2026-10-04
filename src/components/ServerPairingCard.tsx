@@ -39,7 +39,7 @@ export function pairingBlockedReason(state: SessionState | null): "chat-only" | 
   return state?.kind === "session" && !state.scopes.includes("admin") ? "chat-only" : null;
 }
 
-/** The devices the card lists: on an SocialCoffeeAgent Cloud home only the owner's own,
+/** The devices the card lists: on a SocialCoffeeAgent Cloud home only the owner's own,
  * each with full access (the server lists no other). */
 export function shownDevices(devices: PairedDevice[], cloudHome: boolean): PairedDevice[] {
   return cloudHome ? devices.filter((device) => device.scopes.includes("admin")) : devices;

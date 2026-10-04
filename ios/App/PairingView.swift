@@ -82,7 +82,7 @@ struct PairingView: View {
             .fullScreenCover(isPresented: $showingScanner) {
                 PairingScannerSheet { payload in
                     guard let url = URL(string: payload), let invite = PairingInvite.parse(url) else {
-                        return "That isn't an SocialCoffeeAgent pairing QR code."
+                        return "That isn't a SocialCoffeeAgent pairing QR code."
                     }
                     accept(invite)
                     return nil

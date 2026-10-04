@@ -1,4 +1,4 @@
-// An SocialCoffeeAgent Cloud home is personal (docs/cloud-pro.md; server/cloud-owner.ts):
+// A SocialCoffeeAgent Cloud home is personal (docs/cloud-pro.md; server/cloud-owner.ts):
 // only the owner's own devices connect. A server that had other people's
 // sessions before (here: the same data, first served as an ordinary
 // self-hosted server) loses them when it boots as a Cloud home, nothing

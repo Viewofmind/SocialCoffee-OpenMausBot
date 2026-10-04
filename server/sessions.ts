@@ -112,7 +112,7 @@ export interface PairingCode {
   label: string;
   createdAt: number;
   expiresAt: number;
-  /** A browser sign-in (an SocialCoffeeAgent Cloud page's "Use in your browser"): only a
+  /** A browser sign-in (a SocialCoffeeAgent Cloud page's "Use in your browser"): only a
    * browser sign-in redeems it, only by its credential, and a browser sign-in
    * redeems no other window. */
   browser?: true;
@@ -226,7 +226,7 @@ export class SessionRegistry {
   private readonly options: SessionStoreOptions;
   private readonly openMarker: string;
   private closed = false;
-  /** Set on an SocialCoffeeAgent Cloud home (requireAdmin): only admin scope, anywhere. */
+  /** Set on a SocialCoffeeAgent Cloud home (requireAdmin): only admin scope, anywhere. */
   private adminOnly: string | null = null;
 
   // No parameter properties: the server runs this file under Node's

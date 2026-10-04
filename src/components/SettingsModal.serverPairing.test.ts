@@ -59,7 +59,7 @@ describe("Settings → Remote access: server pairing card visibility", () => {
     expect(render()).toContain("SERVER_PAIRING_CARD_MARKER");
   });
 
-  it("on an SocialCoffeeAgent Cloud home, which is personal, tells the card so and offers no People section to invite anyone", () => {
+  it("on a SocialCoffeeAgent Cloud home, which is personal, tells the card so and offers no People section to invite anyone", () => {
     vi.stubGlobal("window", {});
     expect(render()).toContain(">People<");
     fixture.config = { cloudHome: true };

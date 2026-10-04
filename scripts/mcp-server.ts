@@ -797,7 +797,7 @@ export async function handleToolCall(
   switch (name) {
     case "get_system_health": {
       const res = await fetcher("/api/health");
-      if (res?.app !== "openmausbot") throw new Error("The configured endpoint is not an SocialCoffeeAgent server");
+      if (res?.app !== "openmausbot") throw new Error("The configured endpoint is not a SocialCoffeeAgent server");
       return {
         status: "connected",
         endpoint: discoveredBaseUrl ?? OMB_BASE_URL,

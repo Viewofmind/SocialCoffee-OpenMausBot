@@ -1,6 +1,6 @@
 // Copy this computer here: the receiving server's routes (server/cloud-move.ts,
 // docs/copy-workspace.md). Every server the person adds in the desktop app
-// receives a copy the same way, an SocialCoffeeAgent Cloud home included; the names stay
+// receives a copy the same way, a SocialCoffeeAgent Cloud home included; the names stay
 // `cloud-move` so Clouds already running keep answering the desktop.
 //
 //   GET  /api/cloud-move/estimate   what a copy of this workspace carries (the sending side)

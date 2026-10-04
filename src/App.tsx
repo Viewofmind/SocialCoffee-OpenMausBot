@@ -130,7 +130,7 @@ function Shell({ viewer }: { viewer: WelcomeViewer | null }) {
     state.connected &&
     state.instances.length > 0 &&
     !state.instances.some((i) => i.snapshot.state === "available");
-  // An SocialCoffeeAgent Cloud home with none of the person's own engines signed in yet:
+  // A SocialCoffeeAgent Cloud home with none of the person's own engines signed in yet:
   // its first run, and every bot until then, is the engine sign-in.
   const cloudSignIn = cloudSignInDue(viewer, state, engineReady);
 

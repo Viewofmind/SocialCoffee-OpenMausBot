@@ -1,4 +1,4 @@
-// The places an SocialCoffeeAgent Cloud home offers, shared by the server (what a bot is
+// The places a SocialCoffeeAgent Cloud home offers, shared by the server (what a bot is
 // shown and may use, server/cloud-home.ts) and the app (what the Computer
 // panel and the place chip list), so the two cannot disagree.
 //

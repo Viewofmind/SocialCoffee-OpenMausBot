@@ -621,7 +621,7 @@ final class Session: ObservableObject {
             _ = try await probe.environment()
         } catch APIError.status(404, _) {
             throw APIError.transport(
-                "\(connection.displayAddress) isn't an SocialCoffeeAgent server. Check the address and try again."
+                "\(connection.displayAddress) isn't a SocialCoffeeAgent server. Check the address and try again."
             )
         }
     }

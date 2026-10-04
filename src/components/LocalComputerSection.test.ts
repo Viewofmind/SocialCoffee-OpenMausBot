@@ -536,7 +536,7 @@ describe("VPS computer inventory UI", () => {
   });
 });
 
-describe("Settings → Computers on an SocialCoffeeAgent Cloud home", () => {
+describe("Settings → Computers on a SocialCoffeeAgent Cloud home", () => {
   afterEach(() => { storeFixture.config = null; });
   const cards = () => [...renderToStaticMarkup(createElement(LocalComputerSection)).matchAll(/<div class="text-\[15px\] font-medium text-ink">([^<]+)<\/div>/g)].map((match) => match[1]);
 

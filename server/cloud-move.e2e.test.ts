@@ -1,5 +1,5 @@
 // Copy this computer here end to end (docs/copy-workspace.md): a desktop-like
-// server, an SocialCoffeeAgent Cloud home and a plain self-hosted server, each a real server
+// server, a SocialCoffeeAgent Cloud home and a plain self-hosted server, each a real server
 // process over HTTP, driven by the desktop's own orchestrator
 // (electron/cloud-move.mjs), one code path for both destinations. The test
 // plays the Admin (it signs the Cloud's pairing requests), the desktop

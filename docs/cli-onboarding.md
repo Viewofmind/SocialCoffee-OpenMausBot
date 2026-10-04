@@ -64,7 +64,7 @@ The examples below assume a global install; prefix them with `npx` otherwise.
 | `sc-agent pair` | Create another phone invitation while the configured workspace and HTTPS connection are running. |
 | `sc-agent sessions` | List paired devices; `sc-agent sessions revoke ID` signs one out. |
 | `sc-agent serve` | Start without onboarding prompts or automatic browser opening; specify remote-access flags explicitly for a service. |
-| `sc-agent login` | Sign in to an SocialCoffeeAgent account for `--tunnel`; this does not sign in to an AI provider or start the tunnel. |
+| `sc-agent login` | Sign in to a SocialCoffeeAgent account for `--tunnel`; this does not sign in to an AI provider or start the tunnel. |
 
 `start` accepts the same server options as `serve`, including `--port`, `--data-dir`, `--tailscale`, `--tunnel`, and `--public-url`. Keep using your custom data directory and port when starting or pairing:
 

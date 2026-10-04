@@ -1,4 +1,4 @@
-// A bot's memory and other conversations on an SocialCoffeeAgent Cloud home, as far as a
+// A bot's memory and other conversations on a SocialCoffeeAgent Cloud home, as far as a
 // lent Mac is concerned (docs/cloud-pro.md; server/lending-memory.ts). A
 // bot's MEMORY.md, daily log, recall, recent-work brief, profile and working
 // folders reach every one of its turns, the owner's lending turns included,

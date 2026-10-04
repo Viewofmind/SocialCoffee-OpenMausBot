@@ -617,7 +617,7 @@ export async function listManagedBoats(
 
       const matchingRows = candidates.filter((candidate) => candidate?.id === recovery.boxId);
       if (matchingRows.length > 1) {
-        return invalidInventory("boat.dev returned a conflicting id for an SocialCoffeeAgent-managed cloud computer — refresh or repair it in boat.dev");
+        return invalidInventory("boat.dev returned a conflicting id for a SocialCoffeeAgent-managed cloud computer — refresh or repair it in boat.dev");
       }
       if (matchingRows.length === 1) {
         const listedName = typeof matchingRows[0]?.name === "string" ? matchingRows[0].name : "";
@@ -721,7 +721,7 @@ export async function listManagedBoats(
     if (!owner) continue;
     const boxId = typeof candidate.id === "string" ? candidate.id : "";
     if (!BOAT_ID.test(boxId)) {
-      return invalidInventory("boat.dev returned an invalid id for an SocialCoffeeAgent-managed cloud computer — refresh or repair it in boat.dev");
+      return invalidInventory("boat.dev returned an invalid id for a SocialCoffeeAgent-managed cloud computer — refresh or repair it in boat.dev");
     }
     const existing = ownedBoatByBot.get(owner.botId);
     if (existing && existing !== boxId) {
@@ -757,10 +757,10 @@ export async function listManagedBoats(
     // deterministic name), silently skipping a malformed/duplicated identity
     // could let bot deletion mistake provider corruption for absence.
     if (!BOAT_ID.test(boxId)) {
-      return invalidInventory("boat.dev returned an invalid id for an SocialCoffeeAgent-managed cloud computer — refresh or repair it in boat.dev");
+      return invalidInventory("boat.dev returned an invalid id for a SocialCoffeeAgent-managed cloud computer — refresh or repair it in boat.dev");
     }
     if ((boatIdCounts.get(boxId) ?? 0) !== 1 || seenBoatIds.has(boxId)) {
-      return invalidInventory("boat.dev returned a conflicting id for an SocialCoffeeAgent-managed cloud computer — refresh or repair it in boat.dev");
+      return invalidInventory("boat.dev returned a conflicting id for a SocialCoffeeAgent-managed cloud computer — refresh or repair it in boat.dev");
     }
     if (legacyOwner && owner && options.adoptLegacy !== false) {
       try {

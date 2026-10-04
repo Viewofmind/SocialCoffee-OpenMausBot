@@ -80,7 +80,7 @@ const providerFor = (model: string): { provider: string; model: string } => {
  * one thing the person can do about it here. */
 export const PROVIDER_NOT_CONFIGURED_MESSAGE =
   "The Computer engine has no AI sign-in on its cloud computer. Choose another engine in this bot's settings.";
-/** An SocialCoffeeAgent Cloud's included Boat account has no agent sign-ins and never
+/** A SocialCoffeeAgent Cloud's included Boat account has no agent sign-ins and never
  * will: the operator's account must not run (or pay for) customers' models. */
 export const COMPUTER_ENGINE_CLOUD_UNAVAILABLE = "The Computer engine isn't available on SocialCoffeeAgent Cloud — choose another engine.";
 

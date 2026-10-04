@@ -49,7 +49,7 @@ export async function runPhoneSetup(
         io.log("Your saved SocialCoffeeAgent account can be reused. The connection will be checked when the server starts.");
         return true;
       }
-      io.log("Sign in to an SocialCoffeeAgent account using an emailed code. This is separate from your AI provider account.");
+      io.log("Sign in to a SocialCoffeeAgent account using an emailed code. This is separate from your AI provider account.");
       if (await deps.login(options, io) === 0) return true;
     } catch (error) {
       if (error instanceof SetupCancelled) throw error;

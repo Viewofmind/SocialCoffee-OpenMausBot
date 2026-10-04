@@ -132,7 +132,7 @@ export function environmentDescriptor(input: { environmentId: string; desktopMan
       // Never advertise a protocol this server would refuse: the routes are
       // gone unless features.sharedComputers is on, so the capability is too.
       ...(input.sharedComputers === true ? { sharedComputers: true as const } : {}),
-      // An SocialCoffeeAgent Cloud home: its pairing page says "Opening your Cloud…" and
+      // A SocialCoffeeAgent Cloud home: its pairing page says "Opening your Cloud…" and
       // where to connect from, not "the code shown on the server".
       ...(input.cloudHome === true ? { cloudHome: true as const } : {}),
       selfUpdate: input.desktopManaged ? "desktop-managed" : "operator",

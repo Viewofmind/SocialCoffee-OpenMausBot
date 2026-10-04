@@ -82,8 +82,8 @@ function MarkAvatarComponent(
   return (
     <span className="inline-flex shrink-0" data-state={state}>
       <svg
-        width={size}
-        height={size}
+        width={`${size}px`}
+        height={`${size}px`}
         viewBox="0 0 64 64"
         role={label ? "img" : undefined}
         aria-label={label}
