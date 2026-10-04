@@ -226,15 +226,15 @@ export function companionIdentityHeaders(authenticatedDeviceId?: string, mutatio
     // Lets a response whose URL is intentionally loopback-only (the VPS SSH
     // viewer) fail before opening a tunnel a phone cannot reach. This header
     // carries no authority; it only narrows behavior at the harness.
-    "x-openmausbot-companion": "1",
+    "x-sc-agent-companion": "1",
   };
   // Never forward a caller-supplied device header. This value comes only
   // from the registry entry which authenticated the bearer above, allowing
   // the harness to bind an encrypted credential (and a Live call) to the
   // same paired phone.
   if (authenticatedDeviceId && /^[\w-]{1,128}$/.test(authenticatedDeviceId)) {
-    out["x-openmausbot-companion-device"] = authenticatedDeviceId;
-    if (mutationToken) out["x-openmausbot-companion-auth"] = mutationToken;
+    out["x-sc-agent-companion-device"] = authenticatedDeviceId;
+    if (mutationToken) out["x-sc-agent-companion-auth"] = mutationToken;
   }
   return out;
 }
@@ -293,10 +293,10 @@ function harnessControlCheck(options: ProxyOptions) {
       accept: "application/json",
       "content-type": "application/json",
       "content-length": String(Buffer.byteLength(body)),
-      "x-openmausbot-companion": "1",
-      "x-openmausbot-companion-device": deviceId,
+      "x-sc-agent-companion": "1",
+      "x-sc-agent-companion-device": deviceId,
     };
-    if (mutationToken) headers["x-openmausbot-companion-auth"] = mutationToken;
+    if (mutationToken) headers["x-sc-agent-companion-auth"] = mutationToken;
     const request = httpRequest({
       hostname: "127.0.0.1",
       port: options.harnessPort,
@@ -499,13 +499,13 @@ export function createProxyHandler(options: ProxyOptions) {
             if (
               (harness.statusCode ?? 500) < 200 ||
               (harness.statusCode ?? 500) >= 300 ||
-              (identity as { app?: unknown } | null)?.app !== "openmausbot"
+              (identity as { app?: unknown } | null)?.app !== "socialcoffee-agent"
             ) {
               fail();
               return;
             }
             finished = true;
-            sendJson(res, 200, { app: "openmausbot" });
+            sendJson(res, 200, { app: "socialcoffee-agent" });
           });
           return;
         }

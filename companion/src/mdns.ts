@@ -191,7 +191,7 @@ export function decodeMessage(buf: Buffer): DnsMessage | null {
  * and type is stale, drop it" (RFC 6762 §10.2), and two rules keep it off a
  * record here:
  *
- * - **Shared records (§10.2).** The PTR of `_openmausbot._tcp.local` is
+ * - **Shared records (§10.2).** The PTR of `_sc-agent._tcp.local` is
  *   shared: every computer running the companion answers that same name with
  *   its own instance, and the service-type enumeration PTR is shared wider
  *   still. Flushing one tells the client to throw away the instances the
@@ -313,7 +313,7 @@ export function encodeResponse(
 export interface ServiceInfo {
   /** human-readable instance name — what a picker on the phone shows */
   name: string;
-  /** e.g. "_openmausbot._tcp" */
+  /** e.g. "_sc-agent._tcp" */
   type: string;
   port: number;
   /** the name our A records claim, e.g. "socialcoffee-agent-1a2b3c4d.local" */

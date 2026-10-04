@@ -161,7 +161,7 @@ const mintCapability = async (botId: string, threadId: string): Promise<string> 
     "POST",
     "/api/testing/internal-capability",
     { botId, threadId, kind: "agents" },
-    { "x-openmausbot-test-capability": TEST_CAPABILITY_KEY },
+    { "x-sc-agent-test-capability": TEST_CAPABILITY_KEY },
   );
   expect(minted.status).toBe(201);
   return String(minted.body.token);

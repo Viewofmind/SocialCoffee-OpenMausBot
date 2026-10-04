@@ -86,7 +86,7 @@ describe("socialcoffee-agent command line", () => {
 
   describe("the two links one pairing window has", () => {
     const url = "https://mini.example/pair#code=ABCD-EFGH-JKLM";
-    const invite = `openmausbot://pair?address=https%3A%2F%2Fmini.example&token=omb_pair_${"a".repeat(43)}&name=mini`;
+    const invite = `sc-agent://pair?address=https%3A%2F%2Fmini.example&token=omb_pair_${"a".repeat(43)}&name=mini`;
     const block = (over: Record<string, unknown> = {}) =>
       pairingBlock({ code: "ABCD-EFGH-JKLM", url, inviteUrl: invite, expiresAt: Date.now() + 60_000, ...over });
 
@@ -158,7 +158,7 @@ describe("socialcoffee-agent command line", () => {
       expect(out).toMatch(/pairing code:  [A-Z2-9]{4}-[A-Z2-9]{4}-[A-Z2-9]{4}/);
       expect(out).toContain("open or scan:  https://mini.example/pair#code=");
       expect(out).toMatch(/[▀▄█]/);
-      const descriptor: any = await (await fetch(`http://127.0.0.1:${port}/.well-known/openmausbot/environment`)).json();
+      const descriptor: any = await (await fetch(`http://127.0.0.1:${port}/.well-known/socialcoffee-agent/environment`)).json();
       expect(descriptor.label).toBe("cli test");
       const pairing: any = await (await fetch(`http://127.0.0.1:${port}/api/auth/pairing`)).json();
       expect(pairing.pairings.length).toBeGreaterThanOrEqual(1);
@@ -458,7 +458,7 @@ describe.skipIf(process.platform === "win32")("serve --tunnel", () => {
       const gatewayDeadline = Date.now() + 20_000;
       while (Date.now() < gatewayDeadline && status !== 200) {
         try {
-          status = (await fetch(`${gateway}/.well-known/openmausbot/environment`)).status;
+          status = (await fetch(`${gateway}/.well-known/socialcoffee-agent/environment`)).status;
         } catch {
           status = 0;
         }
@@ -513,7 +513,7 @@ describe.skipIf(process.platform === "win32")("serve --tunnel", () => {
       const gatewayDeadline = Date.now() + 20_000;
       while (Date.now() < gatewayDeadline) {
         try {
-          descriptor = await fetch(`${gateway}/.well-known/openmausbot/environment`);
+          descriptor = await fetch(`${gateway}/.well-known/socialcoffee-agent/environment`);
           if (descriptor.status === 200) break;
         } catch {
           descriptor = null;
@@ -525,7 +525,7 @@ describe.skipIf(process.platform === "win32")("serve --tunnel", () => {
       const stranger = await fetch(`${gateway}/api/bots`);
       expect(stranger.status).toBe(403);
       expect(((await stranger.json()) as { error: string }).error).toMatch(/through a proxy/);
-      expect(await (await fetch(`${gateway}/api/health`)).json()).toEqual({ app: "openmausbot" });
+      expect(await (await fetch(`${gateway}/api/health`)).json()).toEqual({ app: "socialcoffee-agent" });
       expect(typeof ((await (await fetch(`http://127.0.0.1:${port}/api/health`)).json()) as { pid: unknown }).pid).toBe("number");
       // the printed code pairs a device through the gateway, and its session is honoured there
       const match = /pairing code:  ([A-Z2-9-]+)/.exec(out);

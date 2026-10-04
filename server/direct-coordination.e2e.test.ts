@@ -23,7 +23,7 @@ async function fixture(test: (f: any) => Promise<void>, fakeEnv: NodeJS.ProcessE
   const desktopOwner = fakeEnv.OMB_TEST_DESKTOP_OWNER_TOKEN;
   const realFetch = globalThis.fetch;
   if (desktopOwner) globalThis.fetch = (input, init = {}) => realFetch(input, { ...init,
-    headers: { ...Object.fromEntries(new Headers(init.headers)), "x-openmausbot-desktop-owner": desktopOwner } });
+    headers: { ...Object.fromEntries(new Headers(init.headers)), "x-sc-agent-desktop-owner": desktopOwner } });
   try { await fixtureSession(test, fakeEnv); } finally { globalThis.fetch = realFetch; }
 }
 
@@ -528,7 +528,7 @@ it.each<[string, NodeJS.ProcessEnv]>([
   ["a headless server", {}],
   ["the desktop app", { OMB_TEST_DESKTOP_OWNER_TOKEN: randomBytes(32).toString("base64url") }],
 ])("on %s, holds a follow-up sent while the teammate still works and runs it next in the same thread", (_where, env) => fixture(async f => {
-  expect((await f.api("/.well-known/openmausbot/environment", undefined, "GET")).capabilities.selfUpdate)
+  expect((await f.api("/.well-known/socialcoffee-agent/environment", undefined, "GET")).capabilities.selfUpdate)
     .toBe(env.OMB_TEST_DESKTOP_OWNER_TOKEN ? "desktop-managed" : "operator");
   const gate = join(f.session.info.dataDir, "first-request.gate");
   f.plan[f.lead.id] = { turns: [{ gateFile: gate, reply: "Export implemented" }, { reply: "Header row added" }] };

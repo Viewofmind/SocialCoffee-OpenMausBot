@@ -105,8 +105,8 @@ const ALL_DAYS = [0, 1, 2, 3, 4, 5, 6];
 const WEEKDAYS = [1, 2, 3, 4, 5];
 const INTERVAL_PRESETS = [5, 10, 15, 30, 60];
 const EVENT_DURATION_OPTIONS = Array.from({ length: 240 / CALENDAR_SLOT_MINUTES }, (_, index) => (index + 1) * CALENDAR_SLOT_MINUTES);
-const BOT_DRAG_TYPE = "application/x-openmaus-bot";
-const EVENT_DRAG_TYPE = "application/x-openmaus-calendar-event";
+const BOT_DRAG_TYPE = "application/x-sc-agent-bot";
+const EVENT_DRAG_TYPE = "application/x-sc-agent-calendar-event";
 
 type EventKind = "routine" | "call";
 type RoutinesLayout = "day" | "week" | "list";
@@ -400,7 +400,7 @@ export function EventEditor({
   };
   const [routineTarget, setRoutineTarget] = useState<RoutineTarget>(existingRoutine?.target ?? "bot");
   const [groupId, setGroupId] = useState(existingRoutine?.groupId ?? "");
-  const [runOn, setRunOn] = useState<RoutineRunOn>(existingRoutine?.runOn ?? defaultRunOn ?? "maus");
+  const [runOn, setRunOn] = useState<RoutineRunOn>(existingRoutine?.runOn ?? defaultRunOn ?? "local");
   const [attachments, setAttachments] = useState<Array<RoutineContextAttachment | CalendarCallAttachment>>(
     existingRoutine?.target === "room-goal" ? [] : existingRoutine?.attachments ?? existingCall?.attachments ?? [],
   );
@@ -480,7 +480,7 @@ export function EventEditor({
       setGroupId("");
       return;
     }
-    setRunOn("maus");
+    setRunOn("local");
     setAttachments([]);
     setAttachmentNotice("");
     const room = selectedRoom ?? rooms[0];
@@ -508,7 +508,7 @@ export function EventEditor({
       const added = toContextAttachments(result.attachments);
       if (added.length) {
         setAttachments((current) => [...current, ...added].slice(0, 20));
-        if (runOn === "cloud") setRunOn("maus");
+        if (runOn === "cloud") setRunOn("local");
       }
       if (result.notice) setAttachmentNotice(result.notice);
     } finally {
@@ -540,7 +540,7 @@ export function EventEditor({
           target: routineTarget,
           botId: lockedBotId ?? botIds[0] ?? "",
           groupId: routineTarget === "room-goal" ? groupId : null,
-          runOn: routineTarget === "room-goal" ? "maus" : runOn,
+          runOn: routineTarget === "room-goal" ? "local" : runOn,
           enabled: existingRoutine ? undefined : true,
           schedule: nextSchedule,
           durationMinutes,
@@ -881,7 +881,7 @@ export function EventEditor({
                     <div className="mt-1 text-[11px] leading-relaxed text-ink-secondary">SocialCoffeeAgent keeps the group and its member hand-offs together for the full goal.</div>
                   </div>
                 ) : <div className="grid grid-cols-2 gap-2">
-                  <button type="button" onClick={() => setRunOn("maus")} className={cn("rounded-xl border p-3 text-left", runOn === "maus" ? "border-accent/60 bg-accent/10" : "border-hairline/50 bg-inset hover:bg-raised")}><div className="text-[12.5px] font-medium text-ink">Bot’s current setup</div><div className="mt-1 text-[11px] text-ink-secondary">Keeps its model and configured computer, including a self-hosted VPS.</div></button>
+                  <button type="button" onClick={() => setRunOn("local")} className={cn("rounded-xl border p-3 text-left", runOn === "local" ? "border-accent/60 bg-accent/10" : "border-hairline/50 bg-inset hover:bg-raised")}><div className="text-[12.5px] font-medium text-ink">Bot’s current setup</div><div className="mt-1 text-[11px] text-ink-secondary">Keeps its model and configured computer, including a self-hosted VPS.</div></button>
                   <button type="button" disabled={!cloudReady || attachments.length > 0} onClick={() => setRunOn("cloud")} className={cn("rounded-xl border p-3 text-left disabled:cursor-not-allowed disabled:opacity-45", runOn === "cloud" ? "border-accent/60 bg-accent/10" : "border-hairline/50 bg-inset hover:bg-raised")}><div className="text-[12.5px] font-medium text-ink">Boat cloud computer</div><div className="mt-1 text-[11px] text-ink-secondary">The bot's own model works on its Boat, not your VPS. SocialCoffeeAgent must stay running to launch it.</div></button>
                 </div>}
               </div>
@@ -1120,7 +1120,7 @@ function QuickComposer({
             name,
             prompt: description,
             botId: botIds[0],
-            runOn: "maus",
+            runOn: "local",
             enabled: true,
             schedule: { type: "once", at: seed.at },
             durationMinutes,

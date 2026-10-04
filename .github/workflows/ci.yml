@@ -542,8 +542,8 @@ jobs:
           set -o pipefail
           cd ios
           xcodebuild \
-            -project OpenMausCompanion.xcodeproj \
-            -scheme OpenMausCompanion \
+            -project SocialCoffeeAgentCompanion.xcodeproj \
+            -scheme SocialCoffeeAgentCompanion \
             -sdk iphonesimulator \
             -destination 'generic/platform=iOS Simulator' \
             ARCHS=arm64 \

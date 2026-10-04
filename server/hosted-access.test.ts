@@ -164,7 +164,7 @@ describe.skipIf(!ADAPTER_SHIPPED)("hosted bridge in the full server", () => {
     expect((await call("/")).location).toBe("/api/auth/hosted/start");
     expect((await call("/pair")).location).toBe("/api/auth/hosted/start");
     expect((await call("/", { local: true })).body).toContain("Fixture workspace");
-    expect((await call("/.well-known/openmausbot/environment")).body.capabilities.emailSignIn).toBe(false);
+    expect((await call("/.well-known/socialcoffee-agent/environment")).body.capabilities.emailSignIn).toBe(false);
     for (const path of ["/api/auth/pair", "/api/auth/pairing", "/api/auth/email/start", "/api/auth/email/verify"]) {
       expect((await call(path, { method: "POST" })).status).toBe(403);
     }
@@ -258,7 +258,7 @@ describe.skipIf(!ADAPTER_SHIPPED)("hosted bridge in the full server", () => {
     }, { timeout: 20_000 }).toBe(200);
     const readiness = await call("/api/health/hosted");
     expect(readiness.status).toBe(200);
-    expect(readiness.body).toEqual({ ok: true, service: "openmausbot", membershipAuthority: "portal", workspace: "acme", ...HOSTED_CONTRACT_METADATA });
+    expect(readiness.body).toEqual({ ok: true, service: "socialcoffee-agent", membershipAuthority: "portal", workspace: "acme", ...HOSTED_CONTRACT_METADATA });
     expect(readiness.contractVersion).toBe("1");
     expect(readiness.cookies).toEqual([]);
     const cookie = await login();

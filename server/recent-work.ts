@@ -22,7 +22,7 @@ const OUTCOME_CHARS = 240;
 /** One conversation a bot takes part in, named the way the bot should say it. */
 export interface BotThread {
   threadId: string;
-  /** `1:1 with Milind`, `room "Standup"` */
+  /** `1:1 with Manav`, `room "Standup"` */
   where: string;
   title: string | null;
   /** A conversation the room cannot see: the bot's own 1:1 chats. */

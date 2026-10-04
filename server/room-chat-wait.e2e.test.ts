@@ -301,7 +301,7 @@ describe("chat rooms wait for a member busy elsewhere", { timeout: 45_000 }, () 
         "POST",
         "/api/testing/internal-capability",
         { botId: pen.id, threadId: pen.threadId, kind: "agents" },
-        { "x-openmausbot-test-capability": TEST_CAPABILITY_KEY },
+        { "x-sc-agent-test-capability": TEST_CAPABILITY_KEY },
       );
       expect(minted.status).toBe(201);
       const token = String(minted.body.token);

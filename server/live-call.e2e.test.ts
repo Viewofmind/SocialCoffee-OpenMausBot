@@ -262,7 +262,7 @@ posixOnly("Live call e2e", () => {
   // own requests: only the companion can say the phone was unpaired.
   it("ends a phone's call, and refuses it another, once the companion says it was unpaired", async () => {
     const bot = await createBot();
-    const phone = { "x-openmausbot-companion": "1", "x-openmausbot-companion-device": "phone-e2e" };
+    const phone = { "x-sc-agent-companion": "1", "x-sc-agent-companion-device": "phone-e2e" };
     const sse = await openSse(`${base}/api/events`);
     try {
       const before = live.sessions.length;
@@ -274,7 +274,7 @@ posixOnly("Live call e2e", () => {
       await sse.until((frame) => frame.kind === "live.call" && frame.call?.callId === call.callId && frame.call?.status === "live");
 
       // another phone's unpairing is not this call's business
-      expect(await post("/api/live/device-revoked", {}, { ...phone, "x-openmausbot-companion-device": "phone-other" }))
+      expect(await post("/api/live/device-revoked", {}, { ...phone, "x-sc-agent-companion-device": "phone-other" }))
         .toEqual({ status: 200, body: { call: null } });
       expect(await post("/api/live/device-revoked", {}, phone)).toMatchObject({ status: 200, body: { call: { callId: call.callId } } });
       await live.waitForCommand(session.id, (c) => c.type === "session.close", 5_000);

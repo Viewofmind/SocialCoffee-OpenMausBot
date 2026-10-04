@@ -42,17 +42,17 @@ for kind in iphone ipad; do
   simulator_id=$(xcrun simctl create "omb-ios-threads-${kind}-${GITHUB_RUN_ID}" "$(device_type "$kind")" "$runtime_id")
   created_ids+=("$simulator_id")
   xcodebuild \
-    -project OpenMausCompanion.xcodeproj \
-    -scheme OpenMausCompanion \
+    -project SocialCoffeeAgentCompanion.xcodeproj \
+    -scheme SocialCoffeeAgentCompanion \
     -configuration Debug \
     -destination "platform=iOS Simulator,id=${simulator_id}" \
     -derivedDataPath "${RUNNER_TEMP}/omb-ios-threads-build" \
     -resultBundlePath "${RUNNER_TEMP}/omb-ios-threads-${kind}.xcresult" \
     -parallel-testing-enabled NO \
-    -only-testing:OpenMausCompanionUITests/ThreadNavigationUITests \
-    -only-testing:OpenMausCompanionUITests/TranscriptPresentationUITests \
-    -only-testing:OpenMausCompanionUITests/SwipeBackUITests \
-    -only-testing:OpenMausCompanionUITests/RosterDensityUITests \
-    -only-testing:OpenMausCompanionUITests/LiveCallUITests \
+    -only-testing:SocialCoffeeAgentCompanionUITests/ThreadNavigationUITests \
+    -only-testing:SocialCoffeeAgentCompanionUITests/TranscriptPresentationUITests \
+    -only-testing:SocialCoffeeAgentCompanionUITests/SwipeBackUITests \
+    -only-testing:SocialCoffeeAgentCompanionUITests/RosterDensityUITests \
+    -only-testing:SocialCoffeeAgentCompanionUITests/LiveCallUITests \
     CODE_SIGNING_ALLOWED=NO test
 done

@@ -1563,7 +1563,7 @@ describe("agents-proxy MCP surface", () => {
       name: "Morning brief",
       instructions: "Summarize today's priorities.",
       schedule: { type: "weekly", time: "09:00", weekdays: ["monday", "friday"] },
-      run_on: "maus",
+      run_on: "local",
       duration_minutes: 45,
       timeout_minutes: 15,
       continuity: true,
@@ -1576,7 +1576,7 @@ describe("agents-proxy MCP surface", () => {
         name: "Morning brief",
         instructions: "Summarize today's priorities.",
         schedule: { type: "weekly", time: "09:00", weekdays: ["monday", "friday"] },
-        runOn: "maus",
+        runOn: "local",
         timeoutMinutes: 15,
         continuity: true,
       },
@@ -1631,7 +1631,7 @@ describe("agents-proxy MCP surface", () => {
   it("advertises VPS-compatible default execution separately from the Boat runner", async () => {
     const list = await rpc("tools/list");
     const routine = list.result.tools.find((entry: { name: string }) => entry.name === "propose_routine");
-    expect(routine.inputSchema.properties.run_on.enum).toEqual(["maus", "box"]);
+    expect(routine.inputSchema.properties.run_on.enum).toEqual(["local", "box"]);
     expect(routine.inputSchema.properties.run_on.description).toContain("INCLUDING a self-hosted VPS");
   });
 
@@ -1653,7 +1653,7 @@ describe("agents-proxy MCP surface", () => {
 
   it.each([
     { run_on: 7 },
-    { run_on: "maus", runOn: "cloud" },
+    { run_on: "local", runOn: "cloud" },
     { timeout_minutes: "20" },
     { timeout_minutes: 10, timeoutMinutes: 20 },
     { clear_timeout: true, timeoutMinutes: 10 },

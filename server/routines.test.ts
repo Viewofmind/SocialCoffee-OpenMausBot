@@ -670,7 +670,7 @@ describe("persistent routine results destinations", () => {
 
   it("does not route webhook or room-goal executions through bot results tasks", async () => {
     const h = resultsHarness();
-    h.manager.enqueueWebhook({ webhookId: "hook", webhookName: "Hook", prompt: "Incoming", botId: "scagent-1", runOn: "maus", deliveryId: "delivery", receivedAt: Date.now() });
+    h.manager.enqueueWebhook({ webhookId: "hook", webhookName: "Hook", prompt: "Incoming", botId: "scagent-1", runOn: "local", deliveryId: "delivery", receivedAt: Date.now() });
     const goal = h.manager.create({ ...input(), target: "room-goal", groupId: "room" });
     h.manager.runNow(goal.id);
     await h.manager.tick();
@@ -1672,7 +1672,7 @@ describe("RoutineManager", () => {
       webhookName: "Incoming delivery",
       prompt: "Handle the delivery",
       botId: "mark-webhook",
-      runOn: "maus",
+      runOn: "local",
       deliveryId: "delivery-exact",
       receivedAt: start,
     });
@@ -1727,7 +1727,7 @@ describe("RoutineManager", () => {
       webhookName: "Capacity check",
       prompt: "Keep active receipts",
       botId: "mark-capacity",
-      runOn: "maus",
+      runOn: "local",
       deliveryId: "delivery-capacity",
       receivedAt: 2_001,
     });
@@ -2144,12 +2144,12 @@ describe("RoutineManager", () => {
       name: "Local review",
       prompt: "Review this",
       botId: "mark-local",
-      runOn: "maus",
+      runOn: "local",
       schedule: { type: "daily", time: "09:00", weekdays: [1] },
       attachments: [attachment],
     });
     expect(() => h.manager.update(local.id, { runOn: "cloud" })).toThrow(/cloud file staging/i);
-    expect(h.manager.listRoutines()[0]).toMatchObject({ runOn: "maus", attachments: [attachment] });
+    expect(h.manager.listRoutines()[0]).toMatchObject({ runOn: "local", attachments: [attachment] });
   });
 
   it("keeps room goals local and attachment-free", () => {
@@ -2211,14 +2211,14 @@ describe("RoutineManager", () => {
     });
     h.setNow(routine.nextRunAt!);
     await h.manager.tick();
-    h.manager.update(routine.id, { runOn: "maus" });
+    h.manager.update(routine.id, { runOn: "local" });
 
     h.setBot("ready");
     await h.manager.tick();
 
     expect(h.runOns).toEqual(["cloud"]);
     expect(h.manager.listRuns()[0]).toMatchObject({ runOn: "cloud" });
-    expect(h.manager.listRoutines()[0]).toMatchObject({ runOn: "maus" });
+    expect(h.manager.listRoutines()[0]).toMatchObject({ runOn: "local" });
   });
 
   it("opens webhook jobs in the assigned bot's live chat", async () => {
@@ -2257,7 +2257,7 @@ describe("RoutineManager", () => {
       webhookName: "Busy gate",
       prompt: "Handle after the turn",
       botId: "scagent-1",
-      runOn: "maus",
+      runOn: "local",
       deliveryId: "delivery-busy",
       receivedAt: new Date(2026, 7, 17, 8, 2).getTime(),
     });

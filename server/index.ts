@@ -1130,7 +1130,7 @@ function cloudOwnerApplied(action: string, routineId: string | undefined, wasOwn
 function approvalShape(shape: { prompt?: string; botId?: string; runOn?: string; schedule?: unknown; target?: string; groupId?: string | null; attachments?: { id: string; path: string }[] }): string {
   const schedule = shape.schedule && typeof shape.schedule === "object" ? { ...(shape.schedule as Record<string, unknown>) } : null;
   if (schedule) delete schedule.anchorAt;
-  return JSON.stringify([shape.prompt ?? "", shape.botId ?? "", shape.runOn ?? "maus", schedule, shape.target ?? "bot", shape.groupId ?? null,
+  return JSON.stringify([shape.prompt ?? "", shape.botId ?? "", shape.runOn ?? "local", schedule, shape.target ?? "bot", shape.groupId ?? null,
     (shape.attachments ?? []).map((attachment) => [attachment.id, attachment.path])]);
 }
 
@@ -1629,7 +1629,7 @@ function adminActivityRecording(): boolean {
  * the command line (it marks its requests; on loopback that is the owner). */
 function adminActorFor(auth: RequestAuth, req: IncomingMessage): AdminActor {
   if (auth.kind === "loopback" && auth.trust !== "service" &&
-    (req.headers["x-openmausbot-cli"] === "1" || req.headers["x-openmausbot-cli-owner"] !== undefined)) return { kind: "cli" };
+    (req.headers["x-sc-agent-cli"] === "1" || req.headers["x-sc-agent-cli-owner"] !== undefined)) return { kind: "cli" };
   return decisionActorFor(auth);
 }
 
@@ -1934,7 +1934,7 @@ type DesktopPrivateMessage = BrowserCleanupWireRequest | {
   botId: string;
   held: true;
 } | {
-  type: "openmausbot:phone-secret-save";
+  type: "sc-agent:phone-secret-save";
   requestId: string;
   target: string;
   value: string;
@@ -11122,7 +11122,7 @@ async function cloudRoutineReadiness(botId: string, threadId?: string): Promise<
   if (!boat.boatConfigured(cfg)) {
     return {
       ready: false,
-      reason: 'The Boat cloud computer needs a working Boat API key. For the bot’s configured computer, including a self-hosted VPS, set run_on="maus" instead.',
+      reason: 'The Boat cloud computer needs a working Boat API key. For the bot’s configured computer, including a self-hosted VPS, set run_on="local" instead.',
     };
   }
   const instance = registry.get(bot.modelSelection.instanceId);
@@ -15511,7 +15511,7 @@ const handleRequest = async (req: IncomingMessage, res: ServerResponse) => {
       }
       res.setHeader(HOSTED_CONTRACT_HEADER, String(HOSTED_CONTRACT_VERSION));
       if (hostedModels) res.setHeader(HOSTED_MODEL_POLICY_HEADER, "1");
-      return json(res, 200, { ok: true, service: "openmausbot", membershipAuthority: "portal", workspace: hosted.workspace, ...HOSTED_CONTRACT_METADATA });
+      return json(res, 200, { ok: true, service: "socialcoffee-agent", membershipAuthority: "portal", workspace: hosted.workspace, ...HOSTED_CONTRACT_METADATA });
     }
     // Hosted workspaces have one sign-in authority. A missing optional layer
     // must not accidentally reactivate legacy email/QR credential minting.
@@ -15536,10 +15536,10 @@ const handleRequest = async (req: IncomingMessage, res: ServerResponse) => {
     // code into a session. Everything else needs the loopback owner or a
     // paired session with the right scope.
     if (method === "GET" && !path.startsWith("/api/") && !path.startsWith("/.well-known/") && serveStatic(res, path)) return;
-    if (method === "GET" && path === "/.well-known/openmausbot/environment") {
+    if (method === "GET" && path === "/.well-known/socialcoffee-agent/environment") {
       return json(res, 200, environmentDescriptor({ environmentId: ENVIRONMENT_ID, desktopManaged: DESKTOP_MANAGED, emailSignIn: !HOSTED_WORKSPACE && !CLOUD_HOME && emailSignIn.enabled(), sharedComputers: lendingEnabled(), cloudHome: Boolean(CLOUD_HOME) }));
     }
-    const domainCheck = /^\/\.well-known\/openmausbot\/domain-check\/([a-f0-9]{64})$/.exec(path);
+    const domainCheck = /^\/\.well-known\/socialcoffee-agent\/domain-check\/([a-f0-9]{64})$/.exec(path);
     if (method === "GET" && domainCheck) {
       res.setHeader("cache-control", "no-store");
       const challenge = customDomainVerifier.challenge(domainCheck[1]);
@@ -15706,7 +15706,7 @@ const handleRequest = async (req: IncomingMessage, res: ServerResponse) => {
     // A stranger learns only the app name; pid (the desktop boot probe keys
     // on it) and the static flag stay behind the gate below.
     if (method === "GET" && path === "/api/health" && !gate.auth) {
-      return json(res, 200, { app: "openmausbot" });
+      return json(res, 200, { app: "socialcoffee-agent" });
     }
     // The brand is public too: the sign-in page must carry the deployment's
     // name and icon before anyone has a session, and it holds nothing secret.
@@ -15945,7 +15945,7 @@ const handleRequest = async (req: IncomingMessage, res: ServerResponse) => {
     // below, it exists only when the launcher sets its high-entropy key.
     if (method === "POST" && path === "/api/testing/org-library") {
       const expected = Buffer.from(process.env.OMB_TEST_ORG_LIBRARY_KEY ?? "");
-      const header = req.headers["x-openmausbot-test-org-library"];
+      const header = req.headers["x-sc-agent-test-org-library"];
       const actual = Buffer.from(Array.isArray(header) ? "" : String(header ?? ""));
       if (expected.length < 32 || actual.length !== expected.length || !timingSafeEqual(actual, expected) || !orgLibrary) {
         return json(res, 404, { error: "not found" });
@@ -15957,9 +15957,9 @@ const handleRequest = async (req: IncomingMessage, res: ServerResponse) => {
     }
     if (method === "POST" && path === "/api/testing/internal-capability") {
       const expected = process.env.OMB_TEST_INTERNAL_CAPABILITY_KEY ?? "";
-      const actual = Array.isArray(req.headers["x-openmausbot-test-capability"])
+      const actual = Array.isArray(req.headers["x-sc-agent-test-capability"])
         ? ""
-        : String(req.headers["x-openmausbot-test-capability"] ?? "");
+        : String(req.headers["x-sc-agent-test-capability"] ?? "");
       const expectedBytes = Buffer.from(expected);
       const actualBytes = Buffer.from(actual);
       if (
@@ -18916,7 +18916,7 @@ const handleRequest = async (req: IncomingMessage, res: ServerResponse) => {
     // it never grants authority or replaces the existing request gate.
     const requirePinnedClientThread = (botId: string, threadId: unknown): void => {
       if (threadId === undefined &&
-        (auth.kind === "session" || req.headers["x-openmausbot-companion"] === "1") &&
+        (auth.kind === "session" || req.headers["x-sc-agent-companion"] === "1") &&
         store.tasks(botId).length > 1) {
         throw Object.assign(new Error("This bot has more than one thread. Update the SocialCoffeeAgent app on this device, then choose a thread and try again."), { status: 409 });
       }
@@ -19662,7 +19662,7 @@ const handleRequest = async (req: IncomingMessage, res: ServerResponse) => {
         importVisibility = parsed.visibility;
       }
       const body = await readBody(req, MAX_TEAM_BACKUP_BYTES);
-      if (body?.format === "openmaus.backup") {
+      if (body?.format === "socialcoffee-agent.backup") {
         if (importMode !== "add") return json(res, 400, { error: "Import backups alongside your existing bots; project mode is only for templates" });
         try {
           const imported = importTeamBackup(store, routines!, body, await defaultSelection(), { visibility: importVisibility });
@@ -23078,7 +23078,7 @@ const handleRequest = async (req: IncomingMessage, res: ServerResponse) => {
     // child proves it is OURS by echoing its pid (a stray dev server has
     // the same API shape but a different pid)
     if (method === "GET" && path === "/api/health") {
-      return json(res, 200, { app: "openmausbot", pid: process.pid, static: Boolean(STATIC_DIR), capabilities: {
+      return json(res, 200, { app: "socialcoffee-agent", pid: process.pid, static: Boolean(STATIC_DIR), capabilities: {
         guardedMessages: 1, guardedRequests: 1, guardedFullAccess: 1, guardedOnBehalfOf: 1,
         ...(sharedWorkspaceFullAccessEnabled() ? { sharedWorkspaceFullAccess: 1 } : {}),
       } });
@@ -24457,10 +24457,10 @@ const handleRequest = async (req: IncomingMessage, res: ServerResponse) => {
     // Electron server has the private key needed to open the envelope.
     m = path.match(/^\/api\/bots\/([\w-]+)\/secret-cards\/([\w-]+)\/provide$/);
     if (m && method === "POST") {
-      if (req.headers["x-openmausbot-companion"] !== "1") {
+      if (req.headers["x-sc-agent-companion"] !== "1") {
         return json(res, 403, { error: "Secure phone entry must come from a paired phone" });
       }
-      const rawDeviceId = req.headers["x-openmausbot-companion-device"];
+      const rawDeviceId = req.headers["x-sc-agent-companion-device"];
       const authenticatedDeviceId = Array.isArray(rawDeviceId) ? "" : String(rawDeviceId ?? "");
       if (!/^[\w-]{1,128}$/.test(authenticatedDeviceId)) {
         return json(res, 401, { error: "This paired phone could not be verified" });

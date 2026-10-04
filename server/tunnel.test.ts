@@ -87,15 +87,15 @@ describe("login and logout against the control plane", () => {
 
   it("an emailed code signs this machine in and reserves its public address; logout releases it", async () => {
     const wrong = fakeIo(["00000000"]);
-    expect(await runLogin(options(dir, { email: "milind@example.test" }), wrong.io)).toBe(1);
+    expect(await runLogin(options(dir, { email: "manav@example.test" }), wrong.io)).toBe(1);
     expect(wrong.err.join("\n")).toMatch(/sign-in failed/);
     expect(describeTunnelAccount(openTunnelCredentials(dir).read()).email).toBeNull();
 
     const right = fakeIo([stub.otp]);
-    expect(await runLogin(options(dir, { email: "milind@example.test" }), right.io)).toBe(0);
+    expect(await runLogin(options(dir, { email: "manav@example.test" }), right.io)).toBe(0);
     expect(right.out.join("\n")).toContain(`This machine's public address: ${stub.endpointUrl}`);
     const doc = openTunnelCredentials(dir).read();
-    expect(describeTunnelAccount(doc)).toMatchObject({ email: "milind@example.test", address: stub.endpointUrl });
+    expect(describeTunnelAccount(doc)).toMatchObject({ email: "manav@example.test", address: stub.endpointUrl });
     expect(tunnelAccess(doc)?.token).toBe(stub.connectorToken);
     expect(stub.calls).toContain("POST /v1/installations");
     expect(stub.calls).toContain("POST /v1/installations/self/endpoint");
@@ -116,7 +116,7 @@ describe("login and logout against the control plane", () => {
   });
 
   it("a running serve --tunnel re-creates a reclaimed endpoint behind the same address and reconnects", async () => {
-    expect(await runLogin(options(dir, { email: "milind@example.test" }), fakeIo([stub.otp]).io)).toBe(0);
+    expect(await runLogin(options(dir, { email: "manav@example.test" }), fakeIo([stub.otp]).io)).toBe(0);
     const pending = new Map<number, () => void>();
     let nextTimer = 1;
     let clock = 1_000_000;
@@ -224,7 +224,7 @@ describe.skipIf(!posix)("startTunnel: guardian, gateway and connector, verified 
     writeFileSync(fake, `#!/bin/sh\necho $$ > "${pidFile}"\nexec sleep 300\n`, { mode: 0o755 });
     const harness = createServer((req, res) => {
       res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ app: "openmausbot", url: req.url, peer: req.socket.remoteAddress ?? null }));
+      res.end(JSON.stringify({ app: "socialcoffee-agent", url: req.url, peer: req.socket.remoteAddress ?? null }));
     });
     await new Promise<void>((done) => harness.listen(origin.socketPath, done));
     const originPort = await freePortBlock([0], 29_600);
@@ -247,7 +247,7 @@ describe.skipIf(!posix)("startTunnel: guardian, gateway and connector, verified 
       const settled = await tunnel.started;
       expect(settled.status, states.join(",")).toBe("ready");
       const viaGateway: any = await (await fetch(`http://127.0.0.1:${originPort}/api/health`)).json();
-      expect(viaGateway.app).toBe("openmausbot");
+      expect(viaGateway.app).toBe("socialcoffee-agent");
       expect(viaGateway.peer).toBeNull();
       // the connector is spawned right after the gateway binds; its shell writes the pid a moment later
       const connectorPidOtherThan = async (previous: number) => {

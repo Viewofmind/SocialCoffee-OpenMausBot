@@ -58,7 +58,7 @@ const api = async (method: string, path: string, body?: unknown): Promise<ApiRes
 const startTurn = async (botId: string, threadId: string): Promise<string> => {
   const minted = await fetch(`${BASE}/api/testing/internal-capability`, {
     method: "POST",
-    headers: { "content-type": "application/json", "x-openmausbot-test-capability": TEST_CAPABILITY_KEY },
+    headers: { "content-type": "application/json", "x-sc-agent-test-capability": TEST_CAPABILITY_KEY },
     body: JSON.stringify({ botId, threadId, kind: "agents", skillAuthoring: true }),
   });
   return (await minted.json() as { token: string }).token;
@@ -828,7 +828,7 @@ describe("post_to_room", () => {
       name: "Nightly",
       prompt: "Handle the incoming event",
       botId: automated.id,
-      runOn: "maus",
+      runOn: "local",
     });
     expect(hook.status).toBe(201);
     const delivered = await fetch(str(field(hook.body, "credential", "url")), {

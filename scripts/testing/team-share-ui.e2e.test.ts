@@ -109,7 +109,7 @@ describe("Share team in the real renderer", () => {
     await expect.poll(async () => typeof (await evaluate("window.__shareText")), { timeout: 5_000 }).toBe("string");
     const saved = JSON.parse(await evaluate("window.__shareText") as string);
     expect(await evaluate("window.__shareDownload")).toBe("sales-desk-1.0.0.socialcoffee-agent.json");
-    expect(saved).toMatchObject({ format: "openmaus.package", version: 2, package: { id: "sales-desk", team: { name: "Sales desk", brief: "Quote list prices only." } } });
+    expect(saved).toMatchObject({ format: "socialcoffee-agent.package", version: 2, package: { id: "sales-desk", team: { name: "Sales desk", brief: "Quote list prices only." } } });
     expect(saved.package.agents).toHaveLength(2);
     const savedScout = saved.package.agents.find((agent: { name: string }) => agent.name === "Scout");
     expect(savedScout.skills).toHaveLength(30);

@@ -197,7 +197,7 @@ posixOnly("who may answer a card on a shared workspace", () => {
     const source = await cardFrom(opener, opener.threadId, ADA);
     // The opener, mid-way through Ada's request, hands work to a teammate in a fresh thread.
     const minted = await fetch(`${BASE}/api/testing/internal-capability`, {
-      method: "POST", headers: { "content-type": "application/json", "x-openmausbot-test-capability": CAPABILITY_KEY },
+      method: "POST", headers: { "content-type": "application/json", "x-sc-agent-test-capability": CAPABILITY_KEY },
       body: JSON.stringify({ botId: opener.id, threadId: opener.threadId }),
     });
     expect(minted.status).toBe(201);

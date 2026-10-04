@@ -52,7 +52,7 @@ export type RoutineScheduleInput =
 /** `cloud` runs the agent itself inside the bot's Boat VM. `scagent` keeps
  * using the provider selected on the bot and only borrows its configured
  * computer tools, if any. */
-export type RoutineRunOn = "maus" | "cloud";
+export type RoutineRunOn = "local" | "cloud";
 export type RoutineTarget = "bot" | "room-goal";
 export type RoutineGoalStatus = Exclude<GroupGoalRunStatus, "working">;
 
@@ -741,8 +741,8 @@ function sanitizeInput(input: RoutineInput, after: number): Omit<Routine, "id" |
   if (target !== "bot" && target !== "room-goal") throw new Error("Choose a valid routine target");
   const groupId = typeof input.groupId === "string" ? input.groupId.trim() : "";
   if (target === "room-goal" && !groupId) throw new Error("Choose a room for this goal");
-  const runOn = input.runOn ?? "maus";
-  if (runOn !== "maus" && runOn !== "cloud") throw new Error("Choose where this routine runs");
+  const runOn = input.runOn ?? "local";
+  if (runOn !== "local" && runOn !== "cloud") throw new Error("Choose where this routine runs");
   const attachments = cleanAttachments(input.attachments);
   const timeoutMinutes = cleanTimeoutMinutes(input.timeoutMinutes);
   if (target === "room-goal" && runOn === "cloud") {
@@ -805,7 +805,7 @@ export class RoutineManager {
               schedule,
               target,
               groupId: loadGroupId(routine.groupId, target),
-              runOn: routine.runOn ?? "maus",
+              runOn: routine.runOn ?? "local",
               timeoutMinutes: loadTimeoutMinutes(routine.timeoutMinutes),
               attachments: loadAttachments(routine.attachments),
               sourceThreadId: persistedSourceThreadId.parse(routine.sourceThreadId),
@@ -829,7 +829,7 @@ export class RoutineManager {
               target,
               goalStatus: loadGoalStatus(run.goalStatus, target),
               groupId: loadGroupId(run.groupId, target),
-              runOn: run.runOn ?? "maus",
+              runOn: run.runOn ?? "local",
               timeoutMinutes: loadTimeoutMinutes(run.timeoutMinutes),
               attachments: loadAttachments(run.attachments),
               sourceThreadId: persistedSourceThreadId.parse(run.sourceThreadId),
@@ -1631,7 +1631,7 @@ export class RoutineManager {
               run.botId,
               task.threadId,
               composeExecutionPrompt(prompt, run.attachments, this.continuityCarry(run)),
-              run.runOn ?? "maus",
+              run.runOn ?? "local",
               triggerSource,
               (message) => this.failThread(task.threadId, message),
             );
@@ -1825,7 +1825,7 @@ export class RoutineManager {
       target: routine.target,
       groupId: routine.groupId,
       botId: routine.botId,
-      runOn: routine.runOn ?? "maus",
+      runOn: routine.runOn ?? "local",
       scheduledFor,
       status: "queued",
       manual,

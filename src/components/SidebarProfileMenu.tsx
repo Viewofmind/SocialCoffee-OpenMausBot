@@ -54,7 +54,7 @@ import {
   type PhonePairingAccess,
 } from "@/lib/phone-pairing";
 
-/** "Milind Soni" → "MS", "milind" → "M", "you@x.dev" → "Y", unset → "?" */
+/** "Manav Shah" → "MS", "manav" → "M", "you@x.dev" → "Y", unset → "?" */
 export function profileInitials(profile?: { name?: string; email?: string }): string {
   const name = profile?.name?.trim();
   if (name) {

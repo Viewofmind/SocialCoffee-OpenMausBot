@@ -81,7 +81,7 @@ const routineToolDefinitionSchema = z.object({
   name: z.string().max(80),
   instructions: z.string().max(20_000),
   schedule: routineToolScheduleSchema,
-  runOn: z.enum(["maus", "cloud"]).optional(),
+  runOn: z.enum(["local", "cloud"]).optional(),
   durationMinutes: z.number().optional(),
   timeoutMinutes: z.number().nullable().optional(),
   continuity: z.boolean().optional(),
@@ -208,7 +208,7 @@ const storedDefinitionSchema = z.object({
   name: z.string().trim().min(1).max(80),
   instructions: z.string().trim().min(1).max(20_000),
   schedule: storedScheduleSchema,
-  runOn: z.enum(["maus", "cloud"]),
+  runOn: z.enum(["local", "cloud"]),
   durationMinutes: z.number().int().min(5).max(240),
   timeoutMinutes: z.number().int().min(5).max(240).optional(),
   continuity: z.boolean().optional(),
@@ -391,7 +391,7 @@ function text(value: string, field: string, max: number): string {
 }
 
 function runOn(value: RoutineRequestRunOn | undefined): RoutineRequestRunOn {
-  return value ?? "maus";
+  return value ?? "local";
 }
 
 function duration(value: number | undefined): number {

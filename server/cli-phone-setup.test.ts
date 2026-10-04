@@ -63,7 +63,7 @@ describe("phone origin validation", () => {
     "https://[::ffff:0.0.0.0]", "https://user:password@agent.example", "https://agent.example/pair",
     "https://agent.example/?token=secret", "https://agent.example/#code=ABCD-EFGH-JKLM",
     "https://agent.example/?", "https://agent.example/#", "https://scagent.\nexample",
-    "https://agent.example\\private", "openmausbot://pair?token=secret",
+    "https://agent.example\\private", "sc-agent://pair?token=secret",
   ])("rejects a local, credential-bearing or non-origin input: %s", (input) => {
     expect(normalizePhoneOrigin(input)).toBeNull();
   });

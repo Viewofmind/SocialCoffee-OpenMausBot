@@ -119,7 +119,7 @@ export function chatUrlTransform(value: string): string {
   // scheme must survive the allow-list so the anchor component sees it
   if (looksLikeThreadRefUrl(value)) return value;
   // Markdown-to-HTML percent-encodes a destination's backslashes, so
-  // C:\Users\Agent\report.md arrives as C:%5CUsers%5CMaus%5Creport.md and no
+  // C:\Users\Agent\report.md arrives as C:%5CUsers%5CManav%5Creport.md and no
   // longer looked like a drive path: the link rendered dead and the image as
   // unavailable. Restore the separators; other escapes stay for the server's
   // single decode.
@@ -977,8 +977,8 @@ const MARKDOWN_COMPONENTS: Components = {
 };
 
 // A thread link only ever comes from a "#Title" run or a canonical
-// openmausbot://thread/ link, whatever case or escaping its scheme uses.
-const MAY_LINK_THREAD = /#|openmausbot/i;
+// sc-agent://thread/ link, whatever case or escaping its scheme uses.
+const MAY_LINK_THREAD = /#|sc-agent/i;
 const NO_THREAD_REFS: ThreadRefsValue = { threads: [] };
 
 /** Render message Markdown with math, protected code, scoped attachments, and mentions. */

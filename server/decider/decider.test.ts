@@ -17,7 +17,7 @@ const KEY = "tsk_unit_secret_key_0123456789abcdef";
 const ON: AppConfig = { decider: { enabled: true, key: KEY, jobs: { roomRouting: true } } };
 const OPTIONS = { maya: "Maya, Product Designer bot.", theo: "Theo, Frontend Engineer bot." };
 const QUESTION = { instructions: "Which bot should answer `new_message`?", options: OPTIONS };
-const STATE = { new_message: { from: "Milind", text: "PRIVATE-MESSAGE-TEXT the navbar overlaps on Safari" } };
+const STATE = { new_message: { from: "Manav", text: "PRIVATE-MESSAGE-TEXT the navbar overlaps on Safari" } };
 
 type FetchMock = ReturnType<typeof vi.fn<typeof fetch>>;
 
@@ -312,10 +312,10 @@ describe("Cloud Pro's included decisions", () => {
   };
   // The app's real room request: the only one the relay takes besides the key check.
   const ROOM = roomRoutingRequest({
-    room: "Launch", humans: ["Milind"],
+    room: "Launch", humans: ["Manav"],
     members: [{ id: "maya", name: "Maya", title: "Product Designer" }, { id: "theo", name: "Theo", title: "Frontend Engineer" }],
-    recent: [{ from: "Milind", text: "PRIVATE-MESSAGE-TEXT we ship Friday" }],
-    message: { from: "Milind", text: "PRIVATE-MESSAGE-TEXT the navbar overlaps on Safari" },
+    recent: [{ from: "Manav", text: "PRIVATE-MESSAGE-TEXT we ship Friday" }],
+    message: { from: "Manav", text: "PRIVATE-MESSAGE-TEXT the navbar overlaps on Safari" },
   });
   const route = (d: ReturnType<typeof decider>) => d.choose("roomRouting", ROOM.state, ROOM.question);
   const yes = () => vi.fn<typeof fetch>(async () => jsonResponse({ answers: { answer: { type: "noul", noul: 0.97 } } }));
@@ -420,7 +420,7 @@ describe("Cloud Pro's included decisions", () => {
       ["a missing state key", { room: "Launch", new_message: ROOM.state.new_message }, { answer: { type: "choice", ...ROOM.question } }],
       ["text as state", "the navbar overlaps", { answer: { type: "choice", ...ROOM.question } }],
       // over the relay's caps
-      ["a state over 24,000 bytes", { ...ROOM.state, new_message: { from: "Milind", text: huge } }, { answer: { type: "choice", ...ROOM.question } }],
+      ["a state over 24,000 bytes", { ...ROOM.state, new_message: { from: "Manav", text: huge } }, { answer: { type: "choice", ...ROOM.question } }],
       ["a body over 64 KiB", ROOM.state, { answer: { type: "choice", instructions: ROOM.question.instructions, options: Object.fromEntries(Array.from({ length: 200 }, (_, i) => [`bot${i}`, "y".repeat(400)])) } }],
     ];
     for (const [name, state, questions] of refused) {
@@ -453,7 +453,7 @@ describe("Cloud Pro's included decisions", () => {
       room: "r".repeat(200), humans: Array.from({ length: 12 }, (_, i) => `Person ${i} ${"p".repeat(90)}`),
       members: Array.from({ length: 24 }, (_, i) => ({ id: `bot-${i}`, name: `Bot ${i}`, title: "t".repeat(200), description: "d".repeat(900) })),
       recent: Array.from({ length: 40 }, (_, i) => ({ from: `Person ${i}`, text: "m".repeat(700) })),
-      message: { from: "Milind", text: "n".repeat(7_000) },
+      message: { from: "Manav", text: "n".repeat(7_000) },
     });
     expect(Object.keys(busy.state).every((key) => (ROOM_ROUTING_STATE_KEYS as readonly string[]).includes(key))).toBe(true);
     expect(relayAccepts("roomRouting", busy.state, { answer: { type: "choice", ...busy.question } })).toBe(true);

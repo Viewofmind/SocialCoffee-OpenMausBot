@@ -195,7 +195,7 @@ describe("per-bot thread capacity through an isolated HTTP fixture", () => {
       prompt: "Write the scheduled digest.",
       target: "bot",
       botId,
-      runOn: "maus",
+      runOn: "local",
       enabled: true,
       schedule: { type: "daily", time: "23:00" },
     });
@@ -257,7 +257,7 @@ describe("per-bot thread capacity through an isolated HTTP fixture", () => {
         prompt: "Write the scheduled digest.",
         target: "bot",
         botId,
-        runOn: "maus",
+        runOn: "local",
         enabled: true,
         schedule: { type: "daily", time: "23:00" },
       });
@@ -306,7 +306,7 @@ describe("per-bot thread capacity through an isolated HTTP fixture", () => {
       prompt: "Write the deferred digest.",
       target: "bot",
       botId,
-      runOn: "maus",
+      runOn: "local",
       enabled: true,
       schedule: { type: "daily", time: "23:00" },
     });
@@ -359,7 +359,7 @@ describe("per-bot thread capacity through an isolated HTTP fixture", () => {
       prompt: "Hold the delegator turn.",
       target: "bot",
       botId: source.botId,
-      runOn: "maus",
+      runOn: "local",
       enabled: true,
       schedule: { type: "daily", time: "23:00" },
     });

@@ -165,7 +165,7 @@ const ROUTINE_FIELDS_SCHEMA = {
   run_on: {
     type: "string",
     // "box" is Boat's historical run_on destination id (agents wire contract).
-    enum: ["maus", "box"],
+    enum: ["local", "box"],
     description: "Default agent keeps the bot's selected model and configured computer, INCLUDING a self-hosted VPS. Omit this field for normal schedules. box runs on the bot's Boat cloud computer, same model; it requires Boat setup and is not the generic cloud/VPS option. Legacy cloud values from list_routines mean box, not VPS.",
   },
   timeout_minutes: {

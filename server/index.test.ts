@@ -55,7 +55,7 @@ async function mintTestCapability(
     method: "POST",
     headers: {
       "content-type": "application/json",
-      "x-openmausbot-test-capability": TEST_CAPABILITY_KEY,
+      "x-sc-agent-test-capability": TEST_CAPABILITY_KEY,
     },
     body: JSON.stringify({ botId, threadId, kind: options.kind ?? "agents", skillAuthoring: options.skillAuthoring ?? false }),
   });
@@ -64,7 +64,7 @@ async function mintTestCapability(
 }
 
 const PHONE_SECRET_TEST_IDENTITY = {
-  type: "openmausbot:phone-secret-key",
+  type: "sc-agent:phone-secret-key",
   version: 1,
   keyId: "taWSR_nZ7ojlH_0Z3tar6Q",
   privateKey: {
@@ -221,7 +221,7 @@ const waitForIsolatedServer = async (
       if (response.status === 200) {
         const health = await response.json() as { app?: unknown; pid?: unknown; static?: unknown };
         lastObservedHealth = JSON.stringify(health);
-        if (health.app === "openmausbot" && health.pid === serverChild.pid && health.static === true) return;
+        if (health.app === "socialcoffee-agent" && health.pid === serverChild.pid && health.static === true) return;
       }
     } catch {
       /* still starting */
@@ -738,7 +738,7 @@ beforeAll(async () => {
         goalStatus: "completed",
         groupId: "test-goal-restart-room",
         botId: "test-bot-a",
-        runOn: "maus",
+        runOn: "local",
         scheduledFor: 5,
         status: "completed",
         manual: false,
@@ -1608,7 +1608,7 @@ describe("harness HTTP API", () => {
       req.end();
     });
     expect(probe.status).toBe(200);
-    expect(probe.body).toEqual({ app: "openmausbot" });
+    expect(probe.body).toEqual({ app: "socialcoffee-agent" });
     // the brand is public too: the sign-in page is branded before anyone has a session
     const brand = await new Promise<{ status: number; body: unknown }>((resolve, reject) => {
       const req = request({ hostname: "127.0.0.1", port: PORT, path: "/api/brand", headers: { host: "example.com" } }, (res) => {
@@ -1638,7 +1638,7 @@ describe("harness HTTP API", () => {
   it("identifies itself on /api/health", async () => {
     const { status, body } = await api("GET", "/api/health");
     expect(status).toBe(200);
-    expect(body.app).toBe("openmausbot");
+    expect(body.app).toBe("socialcoffee-agent");
     expect(typeof body.pid).toBe("number");
     expect(body.static).toBe(true);
   });
@@ -1798,7 +1798,7 @@ describe("harness HTTP API", () => {
       target: "room-goal",
       groupId: room.id,
       botId: lead.id,
-      runOn: "maus",
+      runOn: "local",
       enabled: true,
       schedule: { type: "daily", time: "10:00", weekdays: [1, 2, 3, 4, 5] },
     });
@@ -5676,7 +5676,7 @@ describe("harness HTTP API", () => {
 
   it("installs a complete bot package with a Chief, room, playbook, connector intent, and paused routine", async () => {
     const packageFile = {
-      format: "openmaus.package",
+      format: "socialcoffee-agent.package",
       version: 1,
       package: {
         id: "signal-desk",
@@ -5725,7 +5725,7 @@ describe("harness HTTP API", () => {
           name: "Morning signals",
           agent: "scout",
           prompt: "Prepare the approved morning signal brief.",
-          runOn: "maus",
+          runOn: "local",
           schedule: { type: "daily", time: "09:00", weekdays: [1, 2, 3, 4, 5] },
           durationMinutes: 30,
           enabledAfterInstall: false,
@@ -6134,8 +6134,8 @@ describe("harness HTTP API", () => {
           method: "POST",
           headers: {
             "content-type": "application/json",
-            "x-openmausbot-companion": "1",
-            "x-openmausbot-companion-device": "phone-1",
+            "x-sc-agent-companion": "1",
+            "x-sc-agent-companion-device": "phone-1",
           },
           body: JSON.stringify(encryptedEnvelope),
         },
@@ -6333,7 +6333,7 @@ describe("harness HTTP API", () => {
             queueMicrotask(() => callback({ data: identity }));
           },
           postMessage(message) {
-            if (message?.type !== "openmausbot:phone-secret-save") return;
+            if (message?.type !== "sc-agent:phone-secret-save") return;
             writeFileSync(join(gate, message.requestId + ".started"), message.target);
             saves = saves.then(async () => {
               while (!existsSync(release)) await delay(10);
@@ -6353,13 +6353,13 @@ describe("harness HTTP API", () => {
                 const body = await response.json().catch(() => null);
                 if (!response.ok) throw new Error(body?.error || "credential config failed");
                 messages.emit("message", { data: {
-                  type: "openmausbot:phone-secret-save-result",
+                  type: "sc-agent:phone-secret-save-result",
                   requestId: message.requestId,
                   ok: true,
                 } });
               } catch (error) {
                 messages.emit("message", { data: {
-                  type: "openmausbot:phone-secret-save-result",
+                  type: "sc-agent:phone-secret-save-result",
                   requestId: message.requestId,
                   ok: false,
                   error: error instanceof Error ? error.message : String(error),
@@ -6516,8 +6516,8 @@ describe("harness HTTP API", () => {
           method: "POST",
           headers: {
             "content-type": "application/json",
-            "x-openmausbot-companion": "1",
-            "x-openmausbot-companion-device": deviceId,
+            "x-sc-agent-companion": "1",
+            "x-sc-agent-companion-device": deviceId,
           },
           body: JSON.stringify(Object.fromEntries(
             Object.entries(envelope).filter(([key]) => key !== "botId" && key !== "messageId"),
@@ -6676,7 +6676,7 @@ describe("harness HTTP API", () => {
         prompt: "look at the cloud desktop",
         target: "bot",
         botId: bot.id,
-        runOn: "maus",
+        runOn: "local",
         enabled: true,
         schedule: { type: "daily", time: "10:00", weekdays: [1, 2, 3, 4, 5] },
       });
@@ -8779,7 +8779,7 @@ describe("harness HTTP API", () => {
       name: "Deletion safety routine",
       prompt: "Keep running until interrupted.",
       botId: bot.id,
-      runOn: "maus",
+      runOn: "local",
       enabled: false,
       schedule: { type: "daily", time: "10:00", weekdays: [1] },
     })).body.routine;
@@ -8842,7 +8842,7 @@ describe("harness HTTP API", () => {
         name: "Emergency stop routine",
         prompt: "Keep running until interrupted.",
         botId: bot.id,
-        runOn: "maus",
+        runOn: "local",
         enabled: false,
         schedule: { type: "daily", time: "10:00", weekdays: [1] },
       });
@@ -9797,8 +9797,8 @@ describe("harness HTTP API", () => {
           method: "POST",
           headers: {
             "content-type": "application/json",
-            "x-openmausbot-companion": "1",
-            "x-openmausbot-companion-device": "phone-1",
+            "x-sc-agent-companion": "1",
+            "x-sc-agent-companion-device": "phone-1",
           },
           body: JSON.stringify({
             version: 1,
@@ -9920,7 +9920,7 @@ describe("harness HTTP API", () => {
               time: "09:00",
               weekdays: ["monday", "tuesday", "wednesday", "thursday", "friday"],
             },
-            runOn: "maus",
+            runOn: "local",
             durationMinutes: 30,
           },
         }),
@@ -9981,7 +9981,7 @@ describe("harness HTTP API", () => {
             name: "Nowhere brief",
             instructions: "Should never be scheduled.",
             schedule: { type: "weekly", time: "09:00", weekdays: ["monday"] },
-            runOn: "maus",
+            runOn: "local",
           },
         }),
       });
@@ -10001,7 +10001,7 @@ describe("harness HTTP API", () => {
             name: "Teammate brief",
             instructions: "Summarize for the teammate every weekday.",
             schedule: { type: "weekly", time: "08:30", weekdays: ["monday"] },
-            runOn: "maus",
+            runOn: "local",
             durationMinutes: 30,
           },
         }),
@@ -10186,7 +10186,7 @@ describe("harness HTTP API", () => {
             name: "Orphan-safe brief",
             instructions: "Summarize without recreating the deleted source.",
             schedule: { type: "weekly", time: "09:00", weekdays: ["monday"] },
-            runOn: "maus",
+            runOn: "local",
           },
         }),
       });
@@ -10219,7 +10219,7 @@ describe("harness HTTP API", () => {
         continuity: true,
         prompt: `${fakeSecret}\n${"Review the archive. ".repeat(180)}`,
         botId: bot.id,
-        runOn: "maus",
+        runOn: "local",
         enabled: false,
         schedule: {
           type: "interval",
@@ -10296,7 +10296,7 @@ describe("harness HTTP API", () => {
         name: "Teammate digest",
         prompt: "Summarize the teammate's queue.",
         botId: teammate.id,
-        runOn: "maus",
+        runOn: "local",
         enabled: true,
         schedule: { type: "daily", time: "07:30", weekdays: [1, 2, 3, 4, 5] },
       })).body.routine;
@@ -10304,7 +10304,7 @@ describe("harness HTTP API", () => {
         name: "Chief digest",
         prompt: "Summarize the chief's queue.",
         botId: chief.id,
-        runOn: "maus",
+        runOn: "local",
         enabled: true,
         schedule: { type: "daily", time: "08:00", weekdays: [1] },
       })).body.routine;
@@ -11383,7 +11383,7 @@ describe("harness HTTP API", () => {
       name: "Incoming build",
       prompt: "Review the incoming build event",
       botId: bots.body.bots[0].id,
-      runOn: "maus",
+      runOn: "local",
     });
     expect(created.status).toBe(201);
     expect(created.body.ingress).toMatchObject({ available: true, baseUrl: WEBHOOK_BASE });

@@ -1,4 +1,4 @@
-// The one `openmausbot://pair` link builder. The desktop's phone setup, the
+// The one `sc-agent://pair` link builder. The desktop's phone setup, the
 // headless server's pairing endpoint and `sc-agent pair` all print this
 // link; the Android and iOS scanners read it (android/core Connection.kt
 // `PairingInvite.parse`, ios CompanionCore Client.swift `PairingInvite.parse`).
@@ -178,5 +178,5 @@ export function phonePairingLink({
   const secretKey = validSecretPublicKey(secretPublicKey);
   if (secretKey) fields.push(["secretKey", secretKey]);
 
-  return `openmausbot://pair?${fields.map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join("&")}`;
+  return `sc-agent://pair?${fields.map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join("&")}`;
 }

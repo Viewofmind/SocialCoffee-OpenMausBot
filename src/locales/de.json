@@ -879,7 +879,7 @@
   "phone.code.expiredDetail": "Erstell einen neuen Code, wenn das andere Gerät bereit ist.",
   "phone.code.detail": "Scanne diesen Code in SocialCoffeeAgent auf dem iPhone, oder gib Adresse und Code aus den Kopplungsdetails in einer anderen Desktop-App ein.",
   "phone.code.qrAria": "QR-Code zur Gerätekopplung",
-  "phone.code.manualIntro": "Öffne OpenMausMobile und gib diesen manuellen Code ein.",
+  "phone.code.manualIntro": "Öffne SocialCoffeeAgent und gib diesen manuellen Code ein.",
   "phone.code.expiresIn": "Code läuft in {seconds}s ab",
   "phone.code.createNew": "Neuen Code erstellen",
   "phone.code.trouble": "Probleme?",

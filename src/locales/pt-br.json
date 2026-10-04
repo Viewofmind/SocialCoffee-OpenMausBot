@@ -885,7 +885,7 @@
   "phone.code.expiredDetail": "Crie um código novo quando o outro dispositivo estiver pronto.",
   "phone.code.detail": "Escaneie este código no SocialCoffeeAgent do iPhone, ou digite o endereço e o código dos detalhes de pareamento em outro app de desktop.",
   "phone.code.qrAria": "QR code de pareamento do dispositivo",
-  "phone.code.manualIntro": "Abra o OpenMausMobile e digite este código manual.",
+  "phone.code.manualIntro": "Abra o SocialCoffeeAgent e digite este código manual.",
   "phone.code.expiresIn": "O código expira em {seconds}s",
   "phone.code.createNew": "Criar um código novo",
   "phone.code.trouble": "Com dificuldade?",

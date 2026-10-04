@@ -81,13 +81,13 @@ app.whenReady().then(async () => {
   assert.equal((await phone("/api/bots", "POST", {})).status, 503, "bootstrap must fail closed");
   // Reproduce the old relay: marker/device alone cannot authorize a mutation.
   assert.equal((await api(harnessPort, "/api/bots", "POST", {}, {
-    "x-openmausbot-companion": "1", "x-openmausbot-companion-device": paired.body.device.id,
+    "x-sc-agent-companion": "1", "x-sc-agent-companion-device": paired.body.device.id,
   })).status, 403);
   sidecar.postMessage({ type: "socialcoffee-agent:companion-mutation-token", token: relay });
   await until(async () => (await phone("/api/bots")).status === 200);
   const created = await phone("/api/bots", "POST", { modelSelection: { instanceId: "claude", model: "claude-sonnet-5" } }, {
-    "x-openmausbot-companion-auth": "forged", "x-openmausbot-desktop-owner": "forged",
-    "x-openmausbot-companion-device": "forged-device",
+    "x-sc-agent-companion-auth": "forged", "x-sc-agent-desktop-owner": "forged",
+    "x-sc-agent-companion-device": "forged-device",
   });
   assert.equal(created.status, 201);
   const id = created.body.bot.id;

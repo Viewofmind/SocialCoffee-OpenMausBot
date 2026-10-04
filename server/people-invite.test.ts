@@ -156,7 +156,7 @@ describe("adding people to a hosted workspace", () => {
   let bobTicket = "";
 
   it("offers no email sign-in until the owner names the first admin", async () => {
-    expect((await remote("/.well-known/openmausbot/environment")).body.capabilities.emailSignIn).toBe(false);
+    expect((await remote("/.well-known/socialcoffee-agent/environment")).body.capabilities.emailSignIn).toBe(false);
     const early = await remote("/api/auth/email/start", { body: { email: ADA } });
     expect(early.status).toBe(404);
     expect(early.body.error).toMatch(/not set up/);
@@ -164,7 +164,7 @@ describe("adding people to a hosted workspace", () => {
     const saved = await owner("/api/config", { method: "PUT", body: { signIn: { admins: [ADA], members: [] } } });
     expect(saved.status).toBe(200);
     expect((await owner("/api/config")).body.signIn).toEqual({ admins: [ADA], members: [] });
-    expect((await remote("/.well-known/openmausbot/environment")).body.capabilities.emailSignIn).toBe(true);
+    expect((await remote("/.well-known/socialcoffee-agent/environment")).body.capabilities.emailSignIn).toBe(true);
     expect(stub.calls).not.toContain("POST /api/auth/email-otp/send-verification-otp");
   });
 

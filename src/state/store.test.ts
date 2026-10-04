@@ -1282,7 +1282,7 @@ describe("routine receipt retention", () => {
     routineName: "Check inbox",
     target: "bot",
     botId: "echo",
-    runOn: "maus",
+    runOn: "local",
     scheduledFor,
     status,
     manual: false,

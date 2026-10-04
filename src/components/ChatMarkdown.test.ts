@@ -439,14 +439,14 @@ describe("#Title thread links in markdown", () => {
   });
 
   it("renders a sent canonical link as a chip that opens the thread", () => {
-    const markup = render("done in [QA PR 245](openmausbot://thread/qa-245?bot=scout) today");
+    const markup = render("done in [QA PR 245](sc-agent://thread/qa-245?bot=scout) today");
     expect(markup).toContain('<button type="button" data-thread-link="qa-245"');
     expect(markup).toContain(">QA PR 245</button>");
     expect(markup).not.toContain('href="socialcoffee-agent://');
   });
 
   it("keeps a dead thread link as plain text, never an external anchor", () => {
-    const markup = render("see [Gone](openmausbot://thread/dead?bot=scout)");
+    const markup = render("see [Gone](sc-agent://thread/dead?bot=scout)");
     expect(markup).toContain(">Gone<");
     expect(markup).not.toContain("data-thread-link");
     expect(markup).not.toContain('href="socialcoffee-agent://');
@@ -490,7 +490,7 @@ describe("message-scoped file targets", () => {
   });
 
   it("preserves supported local file spellings without widening unsafe protocols", () => {
-    expect(chatUrlTransform("file:///Users/milind/report.md")).toBe("file:///Users/milind/report.md");
+    expect(chatUrlTransform("file:///Users/manav/report.md")).toBe("file:///Users/manav/report.md");
     expect(chatUrlTransform("C:/Users/Agent/report.md")).toBe("C:/Users/Agent/report.md");
     expect(chatUrlTransform("\\\\server\\share\\report.md")).toBe("\\\\server\\share\\report.md");
     // What rendering hands over for C:\Users\Agent\release notes.md.
@@ -523,11 +523,11 @@ describe("ChatMarkdown attachments", () => {
 
   it("keeps host paths private while routing them through the scoped file handler", () => {
     const html = renderToStaticMarkup(createElement(ChatMarkdown, {
-      text: "[macOS](file:///Users/milind/report.md) [Windows](C:/Users/Agent/report.md)",
+      text: "[macOS](file:///Users/manav/report.md) [Windows](C:/Users/Agent/report.md)",
       message: { threadId: "thread-1", messageId: "message-1" },
     }));
     expect(html).toContain('title="Save a copy"');
-    expect(html).not.toContain("/Users/milind/report.md");
+    expect(html).not.toContain("/Users/manav/report.md");
     expect(html).not.toContain("C:/Users/Agent/report.md");
   });
 

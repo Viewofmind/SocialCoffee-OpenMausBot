@@ -54,7 +54,7 @@ export function triggerInput(draft: { source: string; customName: string; botId:
     name: named || suggestedName(prompt, bots.find((bot) => bot.id === draft.botId)),
     prompt,
     botId: draft.botId,
-    runOn: "maus",
+    runOn: "local",
     ...webhookActivationDefaults(),
     eventTypes: [],
     maxPendingRuns: null,

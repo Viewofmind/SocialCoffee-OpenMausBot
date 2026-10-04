@@ -186,7 +186,7 @@ export async function runControlOmb(
     const health = rawHealth as { status: string; endpoint?: string; app: string; packaged: boolean };
     const instances = (models as { instances?: Array<{ instanceId?: string; snapshot?: { state?: string } }> }).instances ?? [];
     return {
-      ok: health.app === "openmausbot"
+      ok: health.app === "socialcoffee-agent"
         && instances.some((instance) => instance.snapshot?.state === "available"),
       health: endpoint ? { ...health, endpoint } : health,
       availableEngines: instances
@@ -504,7 +504,7 @@ export async function launchVerificationServer(
           signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
         });
         const body = response.ok ? await response.json() as { app?: string } : null;
-        if (body?.app === "openmausbot") break;
+        if (body?.app === "socialcoffee-agent") break;
       } catch {
         // The server is still starting.
       }

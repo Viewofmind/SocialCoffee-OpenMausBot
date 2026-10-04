@@ -182,12 +182,12 @@ describe("before pairing", () => {
     expect(response.body).toEqual({ error: "invalid request URL" });
     const health = await call("/api/health");
     expect(health.status).toBe(200);
-    expect(health.body).toMatchObject({ app: "openmausbot", pid: child.pid });
+    expect(health.body).toMatchObject({ app: "socialcoffee-agent", pid: child.pid });
     expect(child.exitCode).toBeNull();
   });
 
   it("describes itself to anyone, but serves nothing else off-machine", async () => {
-    const descriptor = await call("/.well-known/openmausbot/environment", { headers: remote("10.0.0.1") });
+    const descriptor = await call("/.well-known/socialcoffee-agent/environment", { headers: remote("10.0.0.1") });
     expect(descriptor.status).toBe(200);
     expect(descriptor.body.environmentId).toMatch(/^[0-9a-f-]{36}$/);
     expect(descriptor.body.label).toBe("cab mini");
@@ -410,7 +410,7 @@ describe("pairing", () => {
     // Android's PairingInvite.parse rejects anything that is not this exact
     // scheme and host, which is why the https link in `url` cannot be scanned
     // by the app (android/core Connection.kt).
-    expect(invite.protocol).toBe("openmausbot:");
+    expect(invite.protocol).toBe("sc-agent:");
     expect(invite.host).toBe("pair");
     expect(invite.searchParams.get("address")).toBe(PUBLIC_URL);
     expect(invite.searchParams.get("token")).toBe(opened.credential);

@@ -261,7 +261,7 @@ export function createBotPackageExport(input: {
     };
   }
   return parseBotPackage({
-    format: "openmaus.package",
+    format: "socialcoffee-agent.package",
     version: 1,
     package: definition,
   });
@@ -713,7 +713,7 @@ export function createTeamPackageExport(input: TeamExportInput): TeamExportResul
       agent,
       ...(goal ? { room: roomKeys.get(routine.groupId!)! } : {}),
       prompt: routine.prompt,
-      runOn: goal ? "maus" as const : routine.runOn,
+      runOn: goal ? "local" as const : routine.runOn,
       schedule: portableSchedule(routine.schedule),
       durationMinutes: routine.durationMinutes,
       ...(routine.timeoutMinutes === undefined ? {} : { timeoutMinutes: routine.timeoutMinutes }),

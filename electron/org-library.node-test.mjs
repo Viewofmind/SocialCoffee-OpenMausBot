@@ -478,7 +478,7 @@ function desktop(t, { capability = 1, pointer = true, catalog = standard(), sess
     if (route === "/api/desktop/library") return new Response(f.catalogBytes, { headers: { "content-type": "application/json" } });
     if (route === "/api/desktop/library/report") { f.reports = [...(f.reports ?? []), JSON.parse(options.body)]; return Response.json({ accepted: 1, ignored: 0 }); }
     const sha = /^\/api\/desktop\/library\/blobs\/([a-f0-9]{64})$/.exec(route)?.[1];
-    if (sha && f.blobs.has(sha)) return new Response(f.blobs.get(sha), { headers: { "x-openmaus-sha256": sha } });
+    if (sha && f.blobs.has(sha)) return new Response(f.blobs.get(sha), { headers: { "x-sc-agent-sha256": sha } });
     if (sha) return Response.json({ error: "Not found." }, { status: 404 });
     throw new Error(`Unexpected fixture route ${route}`);
   };

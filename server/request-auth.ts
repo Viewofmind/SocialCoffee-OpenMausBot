@@ -421,11 +421,11 @@ export interface ResolveOptions {
   cliOwnerToken?: string;
 }
 
-const CLI_OWNER_HEADER = "x-openmausbot-cli-owner";
+const CLI_OWNER_HEADER = "x-sc-agent-cli-owner";
 /** The only routes the serving CLI's secret opens: its pairing code. */
 const CLI_OWNER_ROUTE = /^\/api\/auth\/pairing$/;
 
-const DESKTOP_OWNER_HEADER = "x-openmausbot-desktop-owner";
+const DESKTOP_OWNER_HEADER = "x-sc-agent-desktop-owner";
 
 function mutatingPublicRoute(method: string, path: string): boolean {
   const upper = method.toUpperCase();
@@ -510,12 +510,12 @@ export function resolveRequestAuth(req: IncomingMessage, options: ResolveOptions
   const proxied = isProxied(req);
   const loopback = !proxied && isLoopbackHost(headerValue(req.headers.host)) && isAllowedOrigin(headerValue(req.headers.origin));
   if (loopback) {
-    const companionToken = headerValue(req.headers["x-openmausbot-companion-auth"]);
+    const companionToken = headerValue(req.headers["x-sc-agent-companion-auth"]);
     if (companionToken && options.loopbackMutationToken !== undefined) {
       if (
         !secureTokenMatch(companionToken, options.companionMutationToken ?? "") ||
-        req.headers["x-openmausbot-companion"] !== "1" ||
-        !/^[\w-]{1,128}$/.test(headerValue(req.headers["x-openmausbot-companion-device"]) ?? "") ||
+        req.headers["x-sc-agent-companion"] !== "1" ||
+        !/^[\w-]{1,128}$/.test(headerValue(req.headers["x-sc-agent-companion-device"]) ?? "") ||
         // a phone's allowlisted route, or the companion's own notice (an unpaired phone)
         (companionDenial({ path, method, authenticated: true }) && !isCompanionNotice(method, path))
       ) return deny(403, "forbidden: invalid companion request");

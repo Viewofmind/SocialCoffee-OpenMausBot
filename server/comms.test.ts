@@ -34,39 +34,39 @@ describe("mentionedBots", () => {
   const peers = [
     { id: "1", name: "New Bot" },
     { id: "2", name: "New Bot 2" },
-    { id: "3", name: "Milind" },
+    { id: "3", name: "Manav" },
     { id: "4", name: "Ghost", hidden: true },
   ];
   it("matches a tag at a word start, case-insensitively", () => {
-    expect(mentionedBots("hey @milind, look", peers).map((b) => b.id)).toEqual(["3"]);
-    expect(mentionedBots("@Milind first thing", peers).map((b) => b.id)).toEqual(["3"]);
+    expect(mentionedBots("hey @manav, look", peers).map((b) => b.id)).toEqual(["3"]);
+    expect(mentionedBots("@Manav first thing", peers).map((b) => b.id)).toEqual(["3"]);
   });
   it("prefers the longest name so prefixes never half-match", () => {
     expect(mentionedBots("ask @New Bot 2 about it", peers).map((b) => b.id)).toEqual(["2"]);
   });
   it("dedupes repeats and collects multiple bots", () => {
-    expect(mentionedBots("@Milind and @New Bot and @Milind", peers).map((b) => b.id)).toEqual(["3", "1"]);
+    expect(mentionedBots("@Manav and @New Bot and @Manav", peers).map((b) => b.id)).toEqual(["3", "1"]);
   });
   it("ignores emails, hidden bots, and mid-word @", () => {
-    expect(mentionedBots("mail milind@milind.dev please", peers)).toEqual([]);
+    expect(mentionedBots("mail manav@manav.dev please", peers)).toEqual([]);
     expect(mentionedBots("@Ghost around?", peers)).toEqual([]);
   });
   it("routes Markdown- and punctuation-wrapped mentions", () => {
-    expect(mentionedBots("**@Milind** (@New Bot 2) 【@New Bot】", peers).map((bot) => bot.id))
+    expect(mentionedBots("**@Manav** (@New Bot 2) 【@New Bot】", peers).map((bot) => bot.id))
       .toEqual(["3", "2", "1"]);
-    expect(mentionedBots("user@Milind /@Milind", peers)).toEqual([]);
+    expect(mentionedBots("user@Manav /@Manav", peers)).toEqual([]);
   });
   it("requires a word boundary at the end of the name", () => {
     expect(mentionedBots("ask @New Bottle about it", peers)).toEqual([]);
-    expect(mentionedBots("@Milindo is someone else", peers)).toEqual([]);
-    expect(mentionedBots("@Milind𐐀 is someone else", peers)).toEqual([]);
+    expect(mentionedBots("@Manavo is someone else", peers)).toEqual([]);
+    expect(mentionedBots("@Manav𐐀 is someone else", peers)).toEqual([]);
   });
 });
 
 describe("roomResponders", () => {
   const members = [
     { id: "atlas", name: "Atlas" },
-    { id: "milind", name: "Milind" },
+    { id: "manav", name: "Manav" },
   ];
 
   it("routes an unmentioned message to the configured lead", () => {
@@ -74,7 +74,7 @@ describe("roomResponders", () => {
   });
 
   it("lets explicit mentions override the configured lead", () => {
-    expect(roomResponders("@Milind take this", members, { kind: "member", botId: "atlas" })).toEqual([members[1]]);
+    expect(roomResponders("@Manav take this", members, { kind: "member", botId: "atlas" })).toEqual([members[1]]);
   });
 
   it("supports everyone and mentions-only room policies", () => {
@@ -851,7 +851,7 @@ describe("legacy routine comms e2e (fake ACP fleet)", () => {
         expect(taskId).toBeTruthy();
         const minted = await fetch(`${BASE}/api/testing/internal-capability`, {
           method: "POST",
-          headers: { "content-type": "application/json", "x-openmausbot-test-capability": TEST_CAPABILITY_KEY },
+          headers: { "content-type": "application/json", "x-sc-agent-test-capability": TEST_CAPABILITY_KEY },
           body: JSON.stringify({ botId: chief.id, threadId: sourceThreadId, kind: "agents" }),
         });
         expect(minted.status).toBe(201);

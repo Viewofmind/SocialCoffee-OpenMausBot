@@ -26,7 +26,7 @@ import {
 import { packageSummary, parsePackageDocument } from "../../shared/package-format";
 
 const document = parsePackageDocument({
-  format: "openmaus.package", version: 2,
+  format: "socialcoffee-agent.package", version: 2,
   package: {
     id: "desk", release: "1.0.0", name: "Desk", tagline: "A desk.", summary: "A desk team.", category: "Sales",
     author: { name: "Mira" }, license: "MIT", outcomes: ["Answers."], setupMinutes: 2, requirements: { apps: [], capabilities: [] },

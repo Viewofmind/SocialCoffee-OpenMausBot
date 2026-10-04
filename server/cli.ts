@@ -333,9 +333,9 @@ const message = (error: unknown) => (error instanceof Error ? error.message : St
 let serveOwnerToken: string | undefined;
 
 async function api(port: number, path: string, init: { method?: string; body?: string } = {}): Promise<{ status: number; body: any }> {
-  // x-openmausbot-cli names the tool in the admin activity log; on loopback
+  // x-sc-agent-cli names the tool in the admin activity log; on loopback
   // it is the owner either way, so it grants nothing.
-  const headers: Record<string, string> = { "content-type": "application/json", "x-openmausbot-cli": "1", ...(serveOwnerToken ? { "x-openmausbot-cli-owner": serveOwnerToken } : {}) };
+  const headers: Record<string, string> = { "content-type": "application/json", "x-sc-agent-cli": "1", ...(serveOwnerToken ? { "x-sc-agent-cli-owner": serveOwnerToken } : {}) };
   const res = await fetch(`http://127.0.0.1:${port}${path}`, { method: init.method, body: init.body, headers, signal: AbortSignal.timeout(3000) });
   const body: unknown = await res.json().catch(() => ({}));
   return { status: res.status, body };
@@ -352,7 +352,7 @@ function refusedAsService(status: number, body: any): boolean {
 async function serverUp(port: number, pid?: number): Promise<boolean> {
   try {
     const { status, body } = await api(port, "/api/health");
-    return status === 200 && body?.app === "openmausbot" && (pid === undefined || body.pid === pid);
+    return status === 200 && body?.app === "socialcoffee-agent" && (pid === undefined || body.pid === pid);
   } catch {
     return false;
   }
@@ -363,9 +363,9 @@ async function serverUp(port: number, pid?: number): Promise<boolean> {
 export async function isWorkspaceRunning(options: CliOptions): Promise<boolean> {
   try {
     const { status, body } = await api(options.port, "/api/health");
-    if (status !== 200 || body?.app !== "openmausbot") return false;
+    if (status !== 200 || body?.app !== "socialcoffee-agent") return false;
     const expected = readFileSync(join(options.dataDir, "environment-id"), "utf8").trim();
-    const descriptor = await api(options.port, "/.well-known/openmausbot/environment");
+    const descriptor = await api(options.port, "/.well-known/socialcoffee-agent/environment");
     return /^[0-9a-f-]{36}$/i.test(expected) && descriptor.status === 200 && descriptor.body?.environmentId === expected;
   } catch { return false; }
 }
@@ -389,8 +389,8 @@ export async function openDashboard(port: number, env = process.env): Promise<bo
 export async function verifyPhoneEndpoint(port: number, origin: string): Promise<boolean> {
   if (!normalizePhoneOrigin(origin)) return false;
   try {
-    const local = await api(port, "/.well-known/openmausbot/environment");
-    const remote = await fetch(`${origin}/.well-known/openmausbot/environment`, { signal: AbortSignal.timeout(5000), redirect: "error" });
+    const local = await api(port, "/.well-known/socialcoffee-agent/environment");
+    const remote = await fetch(`${origin}/.well-known/socialcoffee-agent/environment`, { signal: AbortSignal.timeout(5000), redirect: "error" });
     if (local.status !== 200 || !remote.ok) return false;
     const descriptor = await remote.json() as { environmentId?: unknown };
     return typeof local.body?.environmentId === "string" && local.body.environmentId.length > 0
@@ -439,7 +439,7 @@ async function showPhonePairing(options: CliOptions, origin: string | undefined,
 /** The pairing link a device opens, rendered as text and a QR code.
  *
  * One window has two links. `url` opens the web app and is what a browser and
- * the iOS app read. `inviteUrl` is the openmausbot:// scheme the native
+ * the iOS app read. `inviteUrl` is the sc-agent:// scheme the native
  * companion scanners accept, and it is the ONLY thing an Android app can
  * scan — its parser rejects any https QR outright. Which one becomes the QR
  * therefore depends on which app is about to scan it; the other is still
@@ -623,7 +623,7 @@ export function formatSessions(sessions: Array<{ id: string; label: string; scop
 export async function runStatus(options: CliOptions, io: CliIo = defaultIo()): Promise<number> {
   let code = 0;
   try {
-    const res = await fetch(`http://127.0.0.1:${options.port}/.well-known/openmausbot/environment`);
+    const res = await fetch(`http://127.0.0.1:${options.port}/.well-known/socialcoffee-agent/environment`);
     const body: any = await res.json();
     io.log(options.json ? JSON.stringify(body, null, 2) : `${body.label} · SocialCoffeeAgent ${body.version} on ${body.platform} · id ${body.environmentId}`);
   } catch {

@@ -227,13 +227,13 @@ describe("canonical form", () => {
     expect(canonicalJson({ b: 1, a: [3, { d: undefined, c: "x" }], e: undefined })).toBe('{"a":[3,{"c":"x"}],"b":1}');
     expect(canonicalJson({ a: [3, { c: "x" }], b: 1 })).toBe(canonicalJson({ b: 1, a: [3, { c: "x" }] }));
     expect(canonicalJson({ "é": 1, Z: 2, a: 3 })).toBe('{"Z":2,"a":3,"é":1}');
-    expect(sha256(canonicalJson({ format: "openmaus.package", version: 2, package: { id: "x", tags: ["b", "a"] } })))
+    expect(sha256(canonicalJson({ format: "socialcoffee-agent.package", version: 2, package: { id: "x", tags: ["b", "a"] } })))
       .toBe("8d50ccbf67f4efca8c5de1159b4cf6ab4368f7b1335316a8f8896a75aab8b71e");
   });
 
   it("hashes a reordered copy of a fixture to the same release bytes", () => {
     const input = fixture("full-team.v2.json");
-    const shuffled = { package: Object.fromEntries(Object.entries(input.package).reverse()), version: 2, format: "openmaus.package" };
+    const shuffled = { package: Object.fromEntries(Object.entries(input.package).reverse()), version: 2, format: "socialcoffee-agent.package" };
     expect(canonicalJson(parsePackageDocument(shuffled))).toBe(canonicalJson(parsePackageDocument(input)));
   });
 });

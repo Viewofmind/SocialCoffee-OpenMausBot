@@ -20,7 +20,7 @@ it("boots and reports an interrupted routine back to its source room", async () 
     // live writer. Recovery must emit its group/card changes during startup.
     writeFileSync(join(dataDir, "routines.json"), JSON.stringify({ version: 1, routines: [], runs: [{
       id: "interrupted-room-run", routineId: "interrupted-routine", routineName: "Room report",
-      botId: bot.id, target: "bot", runOn: "maus", sourceThreadId: channel.activeTaskId,
+      botId: bot.id, target: "bot", runOn: "local", sourceThreadId: channel.activeTaskId,
       status: "running", prompt: "Report once", createdAt: Date.now(), scheduledFor: Date.now(),
     }] }));
     const env: NodeJS.ProcessEnv = {};

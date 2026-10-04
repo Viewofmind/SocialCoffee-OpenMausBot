@@ -154,9 +154,9 @@ describe("resolveRequestAuth", () => {
   it("accepts authenticated relay mutations without exposing the desktop owner capability", () => {
     const headers = {
       host: "127.0.0.1:8799",
-      "x-openmausbot-companion": "1",
-      "x-openmausbot-companion-device": "phone-1",
-      "x-openmausbot-companion-auth": "relay-secret",
+      "x-sc-agent-companion": "1",
+      "x-sc-agent-companion-device": "phone-1",
+      "x-sc-agent-companion-auth": "relay-secret",
     };
     const check = (method: string, path: string, overrides: Record<string, string> = {}, relay = "relay-secret") =>
       resolveRequestAuth(request({ ...headers, ...overrides }, method), {
@@ -179,10 +179,10 @@ describe("resolveRequestAuth", () => {
       ["POST", "/api/bots/b/browser/restart"],
     ]) expect(check(method, path).auth?.kind, path).not.toBe("loopback");
     const forged: Record<string, string>[] = [
-      { "x-openmausbot-companion-auth": "" },
-      { "x-openmausbot-companion-auth": "desktop-secret" },
-      { "x-openmausbot-companion-device": "" },
-      { "x-openmausbot-companion": "0" },
+      { "x-sc-agent-companion-auth": "" },
+      { "x-sc-agent-companion-auth": "desktop-secret" },
+      { "x-sc-agent-companion-device": "" },
+      { "x-sc-agent-companion": "0" },
       { origin: "https://evil.example" },
       { "x-forwarded-for": "203.0.113.1" },
       { host: "remote.example" },
@@ -283,7 +283,7 @@ describe("resolveRequestAuth", () => {
     const desktop = resolveRequestAuth(
       request({
         host: "127.0.0.1:8799",
-        "x-openmausbot-desktop-owner": "owner-token-123",
+        "x-sc-agent-desktop-owner": "owner-token-123",
       }, "POST"),
       options("/api/routines"),
     );
@@ -561,7 +561,7 @@ describe("loopback trust: owner on one person's machine, service on a shared wor
   });
 
   it("ignores service trust while the desktop capability is in force", () => {
-    expect(check("PUT", "/api/config", { trust: "service", desktopToken: "owner-token", headers: { "x-openmausbot-desktop-owner": "owner-token" } }).auth)
+    expect(check("PUT", "/api/config", { trust: "service", desktopToken: "owner-token", headers: { "x-sc-agent-desktop-owner": "owner-token" } }).auth)
       .toEqual({ kind: "loopback", scopes: ["admin", "client"] });
   });
 
@@ -597,7 +597,7 @@ describe("loopback trust: owner on one person's machine, service on a shared wor
   it("lets only the CLI that started the server, holding its secret, mint a pairing code under service trust", () => {
     const secret = "c".repeat(43);
     const as = (method: string, path: string, header?: string, token: string | null = secret) =>
-      resolveRequestAuth(request({ ...local, ...(header ? { "x-openmausbot-cli-owner": header } : {}) }, method), {
+      resolveRequestAuth(request({ ...local, ...(header ? { "x-sc-agent-cli-owner": header } : {}) }, method), {
         sessions, cookieName, streamPath: "/api/events", url: new URL(path, "http://x"), loopbackTrust: "service", cliOwnerToken: token ?? undefined,
       });
     expect(as("POST", "/api/auth/pairing", secret).auth).toEqual({ kind: "loopback", scopes: ["admin", "client"] });
