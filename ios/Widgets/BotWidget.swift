@@ -192,7 +192,7 @@ struct BotTimelineProvider: AppIntentTimelineProvider {
         BotEntry(
             date: Date(),
             state: .quiet(WidgetSnapshot.empty()),
-            entity: ChatEntity(id: "demo", name: "Maus", color: "", face: MausState.idle.rawValue)
+            entity: ChatEntity(id: "demo", name: "Agent", color: "", face: MausState.idle.rawValue)
         )
     }
 
@@ -269,13 +269,13 @@ struct BotWidgetView: View {
         Group {
             switch (entry.state, entry.entity) {
             case (.unpaired, _):
-                Placeholder(icon: "qrcode", message: "Open MausBot to pair")
+                Placeholder(icon: "qrcode", message: "Open SocialCoffeeAgent to pair")
             case (_, nil):
-                Placeholder(icon: "person.crop.circle", message: "Open MausBot first")
+                Placeholder(icon: "person.crop.circle", message: "Open SocialCoffeeAgent first")
             case (.quiet, let entity?), (.fresh, let entity?), (.stale, let entity?):
                 content(for: entity)
             default:
-                Placeholder(icon: "person.crop.circle", message: "Open MausBot first")
+                Placeholder(icon: "person.crop.circle", message: "Open SocialCoffeeAgent first")
             }
         }
         // The widget is about one chat; every state it can show opens

@@ -1,4 +1,4 @@
-// A guest's turn on an OMB Cloud home gets no shell, and no process a bot
+// A guest's turn on a SocialCoffeeAgent Cloud home gets no shell, and no process a bot
 // runs finds the Cloud's secrets (docs/cloud-pro.md). Real server booted the
 // way the image's launcher boots it (secrets over a pipe, never the
 // environment: server/cloud-home-start.ts), synthetic engines. A Cloud home
@@ -49,7 +49,7 @@ async function api(method: string, path: string, options: { body?: unknown; toke
 
 /** The Admin's signed pairing: it only works when the server got the secret. */
 async function adminPairing(): Promise<string> {
-  const body = JSON.stringify({ label: "OpenMausBot app (Cloud)", ttlSeconds: 300 });
+  const body = JSON.stringify({ label: "SocialCoffeeAgent app (Cloud)", ttlSeconds: 300 });
   const timestamp = String(Math.floor(Date.now() / 1000)), nonce = randomBytes(16).toString("base64url");
   const response = await fetch(`${base}/api/cloud/pairing`, { method: "POST", headers: {
     host: HOST, "x-forwarded-for": "203.0.113.9", "x-forwarded-proto": "https", "content-type": "application/json",
@@ -82,7 +82,7 @@ await import(${JSON.stringify(pathToFileURL(join(SERVER_DIR, "testing", fake)).h
 
 beforeAll(async () => {
   home = mkdtempSync(join(tmpdir(), "omb-cloud-guest-shell-"));
-  const dataDir = join(home, ".openmausbot");
+  const dataDir = join(home, ".socialcoffee-agent");
   mkdirSync(dataDir, { recursive: true });
   const codex = probing("codex", "fake-codex-app-server.ts", `process.env.FAKE_CODEX_DUMP = ${JSON.stringify(join(home, "codex.json"))};`);
   // A Claude whose turns hold until the test writes the release file; each
@@ -155,7 +155,7 @@ const newBot = async (name: string, instanceId: string) =>
 async function leftBehind(of: { threadId?: string; routineId?: string }) {
   for (const proxy of proxies.splice(0)) proxy.kill();
   await waitForExit(child, { signal: "SIGTERM" });
-  markLeftBehind(join(home, ".openmausbot"), { threadIds: of.threadId ? [of.threadId] : [], routineIds: of.routineId ? [of.routineId] : [] });
+  markLeftBehind(join(home, ".socialcoffee-agent"), { threadIds: of.threadId ? [of.threadId] : [], routineIds: of.routineId ? [of.routineId] : [] });
   await boot();
 }
 /** A conversation a guest opened with a bot before the Cloud was personal. */

@@ -74,7 +74,7 @@ function send(path: string, init: CallInit, headers: Record<string, string>): Pr
 }
 
 /** The box itself: a loopback Host and Origin, nothing forwarded. This is the
- * owner, the way `openmausbot` on the server or a bootstrap script talks. */
+ * owner, the way `sc-agent` on the server or a bootstrap script talks. */
 const owner = (path: string, init: CallInit = {}) => send(path, init, { host: `127.0.0.1:${port}`, origin: `http://127.0.0.1:${port}` });
 
 /** A browser somewhere else, reaching the server through its proxy. */
@@ -102,11 +102,11 @@ beforeAll(async () => {
   stub = await startControlPlaneStub();
   home = mkdtempSync(join(tmpdir(), "omb-people-invite-"));
   const staticDir = join(home, "static");
-  mkdirSync(join(home, ".openmausbot"), { recursive: true });
+  mkdirSync(join(home, ".socialcoffee-agent"), { recursive: true });
   mkdirSync(join(staticDir, "assets"), { recursive: true });
   writeFileSync(join(staticDir, "index.html"), "<!doctype html><title>Served UI</title>");
   // No sign-in list on disk and none in the environment: nobody is welcome yet.
-  writeFileSync(join(home, ".openmausbot", "config.json"), JSON.stringify({ instances: { fixture: { driver: "people-invite-test-shadow" } } }));
+  writeFileSync(join(home, ".socialcoffee-agent", "config.json"), JSON.stringify({ instances: { fixture: { driver: "people-invite-test-shadow" } } }));
   child = spawn(process.execPath, [join(SERVER_DIR, "index.ts")], {
     cwd: ROOT,
     env: {

@@ -33,7 +33,7 @@ beforeEach(async () => {
     get(target, key) { return key === "platform" ? "win32" : key === "resourcesPath" ? fixture.home : Reflect.get(target, key); },
   }));
   vi.stubEnv("CUA_DRIVER_PATH", join(fixture.home, "cua-driver.exe"));
-  vi.stubEnv("OPENMAUSBOT_CUA_EMBEDDED", "");
+  vi.stubEnv("SC_AGENT_CUA_EMBEDDED", "");
   vi.resetModules();
   cua = await import("./cua.mjs");
 });

@@ -10,7 +10,7 @@ MCP server you trust. A server is one of two things:
   line). Most servers speak **Streamable HTTP**; pick **SSE** only for an
   older server that documents the `/sse` endpoint.
 
-OpenMausBot saves a new server switched off. Use **Test** to start the command
+SocialCoffeeAgent saves a new server switched off. Use **Test** to start the command
 (or connect to the address), complete the MCP handshake, and see the tools it
 advertises. Then turn it on. It becomes available to compatible bots on their
 next task; no app restart is needed.
@@ -24,12 +24,12 @@ Some URL servers take no token; they want you to sign in with your browser
 details (RFC 9728 protected-resource metadata, then the authorization
 server's own metadata), the server shows **Needs sign-in** and a **Sign in**
 button. Sign in opens the provider's page in your browser, which returns to
-OpenMausBot on `127.0.0.1`. The server then shows **Signed in**, and Test
+SocialCoffeeAgent on `127.0.0.1`. The server then shows **Signed in**, and Test
 lists its tools.
 
 - **Which servers work.** The authorization server must support PKCE with
   S256. If it lets apps register themselves (dynamic client registration),
-  OpenMausBot registers a fresh app for each sign-in. If it only accepts an
+  SocialCoffeeAgent registers a fresh app for each sign-in. If it only accepts an
   app registered in advance, add that app as described below. A 401 without
   sign-in details keeps the old message: check the address and headers.
 - **Where you can sign in.** On the workspace computer or from another
@@ -38,7 +38,7 @@ lists its tools.
   turn until someone signs in from this page. A signed-in server gets
   `Authorization: Bearer …` in place of any `Authorization` header you set,
   so every engine that reaches URL servers can use it.
-- **Tokens are kept apart.** They live in `~/.openmausbot/mcp-oauth.json`
+- **Tokens are kept apart.** They live in `~/.socialcoffee-agent/mcp-oauth.json`
   (owner-only), never in `config.json` or an API response, and are left out of
   workspace backups. They belong to the server's address: changing the
   address or removing the server drops them. **Sign out** revokes them when
@@ -51,11 +51,11 @@ in from another computer?** while sign-in is waiting. Finish approval in your
 browser. If it redirects to a localhost page that cannot connect, copy the
 **entire URL from the address bar**, paste it into **Redirect URL**, and choose
 **Complete sign-in**. The connection error is expected: that address refers to
-your computer, while OpenMausBot is on the server. No extra port forwarding or
+your computer, while SocialCoffeeAgent is on the server. No extra port forwarding or
 public callback address is needed. **Open sign-in page** reopens the approval
 page if your browser blocked the first attempt.
 
-Keep the redirect URL private. Complete the flow in the same OMB browser/session
+Keep the redirect URL private. Complete the flow in the same SocialCoffeeAgent browser/session
 that started it, within five minutes. Cancellation or logging out ends the
 pending flow; a URL cannot be reused. Existing same-machine sign-in still
 finishes automatically. This works with dynamically registered and
@@ -67,7 +67,7 @@ Corporate identity providers (Microsoft Entra ID, for example) and some
 hosted servers do not let apps register themselves. Register an app with the
 provider, then edit the server and fill in **Sign-in app**:
 
-- **Client ID** of that app. With a client ID set, OpenMausBot signs in as
+- **Client ID** of that app. With a client ID set, SocialCoffeeAgent signs in as
   that app and never registers one.
 - **Client secret**, only for a confidential app. It is write-only like a
   header value: kept in `config.json`, never shown again, and sent only to
@@ -160,10 +160,10 @@ server is still this page or the bot project's `.mcp.json`.
 
 The switch drops the CLI flag `--strict-mcp-config` (Claude Code 1.0.60+)
 while keeping `--setting-sources project` (1.0.122+). The environment variable
-`OMB_CLAUDE_INHERIT_USER_CONFIG=1` on the OpenMausBot process remains the full
+`OMB_CLAUDE_INHERIT_USER_CONFIG=1` on the SocialCoffeeAgent process remains the full
 escape hatch back to the old launch: it restores everything, for every Claude
 bot, until you remove it. The harness also picks the session's compaction
-window with `--autocompact` (2.1.122+). OpenMausBot reads `claude --version`
+window with `--autocompact` (2.1.122+). SocialCoffeeAgent reads `claude --version`
 whenever it lists engines (app load, the Engines page, after an update) and
 only passes each flag to a CLI that accepts it, so an older CLI keeps working
 — without the controls it predates — and the Engines page shows an update
@@ -187,14 +187,14 @@ Address entries are HTTPS only. The host is compared label by label, where
 and the path separately, where `*` matches anything.
 
 Limits: a personal **Codex** engine also loads MCP servers from your own
-`~/.codex/config.toml`, which OpenMausBot does not filter. An organization that
+`~/.codex/config.toml`, which SocialCoffeeAgent does not filter. An organization that
 must block those can allow only company models, or leave personal Codex off
 its engine list. Company Codex uses its own separate home, without your
 `config.toml`.
 
 ## Advanced: edit the file
 
-The same registry lives in `~/.openmausbot/config.json`:
+The same registry lives in `~/.socialcoffee-agent/config.json`:
 
 ```json
 {
@@ -221,7 +221,7 @@ The same registry lives in `~/.openmausbot/config.json`:
 
 `type` is `http` (Streamable HTTP, the default) or `sse`. `oauth` is the
 optional sign-in app; `clientSecret` and `scopes` may be left out. If you edit the file
-by hand, restart OpenMausBot. Every bot whose engine can mount custom MCP
+by hand, restart SocialCoffeeAgent. Every bot whose engine can mount custom MCP
 servers gets the enabled tools on its next task.
 
 ## Rules that keep this safe
@@ -249,7 +249,7 @@ servers gets the enabled tools on its next task.
   tokens scoped to the one server.
 - **Testing is bounded.** A command is stopped after the handshake (or eight
   seconds), its output is capped, and its stderr is never sent to the UI. It
-  inherits none of OpenMausBot's workspace or provider credentials; only the
+  inherits none of SocialCoffeeAgent's workspace or provider credentials; only the
   environment variables configured for that MCP server are added. A URL test
   reads at most 1 MB and reports only the HTTP status of a refusal.
 - **Addresses are checked.** A URL server needs a full `http://` or

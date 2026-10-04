@@ -277,12 +277,12 @@ test("the Server menu opens My Cloud through the Cloud's own connection, never a
   // Another server opens as before.
   calls.length = 0; await context.switchEnvironment("vps");
   assert.deepEqual(calls, ["active:vps", `navigate:${other.origin}`]);
-  // OMB Cloud cannot be asked (a check failed, the sign-in ended): known by its remembered address.
+  // SocialCoffeeAgent Cloud cannot be asked (a check failed, the sign-in ended): known by its remembered address.
   context.environmentsState = { environments: [entry, other], activeId: environments.LOCAL_ID };
   context.cloudAccount = { homeTarget: () => null }; context.remember({ accountId: "a1", origin });
   connect = async () => { calls.push("connect"); throw new Error("Your Cloud is not ready to connect yet."); };
   calls.length = 0; await context.switchEnvironment("cloud");
-  assert.deepEqual(calls, ["connect", "settings"], "not signed in there: Settings → OMB Cloud says what to do next");
+  assert.deepEqual(calls, ["connect", "settings"], "not signed in there: Settings → SocialCoffeeAgent Cloud says what to do next");
   signedIn = true; calls.length = 0; await context.switchEnvironment("cloud");
   assert.deepEqual(calls, ["connect", "active:cloud", `navigate:${origin}`], "signed in there already: it opens as any server does");
   // Without a Cloud sign-in on this computer, a saved entry is just a server.

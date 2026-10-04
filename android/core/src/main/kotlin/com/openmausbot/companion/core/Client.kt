@@ -80,7 +80,7 @@ private fun pairingRouteMessage(
     val advice = when {
         causes.isNotEmpty() -> "Couldn't reach $computer. ${causes.joinToString(" ")}"
         routes.any { it.startsWith("https://", ignoreCase = true) } ->
-            "Couldn't reach $computer. Make sure the computer is awake with OpenMausBot open, then try again."
+            "Couldn't reach $computer. Make sure the computer is awake with SocialCoffeeAgent open, then try again."
         hosts.isNotEmpty() && hosts.all { it.lowercase().trimEnd('.').endsWith(".ts.net") } ->
             "Your phone couldn't reach $computer over Tailscale. Turn on Tailscale on this phone, " +
                 "signed in to the same tailnet as the computer, then try again."
@@ -90,7 +90,7 @@ private fun pairingRouteMessage(
         else ->
             "Your phone couldn't reach $computer on this network. Put the phone on the same Wi-Fi " +
                 "as the computer. If it already is, the computer's firewall may be blocking " +
-                "OpenMausBot: on a Windows PC, set its network to Private. Or open Settings → " +
+                "SocialCoffeeAgent: on a Windows PC, set its network to Private. Or open Settings → " +
                 "Remote access on the computer and sign in so the phone can connect from anywhere."
     }
     return if (routes.isEmpty()) advice else "$advice\nTried: ${routes.joinToString()}"
@@ -103,7 +103,7 @@ class ServerPairingRetryError(cause: IOException) : IOException(
 )
 
 /**
- * The server's public descriptor did not answer as an OpenMausBot server, so the pairing code
+ * The server's public descriptor did not answer as a SocialCoffeeAgent server, so the pairing code
  * never left the phone: the same code and attempt id stay usable once the address, the network
  * or the phone is fixed. The message names the address, since that is what the person can check.
  */
@@ -116,7 +116,7 @@ class ServerAddressError private constructor(
     companion object {
         /** Nothing at the descriptor: something answers at [address], and it is not a server. */
         fun notAServer(address: String, cause: IOException) = ServerAddressError(
-            "$address isn't an OpenMausBot server. Check the address and try again.",
+            "$address isn't a SocialCoffeeAgent server. Check the address and try again.",
             cause,
             notAServer = true,
         )
@@ -656,7 +656,7 @@ class CompanionClient(
             if (error.serverMessage?.contains(ALREADY_DRAINED, ignoreCase = true) == true) return false
             throw APIError.Status(
                 404,
-                "This computer is too old to take back a queued message. Update OpenMausBot on it.",
+                "This computer is too old to take back a queued message. Update SocialCoffeeAgent on it.",
             )
         }
     }
@@ -1310,7 +1310,7 @@ class CompanionClient(
          * Identify every route the invite permits ([Connection.pairingEndpoints]) before
          * presenting the one-time credential. Probes run together, but the advertised order wins
          * rather than response speed, and only the first route that identifies itself as
-         * OpenMausBot receives the credential.
+         * SocialCoffeeAgent receives the credential.
          */
         suspend fun pairFirstReachable(
             connection: Connection,
@@ -1381,7 +1381,7 @@ class CompanionClient(
             }
         }
 
-        /** Null when [connection] identified itself as OpenMausBot; otherwise why it did not. */
+        /** Null when [connection] identified itself as SocialCoffeeAgent; otherwise why it did not. */
         private suspend fun probeFailure(connection: Connection, client: OkHttpClient): Throwable? {
             val companion = CompanionClient(connection, token = null, baseClient = client)
             val probeClient = client.newBuilder()
@@ -1399,7 +1399,7 @@ class CompanionClient(
                 if (identity.app == "openmausbot") {
                     null
                 } else {
-                    APIError.Transport("Something other than OpenMausBot answers at ${connection.displayAddress}.")
+                    APIError.Transport("Something other than SocialCoffeeAgent answers at ${connection.displayAddress}.")
                 }
             } catch (error: CancellationException) {
                 throw error

@@ -83,7 +83,7 @@ describe("composer thread approval persistence", () => {
 
 describe("independent bot threads", () => {
   const bot: Bot = {
-    id: "thread-bot", threadId: "first", name: "Maus", title: "Helper", description: "",
+    id: "thread-bot", threadId: "first", name: "Agent", title: "Helper", description: "",
     notifications: true, color: "green", unread: true, busy: true, activity: "waiting-on-you",
     modelSelection: { instanceId: "default", model: "default-model" }, approvalMode: "ask", alwaysAllow: [],
     messages: [{ id: "first-message", role: "user", kind: "text", text: "First conversation", at: 1 }],
@@ -342,7 +342,7 @@ describe("connector grants persistence", () => {
   const announcement = () => ({
     id: "bot-1",
     threadId: "thread-1",
-    name: "Maus",
+    name: "Agent",
     title: "Helper",
     description: "",
     notifications: true,
@@ -375,7 +375,7 @@ describe("trusted approval-mode persistence", () => {
   const announcement = (approvalMode: Bot["approvalMode"] = "ask") => ({
     id: "bot-1",
     threadId: "thread-1",
-    name: "Maus",
+    name: "Agent",
     title: "Helper",
     description: "",
     notifications: true,
@@ -2209,7 +2209,7 @@ describe("live config frames", () => {
     expect(configStatusFromFrame({ ...baseFrame, automaticRecovery: { enabled: false } }).automaticRecovery).toEqual({ enabled: false });
   });
 
-  it("keeps an OMB Cloud home's flag through live config refreshes, and adds none elsewhere", () => {
+  it("keeps a SocialCoffeeAgent Cloud home's flag through live config refreshes, and adds none elsewhere", () => {
     expect(configStatusFromFrame({ ...baseFrame, cloudHome: true }).cloudHome).toBe(true);
     expect(configStatusFromFrame(baseFrame)).not.toHaveProperty("cloudHome");
   });

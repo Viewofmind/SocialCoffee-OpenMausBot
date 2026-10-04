@@ -1,8 +1,8 @@
-import type { MausState } from "@/lib/mascot";
+import type { MarkState } from "@/lib/mascot";
 
 export interface SceneProps {
   playing: boolean;
-  onCue?: (state: MausState) => void;
+  onCue?: (state: MarkState) => void;
   onEnded?: () => void;
   label: string;
 }

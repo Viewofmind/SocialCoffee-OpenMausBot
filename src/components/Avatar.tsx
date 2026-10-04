@@ -1,58 +1,14 @@
-// Bot avatar — the Blob Studio "Cursor" mascot (CursorAvatar.tsx), wrapped
-// in the app's historical MausAvatar API so no call site changes: per-bot
-// color becomes a body gradient, the app's one-shot motion beats borrow the
-// face/state for a moment, and the eyes follow the pointer. The previous
-// hand-built Maus body + face engine (maus-engine/face/driver) is gone;
-// CursorAvatar owns morphing, blinking, drift, body motion and effects.
-import {
-  forwardRef,
-  memo,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-  type PointerEvent as ReactPointerEvent,
-} from "react";
-import { MAUS_COLORS, type MausColor, type MausMotion, type MausState } from "@/lib/mascot";
-import { CursorAvatar, type CursorAvatarHandle } from "./CursorAvatar";
+// Bot avatar — the SocialCoffeeAgent "SC" mark on a per-bot color tile,
+// behind the app's historical MarkAvatar API so no call site changes.
+import { forwardRef, memo, useEffect, useId, useImperativeHandle, useState } from "react";
+import { MARK_COLORS, type MarkColor, type MarkMotion, type MarkState } from "@/lib/mascot";
 import { avatarCropRadius, botAvatarProfile, clampAvatarFocus, clampAvatarZoom, type BotAvatarCrop } from "../../shared/bot-avatar";
-import { MASCOT_BODIES, botMascotBody, type MascotBodyId } from "../../shared/mascot-bodies";
+import type { MascotBodyId } from "../../shared/mascot-bodies";
 
 export const EYE_SCALE = 1.12;
 export const MOUTH_WEIGHT = 11;
 
-/**
- * How far the pointer may pull the eyes. Facing forward the full range is
- * safe; with the expressions' authored gaze they already start off-centre.
- */
-const POINTER_GAZE = { forward: 1, authored: 0.25 };
-
-/**
- * What a one-shot motion does while it plays: CursorAvatar animates the body
- * per state, so borrowing the state for a beat moves body and face together.
- */
-interface MotionFaces
-  extends Partial<
-    Record<Exclude<MausMotion, "none">, { state?: MausState; blink?: boolean; spin?: number }>
-  > {}
-
-const MOTION_FACE: MotionFaces = {
-  arrive: { state: "spawning", spin: 900 },
-  switch: { state: "waking", spin: 620 },
-  customize: { state: "proud", blink: true },
-  alert: { state: "alerting" },
-  thinking: { state: "thinking" },
-  working: { state: "working" },
-  launch: { state: "loading" },
-  success: { state: "happy", blink: true },
-  celebrate: { state: "celebrate", spin: 700 },
-  blink: { blink: true },
-  surprise: { state: "surprised", blink: true },
-  failure: { state: "sad" },
-};
-
-/** How long a one-shot motion holds its state before the bot's own returns. */
-const MOTION_FACE_MS = 1400;
+const MARK_INK = "#F5E9DA";
 
 /** Channel-wise mix of a hex color toward another, t in 0..1. */
 function mix(hex: string, toward: string, t: number): string {
@@ -69,26 +25,30 @@ function mix(hex: string, toward: string, t: number): string {
 }
 
 /**
- * Bot color -> the mascot's three-stop body gradient (highlight, base,
+ * Bot color -> the mark's three-stop tile gradient (highlight, base,
  * shadow), with the same light/dark spread as the pack's default green
  * ["#9FE6B5", "#3FAE6E", "#1C7A4C"].
  */
-const gradientFor = (color: MausColor): [string, string, string] => {
-  const fill = MAUS_COLORS[color] ?? MAUS_COLORS.green;
+const gradientFor = (color: MarkColor): [string, string, string] => {
+  const fill = MARK_COLORS[color] ?? MARK_COLORS.green;
   return [mix(fill, "#ffffff", 0.55), fill, mix(fill, "#000000", 0.42)];
 };
 
-export type MausAvatarHandle = CursorAvatarHandle;
+export type MarkAvatarHandle = {
+  blink: () => void;
+  spin: (durationMs?: number) => void;
+  setExpression: (index: number) => void;
+};
 
-export type MausAvatarProps = {
-  color: MausColor;
+export type MarkAvatarProps = {
+  color: MarkColor;
   /** Named behaviour — drives the expression pool, its cadence and blinking. */
-  state?: MausState;
+  state?: MarkState;
   /** Pin one of the 25 faces and stop the state's own drift. */
   expression?: number;
   size?: number;
   label?: string;
-  motion?: MausMotion;
+  motion?: MarkMotion;
   motionKey?: number;
   /** Head turn in degrees. */
   turn?: number;
@@ -108,101 +68,58 @@ export type MausAvatarProps = {
   trackPointer?: boolean;
   /** Run the animation. Off renders the state's resting face. */
   animated?: boolean;
-  /** Which body the bot wears. Unknown values fall back to the cursor. */
+  /** Kept for stored profiles; the SC mark has a single shape. */
   bodyId?: MascotBodyId;
 };
 
-function MausAvatarComponent(
-  {
-    color,
-    state = "idle",
-    expression,
-    size = 44,
-    label,
-    motion = "none",
-    motionKey = 0,
-    turn,
-    gaze,
-    spring,
-    eyeScale,
-    showMouth,
-    mouthStroke,
-    forward = true,
-    lookAround,
-    trackPointer = true,
-    animated = true,
-    bodyId,
-  }: MausAvatarProps,
-  ref: React.Ref<MausAvatarHandle>,
+function MarkAvatarComponent(
+  { color, state = "idle", size = 44, label }: MarkAvatarProps,
+  ref: React.Ref<MarkAvatarHandle>,
 ) {
-  const silhouette = MASCOT_BODIES[botMascotBody(bodyId)];
-  const inner = useRef<CursorAvatarHandle>(null);
-  useImperativeHandle(ref, () => ({
-    blink: () => inner.current?.blink(),
-    spin: (durationMs?: number) => inner.current?.spin(durationMs),
-    setExpression: (index: number) => inner.current?.setExpression(index),
-  }));
-
-  // A one-shot motion borrows the state for a moment, then hands it back.
-  const [motionState, setMotionState] = useState<MausState | null>(null);
-  useEffect(() => {
-    if (motion === "none" || !animated) return;
-    const beat = MOTION_FACE[motion];
-    if (!beat) return;
-    if (beat.blink) inner.current?.blink();
-    if (beat.spin) inner.current?.spin(beat.spin);
-    if (!beat.state) return;
-    setMotionState(beat.state);
-    const timer = setTimeout(() => setMotionState(null), MOTION_FACE_MS);
-    return () => clearTimeout(timer);
-  }, [motion, motionKey, animated]);
-
-  // Pointer-follow gaze, composed with any gaze the caller pins.
-  const [pointer, setPointer] = useState({ x: 0, y: 0 });
-  const range = forward ? POINTER_GAZE.forward : POINTER_GAZE.authored;
-  const onPointerMove = (event: ReactPointerEvent<HTMLSpanElement>) => {
-    if (!trackPointer || !animated) return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    setPointer({
-      x: Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width) * 2 - 1)) * range,
-      y: Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height) * 2 - 1)) * range,
-    });
-  };
-  const onPointerLeave = () => setPointer({ x: 0, y: 0 });
-
+  useImperativeHandle(ref, () => ({ blink: () => {}, spin: () => {}, setExpression: () => {} }));
+  const gradientId = `sc-mark-${useId().replace(/:/g, "")}`;
+  const [highlight, base, shadow] = gradientFor(color);
   return (
-    <span
-      className="inline-flex shrink-0"
-      onPointerMove={trackPointer && animated ? onPointerMove : undefined}
-      onPointerLeave={trackPointer && animated ? onPointerLeave : undefined}
-    >
-      <CursorAvatar
-        ref={inner}
-        state={motionState ?? state}
-        expression={expression}
-        size={size}
-        silhouette={silhouette}
-        gradient={gradientFor(color)}
-        title={label ?? null}
-        lookAround={lookAround ?? (forward ? 0 : 1)}
-        gaze={{ x: (gaze?.x ?? 0) + pointer.x, y: (gaze?.y ?? 0) + pointer.y }}
-        turn={turn}
-        spring={spring}
-        eyeScale={eyeScale}
-        showMouth={showMouth}
-        mouthStroke={mouthStroke}
-        paused={!animated}
-      />
+    <span className="inline-flex shrink-0" data-state={state}>
+      <svg
+        width={`${size}px`}
+        height={`${size}px`}
+        viewBox="0 0 64 64"
+        role={label ? "img" : undefined}
+        aria-label={label}
+        aria-hidden={label ? undefined : true}
+      >
+        <defs>
+          <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor={highlight} />
+            <stop offset="0.5" stopColor={base} />
+            <stop offset="1" stopColor={shadow} />
+          </linearGradient>
+        </defs>
+        <rect width="64" height="64" rx="16" fill={`url(#${gradientId})`} />
+        <text
+          x="32"
+          y="32"
+          dy="0.35em"
+          textAnchor="middle"
+          fontFamily="system-ui, -apple-system, Segoe UI, sans-serif"
+          fontWeight={700}
+          fontSize="26"
+          fill={MARK_INK}
+        >
+          SC
+        </text>
+      </svg>
     </span>
   );
 }
 
-export const MausAvatar = memo(forwardRef(MausAvatarComponent));
+export const MarkAvatar = memo(forwardRef(MarkAvatarComponent));
 
-export type BotAvatarProps = Omit<MausAvatarProps, "color"> & {
+export type BotAvatarProps = Omit<MarkAvatarProps, "color"> & {
   bot: {
     name?: string;
-    color: MausColor;
+    color: MarkColor;
     avatarUrl?: string | null;
     avatarCrop?: BotAvatarCrop;
     avatarZoom?: number;
@@ -257,7 +174,7 @@ export function BotAvatar({ bot, size = 44, label, ...mascotProps }: BotAvatarPr
 
   if (outcome !== "flatImage") {
     return (
-      <MausAvatar
+      <MarkAvatar
         bodyId={bot.mascotBody ?? undefined}
         {...mascotProps}
         color={bot.color}

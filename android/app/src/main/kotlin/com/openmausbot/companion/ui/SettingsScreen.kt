@@ -681,7 +681,7 @@ private fun localizedActivityCaption(detail: ActivityDetail): String = when (det
     ActivityDetail.HIDDEN -> stringResource(R.string.mobile_activity_hidden_caption)
 }
 
-private const val ADDRESS_CLIP_LABEL = "OpenMausMobile computer address"
+private const val ADDRESS_CLIP_LABEL = "SocialCoffeeAgent computer address"
 
 /** Long enough for "Copied" to be read, short enough not to linger (iOS `:363-367`). */
 private const val COPIED_LABEL_MILLIS = 2_000L
@@ -692,7 +692,7 @@ private const val COPIED_LABEL_MILLIS = 2_000L
  */
 internal fun troubleshootingText(status: Session.Status): String = when (status) {
     Session.Status.Live -> "This computer is connected and responding normally."
-    Session.Status.Connecting -> "OpenMausBot is trying the saved connection automatically."
+    Session.Status.Connecting -> "SocialCoffeeAgent is trying the saved connection automatically."
     Session.Status.Unauthorized -> "This phone was removed from the computer. Pair it again to reconnect."
     Session.Status.Unpaired -> "This phone is not paired with a computer."
     is Session.Status.Offline -> status.message

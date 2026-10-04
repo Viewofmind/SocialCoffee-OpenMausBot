@@ -39,7 +39,7 @@ export function pairingBlockedReason(state: SessionState | null): "chat-only" | 
   return state?.kind === "session" && !state.scopes.includes("admin") ? "chat-only" : null;
 }
 
-/** The devices the card lists: on an OMB Cloud home only the owner's own,
+/** The devices the card lists: on a SocialCoffeeAgent Cloud home only the owner's own,
  * each with full access (the server lists no other). */
 export function shownDevices(devices: PairedDevice[], cloudHome: boolean): PairedDevice[] {
   return cloudHome ? devices.filter((device) => device.scopes.includes("admin")) : devices;
@@ -61,7 +61,7 @@ const button = "rounded-md bg-accent px-3 py-1.5 text-[13px] font-medium text-ac
 const quiet = "rounded-md border border-hairline/50 px-3 py-1.5 text-[13px] text-ink hover:bg-control";
 
 /** Settings → Remote access: mint a one-time pairing code with a QR for
- * the phone app (or for a non-phone client — MCP, `openmausbot pair`, a
+ * the phone app (or for a non-phone client — MCP, `sc-agent pair`, a
  * second desktop app), and see or sign out the devices that hold a
  * session. Shown for every client of a server: a hosted server reached
  * from a browser, the desktop app's own local server (#950), and the

@@ -204,8 +204,8 @@ final class FailoverTests: XCTestCase {
             NSURLErrorNetworkUnavailableReasonKey: URLError.NetworkUnavailableReason.cellular.rawValue,
         ])
         let message = ConnectionAdvice.message(for: denied, host: "mac.companion.example", port: 443)
-        XCTAssertTrue(message.contains("Cellular data is off for MausBot"), message)
-        XCTAssertTrue(message.contains("Settings → MausBot → Cellular Data"), message)
+        XCTAssertTrue(message.contains("Cellular data is off for SocialCoffeeAgent"), message)
+        XCTAssertTrue(message.contains("Settings → SocialCoffeeAgent → Cellular Data"), message)
         // Plain offline is still plain offline.
         XCTAssertTrue(ConnectionAdvice.message(for: URLError(.notConnectedToInternet), host: "x", port: 8810)
             .contains("You're offline."))

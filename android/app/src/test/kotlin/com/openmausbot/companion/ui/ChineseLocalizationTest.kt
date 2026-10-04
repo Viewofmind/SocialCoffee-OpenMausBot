@@ -29,7 +29,7 @@ class ChineseLocalizationTest {
         compose.onNodeWithText("列表密度").assertIsDisplayed()
         compose.onNodeWithText("紧凑").assertIsDisplayed()
         compose.onNodeWithText("显示全部 27 行").assertIsDisplayed()
-        compose.onNodeWithText("MausBot").assertIsDisplayed()
+        compose.onNodeWithText("SocialCoffeeAgent").assertIsDisplayed()
     }
 
     @Test
@@ -39,7 +39,7 @@ class ChineseLocalizationTest {
         compose.onNodeWithText("列表密度").assertIsDisplayed()
         compose.onNodeWithText("緊湊").assertIsDisplayed()
         compose.onNodeWithText("顯示全部 27 行").assertIsDisplayed()
-        compose.onNodeWithText("MausBot").assertIsDisplayed()
+        compose.onNodeWithText("SocialCoffeeAgent").assertIsDisplayed()
     }
 
     @Test

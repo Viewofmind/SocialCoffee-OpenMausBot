@@ -440,7 +440,7 @@ public struct PairingRouteError: Error, LocalizedError, Equatable, Sendable {
         let hosts = attemptedHosts.map { URLComponents(string: $0)?.host?.lowercased() ?? "" }
         let advice: String
         if attemptedHosts.contains(where: { $0.lowercased().hasPrefix("https://") }) {
-            advice = "Couldn’t reach \(computer). Make sure the computer is awake with OpenMausBot open, then try again."
+            advice = "Couldn’t reach \(computer). Make sure the computer is awake with SocialCoffeeAgent open, then try again."
         } else if !hosts.isEmpty, hosts.allSatisfy({ $0.hasSuffix(".ts.net") || $0.hasSuffix(".ts.net.") }) {
             advice = "Your phone couldn’t reach \(computer) over Tailscale. Turn on Tailscale on this phone, " +
                 "signed in to the same tailnet as the computer, then try again."
@@ -450,7 +450,7 @@ public struct PairingRouteError: Error, LocalizedError, Equatable, Sendable {
             // calls Public; then Remote access, which connects outward.
             advice = "Your phone couldn’t reach \(computer) on this network. Put the phone on the same Wi-Fi " +
                 "as the computer. If it already is, the computer’s firewall may be blocking " +
-                "OpenMausBot: on a Windows PC, set its network to Private. Or open Settings → " +
+                "SocialCoffeeAgent: on a Windows PC, set its network to Private. Or open Settings → " +
                 "Remote access on the computer and sign in so the phone can connect from anywhere."
         }
         return attemptedHosts.isEmpty
@@ -810,7 +810,7 @@ public struct CompanionClient: Sendable {
     /// address of that computer, since the desktop cannot know which one the
     /// phone can reach; a typed address is exactly one; a protected route is
     /// never followed by cleartext. Only the first response that identifies
-    /// itself as OpenMausBot receives the one-time pairing POST. The request
+    /// itself as SocialCoffeeAgent receives the one-time pairing POST. The request
     /// id makes that redemption safely replayable by newer desktop builds if
     /// its response is lost in transit.
     public static func pairFirstReachable(
@@ -1600,7 +1600,7 @@ public struct CompanionClient: Sendable {
             guard message?.localizedCaseInsensitiveContains(Self.alreadyDrainedQueueMessage) == true else {
                 throw APIError.status(
                     code: 404,
-                    message: "This computer is too old to take back a queued message. Update OpenMausBot on it."
+                    message: "This computer is too old to take back a queued message. Update SocialCoffeeAgent on it."
                 )
             }
             return false

@@ -51,7 +51,7 @@ The launcher prepares these cases:
   the tool, and the launcher does not confirm the card.
 - **Manual inbox check** is created through the routine API and run twice for
   Pepper. Both fresh executions report into **Fleet health reports**, inside
-  the **OMB management** folder. Its next scheduled occurrence is an hour later.
+  the **SocialCoffeeAgent management** folder. Its next scheduled occurrence is an hour later.
 - **Provider failure example** is created for **Miso** and run once. Miso's
   isolated fake engine deliberately exits early, producing a failure receipt.
 - **Automatic scheduled check** is scheduled for Pepper about twelve seconds
@@ -96,7 +96,7 @@ The final startup JSON includes the server `url`, `previewUrl`, `pepperId`,
 7. Open bot settings → Routines. It must use the same routine editor and central
    logs, without creating a second definition or competing history page.
    Confirm that the chat's model header and Ask composer retain their positions.
-8. Expand Pepper's threads. **OMB management** contains one **Fleet health
+8. Expand Pepper's threads. **SocialCoffeeAgent management** contains one **Fleet health
    reports** thread, not separate sidebar entries for the two executions.
    Right-click the folder (or use its actions menu) → **Mark folder as read**.
    Its unread dots clear without selecting a conversation or resolving any
@@ -164,7 +164,7 @@ parity, restart recovery, duplicate completion events and atomic cursor/counter
 rollback on a failed save. The MCP fixture verifies reviewed policy changes
 and the listing through the actual tool and API, using no live accounts.
 
-The routine tool defaults to `maus` (the bot's configured model and computer,
+The routine tool defaults to `scagent` (the bot's configured model and computer,
 including VPS); `box` explicitly selects the bot's Boat cloud computer, which the
 bot's own model drives through its computer tools. Legacy `cloud`
 values remain accepted without migrating existing routines. The cron tool

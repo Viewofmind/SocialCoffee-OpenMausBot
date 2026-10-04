@@ -1,4 +1,4 @@
-// An OMB Cloud home is personal (docs/cloud-pro.md): only the owner's own
+// A SocialCoffeeAgent Cloud home is personal (docs/cloud-pro.md): only the owner's own
 // devices connect, each with an admin session the Admin's signed pairing
 // gave it. No pairing, sign-in or session without admin scope is minted or
 // redeemed there (server/sessions.ts requireAdmin), and at every boot any
@@ -30,7 +30,7 @@ import { lstatSync, readFileSync } from "node:fs";
 import { z } from "zod";
 import { writeFileAtomic } from "./atomic.ts";
 
-export const CLOUD_PERSONAL_REFUSAL = "OMB Cloud is personal: only your own devices can connect.";
+export const CLOUD_PERSONAL_REFUSAL = "SocialCoffeeAgent Cloud is personal: only your own devices can connect.";
 
 const KEY = /^p_[\w-]{22}$/;
 const keys = z.array(z.string().regex(KEY)).max(100_000);

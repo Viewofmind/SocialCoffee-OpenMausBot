@@ -44,7 +44,7 @@ data class LiveVoiceOption(val id: String, val label: String)
  */
 object LiveCallRules {
     const val NEEDS_KEY_MESSAGE = "Set up Live calls on your computer first."
-    const val MIC_DENIED_MESSAGE = "Live calls need Microphone access. Enable it in Settings → MausBot."
+    const val MIC_DENIED_MESSAGE = "Live calls need Microphone access. Enable it in Settings → SocialCoffeeAgent."
     const val AUDIO_FAILED_MESSAGE = "Could not connect the call audio."
     /** The answer went in, but the audio never connected in `LiveCallManager.MEDIA_CONNECT_TIMEOUT_MS` (the desktop's `call.live.droppedNoAudio`). */
     const val AUDIO_TIMEOUT_MESSAGE = "Call dropped: the audio could not connect."
@@ -174,7 +174,7 @@ object LiveCallRules {
         "expired" -> EndNotice("Call ended: it reached OpenAI's time limit.", dropped = false)
         "content" -> EndNotice("OpenAI ended the call under its content rules.", dropped = false)
         "deleted" -> EndNotice("Call ended: the chat was deleted.", dropped = false)
-        "shutdown" -> EndNotice("Call ended: OpenMausBot restarted.", dropped = false)
+        "shutdown" -> EndNotice("Call ended: SocialCoffeeAgent restarted.", dropped = false)
         "signed-out" -> EndNotice(SIGNED_OUT_MESSAGE, dropped = false)
         "remote-hangup", "remote_hangup", "connection-lost", "connection_lost", "sideband-lost", "error" ->
             EndNotice(CALL_DROPPED, dropped = true)

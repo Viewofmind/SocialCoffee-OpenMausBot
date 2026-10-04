@@ -98,7 +98,7 @@ describe("the native-app encoding of a pairing window", () => {
   });
 });
 
-describe("a browser sign-in window (an OMB Cloud page's \"Use in your browser\")", () => {
+describe("a browser sign-in window (a SocialCoffeeAgent Cloud page's \"Use in your browser\")", () => {
   it("is redeemed only by a browser sign-in, only by its credential, and only once", () => {
     const { code, credential } = registry.openPairing({ scopes: ["admin", "client"], label: "Web browser", browser: true });
     // Not by an app or a typed code, which leave it open.
@@ -590,8 +590,8 @@ describe("stream tickets", () => {
   });
 });
 
-describe("admin scope only (an OMB Cloud home is personal: server/cloud-owner.ts)", () => {
-  const PERSONAL = "OMB Cloud is personal: only your own devices can connect.";
+describe("admin scope only (a SocialCoffeeAgent Cloud home is personal: server/cloud-owner.ts)", () => {
+  const PERSONAL = "SocialCoffeeAgent Cloud is personal: only your own devices can connect.";
   it("opens, redeems, issues and accepts nothing without admin scope; the owner's devices are unaffected", () => {
     // Made before the rule applies (as a stored session is at boot).
     const earlier = registry.openPairing({ scopes: ["client"], label: "Guest phone" });

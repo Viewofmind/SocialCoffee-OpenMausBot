@@ -374,7 +374,7 @@ extension LiveCallNotice {
     var text: Text {
         switch self {
         case .micDenied:
-            return Text("Live calls need Microphone access. Enable it in Settings → MausBot.")
+            return Text("Live calls need Microphone access. Enable it in Settings → SocialCoffeeAgent.")
         case .needsKey:
             return Text("Set up Live calls on your computer first.")
         case let .busy(client, botName):
@@ -402,7 +402,7 @@ extension LiveCallNotice {
         case .endedDeleted:
             return Text("Call ended: the chat was deleted.")
         case .endedShutdown:
-            return Text("Call ended: OpenMausBot restarted.")
+            return Text("Call ended: SocialCoffeeAgent restarted.")
         // The computer's own words when it ended the call; this phone's
         // when the computer stopped taking its requests: the words the
         // harness uses for a phone it unpaired (LIVE_COPY.unpaired).

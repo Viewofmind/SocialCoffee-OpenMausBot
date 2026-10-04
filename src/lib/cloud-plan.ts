@@ -1,5 +1,5 @@
-// What the app says about the person's OMB Cloud plan, in one place: Settings
-// → OMB Cloud, the Pro card in Settings and the Pro introduction all read it,
+// What the app says about the person's SocialCoffeeAgent Cloud plan, in one place: Settings
+// → SocialCoffeeAgent Cloud, the Pro card in Settings and the Pro introduction all read it,
 // so no two of them can disagree. The rule the owner set: after buying,
 // nothing unexpected or contradictory, never an offer to buy to someone who
 // pays (or may pay: an unknown state is not "free"), and every state has one
@@ -25,9 +25,9 @@ export type CloudPlanView =
   | { kind: "paid"; label: string; checking: boolean }
   /** A plan that is not active (a payment problem, or it ended) or a Cloud still there without one. */
   | { kind: "attention"; label: string | null }
-  /** A payment OMB Cloud received and is linking to this account. */
+  /** A payment SocialCoffeeAgent Cloud received and is linking to this account. */
   | { kind: "purchase"; label: string | null; paidAt?: number }
-  /** OMB Cloud cannot be asked right now. `label`: the plan last verified. */
+  /** SocialCoffeeAgent Cloud cannot be asked right now. `label`: the plan last verified. */
   | { kind: "unverified"; label: string | null }
   /** This computer's sign-in ended. The plan is unaffected. */
   | { kind: "reauth"; label: string | null; reason: "expired" | "access-ended" };
@@ -60,8 +60,8 @@ export function buyOfferAllowed(view: CloudPlanView): boolean {
 export function cloudPlanLine(view: CloudPlanView): string | null {
   switch (view.kind) {
     case "paid": return t("cloudAccount.pro", { plan: view.label });
-    case "attention": return t("cloudAccount.inactive", { plan: view.label ?? "OMB Cloud" });
-    case "purchase": return t("cloudAccount.purchaseReceived", { plan: view.label ?? "OMB Cloud" });
+    case "attention": return t("cloudAccount.inactive", { plan: view.label ?? "SocialCoffeeAgent Cloud" });
+    case "purchase": return t("cloudAccount.purchaseReceived", { plan: view.label ?? "SocialCoffeeAgent Cloud" });
     case "unverified": return view.label ? t("cloudAccount.lastPlan", { plan: view.label }) : null;
     case "reauth": return view.label ? t("cloudAccount.planName", { plan: view.label }) : null;
     case "free": return t("cloudAccount.free");

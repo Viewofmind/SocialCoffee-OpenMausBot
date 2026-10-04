@@ -92,10 +92,10 @@ describe("Computer panel Works on", () => {
     expect(markup).toContain("Choose where this bot can use a computer.</p>");
   });
 
-  it("lists neither on an OMB Cloud home, and says why", () => {
+  it("lists neither on a SocialCoffeeAgent Cloud home, and says why", () => {
     const markup = computerTab({ cloudHome: true });
     expect(places(markup)).toEqual(["Auto", "Cloud", "Browser", "Off"]);
-    expect(markup).toContain("Bots on your OMB Cloud work in the cloud; to let them use your Mac, turn on Let my Cloud use this Mac");
+    expect(markup).toContain("Bots on your SocialCoffeeAgent Cloud work in the cloud; to let them use your Mac, turn on Let my Cloud use this Mac");
   });
 });
 

@@ -105,7 +105,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // 127.0.0.1 explicitly — vite binds IPv4; a bare "localhost" here can
 // resolve to ::1 and paint a black window
 const DEV_URL = process.env.ELECTRON_START_URL ?? "http://127.0.0.1:5199";
-const DEFAULT_COMPOSIO_BROKER_URL = "https://openmausbot-composio.milindsoni201.workers.dev";
+// No SocialCoffeeAgent-hosted Composio broker exists yet; packaged builds
+// use a configured OMB_COMPOSIO_BROKER_URL or leave managed Composio off.
+const DEFAULT_COMPOSIO_BROKER_URL = "";
 let SERVER_PORT = 8799;
 const APP_ICON = path.join(__dirname, "resources/app-icon.png");
 let desktopViewerWindow = null;
@@ -114,7 +116,7 @@ let desktopViewerContextId = null;
 let desktopWorkspaceManager = null;
 let desktopWorkspaceOwner = null;
 let pendingOrganizationEntry = takeOrganizationDeepLink(process.argv);
-// openmausbot://cloud, delivered with the organisation action once main can navigate.
+// socialcoffee-agent://cloud, delivered with the organisation action once main can navigate.
 const cloudEntry = createCloudEntry({
   reveal: () => { if (!desktopTray?.show()) activateExistingWindow(BrowserWindow.getAllWindows()); },
   open: async () => {
@@ -206,6 +208,15 @@ function applyUnreadBadge(win = mainWindow) {
   if (process.platform === "darwin" || process.platform === "linux") app.setBadgeCount(count);
 }
 
+// Electron profile lives in its own socialcoffee-agent directory; no other
+// app's profile is read or migrated.
+app.setPath("userData", path.join(app.getPath("appData"), "socialcoffee-agent"));
+app.setAboutPanelOptions({
+  applicationName: "SocialCoffeeAgent",
+  credits: "SocialCoffeeAgent by SocialCoffee DigiTech Pvt Ltd",
+  copyright: "Copyright © 2026 SocialCoffee DigiTech Pvt Ltd. Based on OpenMausBot, Copyright 2026 Milind Soni and OpenMausBot contributors.",
+});
+
 // GNOME groups the window with its installed desktop entry only when both
 // identities match. This must run before Electron becomes ready. Ubuntu also
 // uses Chromium's software renderer: the supported machine reproduced two
@@ -213,14 +224,14 @@ function applyUnreadBadge(win = mainWindow) {
 // intercepting input. This app is not graphics-heavy, so reliability wins.
 if (process.platform === "linux") {
   app.disableHardwareAcceleration();
-  app.setDesktopName("com.openmausbot.app.desktop");
+  app.setDesktopName("in.socialcoffee.agent.desktop");
 }
 
 // One instance per user: without this lock a second launch forks a second
 // harness server on a fallback port and splits data dirs in two. The loser
 // exits before any child or window exists; the winner surfaces itself.
 if (!app.requestSingleInstanceLock()) {
-  console.log("[desktop] OpenMausBot is already running — focusing that window");
+  console.log("[desktop] SocialCoffeeAgent is already running — focusing that window");
   process.exit(0);
 }
 
@@ -269,7 +280,7 @@ app.on("open-url", (event, url) => {
 
 app.on("second-instance", (_event, commandLine) => {
   if (takeOrganizationDeepLink(commandLine)) {
-    queueOrganizationEntry("openmausbot://organization");
+    queueOrganizationEntry("socialcoffee-agent://organization");
     return;
   }
   if (cloudEntry.fromArgs(commandLine)) return;
@@ -347,7 +358,7 @@ const serverSupervisor = createServerSupervisor({
     slog("server recovery paused after repeated failures; quit and reopen to retry");
     dialog.showErrorBox(
       "The bot server stopped",
-      "Automatic recovery could not restart the background server. Quit and reopen OpenMausBot to try again. Interrupted chat turns were not resent.\n\n" +
+      "Automatic recovery could not restart the background server. Quit and reopen SocialCoffeeAgent to try again. Interrupted chat turns were not resent.\n\n" +
         `Server log: ${path.join(LOG_DIR, "server.log")}`,
     );
   },
@@ -359,7 +370,7 @@ function desktopDataDir() {
   // then pass this exact resolved path to the utility child. server/config.ts
   // intentionally treats an empty OMB_DATA_DIR differently, so inheriting it
   // without normalization would lease one directory and write another.
-  return process.env.OMB_DATA_DIR || path.join(app.getPath("home"), ".openmausbot");
+  return process.env.OMB_DATA_DIR || path.join(app.getPath("home"), ".socialcoffee-agent");
 }
 
 async function stopUtilityServer(proc, timeoutMs = UTILITY_SERVER_STOP_TIMEOUT_MS) {
@@ -497,8 +508,8 @@ function composioBrokerUrl() {
 }
 
 // The packaged app has no terminal: everything about the server child's life
-// goes to server.log in the OS log dir (~/Library/Logs/OpenMausBot on macOS,
-// Console.app-visible; %APPDATA%\OpenMausBot\logs on Windows), which is also
+// goes to server.log in the OS log dir (~/Library/Logs/SocialCoffeeAgent on macOS,
+// Console.app-visible; %APPDATA%\SocialCoffeeAgent\logs on Windows), which is also
 // why stdio is piped, not inherited — under a Finder/Explorer launch the
 // parent's stdio leads nowhere and a failed boot is otherwise undiagnosable.
 const LOG_DIR = app.getPath("logs");
@@ -1002,7 +1013,7 @@ function syncPhoneSecretKey(proc) {
 
 function ensureCloudAccount() {
   if (cloudAccount) return cloudAccount;
-  if (!app.isPackaged || desktopRemoteAccess) throw new Error("OMB Cloud sign-in requires the local desktop app.");
+  if (!app.isPackaged || desktopRemoteAccess) throw new Error("SocialCoffeeAgent Cloud sign-in requires the local desktop app.");
   cloudAccount = createCloudAccountClient({
     store: createCloudAccountStore({ file: path.join(app.getPath("userData"), "cloud-account.bin"), encryption: {
       available: async () => (await safeStorage.isAsyncEncryptionAvailable()) &&
@@ -1204,11 +1215,11 @@ async function runCompanyBackup(kind, input, scheduled = null) {
     const status = await localBackupStatus(proc);
     if (status.pendingRestore) {
       publishCompanyBackupState({ busy: false, pendingRestore: true });
-      throw new Error("Restart OpenMausBot to finish the pending restore before starting another backup operation.");
+      throw new Error("Restart SocialCoffeeAgent to finish the pending restore before starting another backup operation.");
     }
     if (status.busy) throw companyBackupDeferred();
     const transfers = createCompanyBackups({
-      tempRoot: path.join(app.getPath("temp"), "openmaus-company-backups"),
+      tempRoot: path.join(app.getPath("temp"), "socialcoffee-agent-company-backups"),
       localRequest: (route, init) => localBackupRequest(proc, route, init),
       portalRequest: (route, options) => client.requestBackup(route, { ...options, generation }),
       availableBytes: async temporary => {
@@ -1238,7 +1249,7 @@ async function runCompanyBackup(kind, input, scheduled = null) {
 function syncDesktopMutationToken(proc) {
   try {
     proc.postMessage({
-      type: "openmausbot:desktop-mutation-token",
+      type: "socialcoffee-agent:desktop-mutation-token",
       token: desktopMutationToken,
       companionToken: companionMutationToken,
     });
@@ -1419,7 +1430,7 @@ function syncManagedComposioCredentials() {
   if (!serverProc) return;
   try {
     serverProc.postMessage({
-      type: "openmausbot:managed-composio",
+      type: "socialcoffee-agent:managed-composio",
       access: managedComposioAccess(composioBrokerUrl(), secureCredentials),
     });
   } catch (error) {
@@ -1440,8 +1451,8 @@ function buildErrorPage({ allPortsOccupied }) {
   const serverLogPath = path.join(LOG_DIR, "server.log");
   const serverLogHref = pathToFileURL(serverLogPath).href;
   const reason = allPortsOccupied
-    ? "Every OpenMausBot port answered health checks from another process — likely a second copy of the app, or another program on ports 8799–28799. Quit that program, then quit and reopen OpenMausBot."
-    : "The background server didn't come up in time — this is usually slow startup, not a port conflict. Quit and reopen OpenMausBot.";
+    ? "Every SocialCoffeeAgent port answered health checks from another process — likely a second copy of the app, or another program on ports 8799–28799. Quit that program, then quit and reopen SocialCoffeeAgent."
+    : "The background server didn't come up in time — this is usually slow startup, not a port conflict. Quit and reopen SocialCoffeeAgent.";
   return (
     "data:text/html;charset=utf-8," +
     encodeURIComponent(
@@ -1504,7 +1515,7 @@ function desktopViewerErrorPage(message, retryUrl) {
 }
 
 function openDesktopViewer(owner, rawUrl, rawTitle, contextId) {
-  if (!owner || owner.isDestroyed()) throw new Error("The OpenMausBot window is unavailable");
+  if (!owner || owner.isDestroyed()) throw new Error("The SocialCoffeeAgent window is unavailable");
   const url = desktopViewerUrl(rawUrl);
   const titleCandidate = Object.prototype.toString.call(rawTitle) === "[object String]" ? rawTitle.trim() : "";
   const title = titleCandidate ? titleCandidate.slice(0, 80) : "Live desktop";
@@ -1549,7 +1560,7 @@ function openDesktopViewer(owner, rawUrl, rawTitle, contextId) {
       sandbox: true,
       // Keep provider cookies away from the app renderer and discard them on
       // app exit. The secret-bearing URL is sufficient to authenticate.
-      partition: "openmausbot-desktop-viewer",
+      partition: "socialcoffee-agent-desktop-viewer",
     },
   });
   desktopViewerWindow = viewer;
@@ -1622,7 +1633,7 @@ function openDesktopViewer(owner, rawUrl, rawTitle, contextId) {
 }
 
 function ensureDesktopWorkspace(owner) {
-  if (!owner || owner.isDestroyed()) throw new Error("The OpenMausBot window is unavailable");
+  if (!owner || owner.isDestroyed()) throw new Error("The SocialCoffeeAgent window is unavailable");
   if (desktopWorkspaceManager) {
     if (desktopWorkspaceOwner !== owner) {
       throw new Error("The two-desktop view belongs to another app window");
@@ -1634,7 +1645,7 @@ function ensureDesktopWorkspace(owner) {
   const manager = createDesktopWorkspaceManager({
     owner,
     createView: (options) => new WebContentsView(options),
-    partitionPrefix: `openmausbot-desktop-workspace-${randomUUID()}`,
+    partitionPrefix: `socialcoffee-agent-desktop-workspace-${randomUUID()}`,
     notify: (state) => {
       if (!owner.isDestroyed() && !owner.webContents.isDestroyed()) {
         owner.webContents.send("desktop-workspace:state", state);
@@ -1771,8 +1782,8 @@ function stopLending() {
   for (const env of environmentsState.environments) if (computerSharing?.cloudState(env).enabled) computerSharing.revoke(env);
 }
 
-/** "Lending settings…" in the menu bar: Settings → OMB Cloud in the local
- * window, with none of the openmausbot://cloud link's automatic actions. */
+/** "Lending settings…" in the menu bar: Settings → SocialCoffeeAgent Cloud in the local
+ * window, with none of the socialcoffee-agent://cloud link's automatic actions. */
 async function openLendingSettings() {
   if (!app.isPackaged || desktopRemoteAccess || !serverReady) return;
   if (activeEnvironment(environmentsState)) persistEnvironments(withActive(environmentsState, LOCAL_ID));
@@ -1795,7 +1806,7 @@ function lendingIndicator() {
 async function offerComputerSharing(win) {
   const env = activeEnvironment(environmentsState);
   if (!env || sharingPrompts.has(env.id) || win.isDestroyed()) return;
-  // The person's own Cloud is lent to from Settings → OMB Cloud, never here.
+  // The person's own Cloud is lent to from Settings → SocialCoffeeAgent Cloud, never here.
   if (env.origin === cloudAccount?.homeTarget()?.origin) return;
   // Never offer a grant this build's server will not honour.
   if (!(await refreshSharedComputersAllowed()) || win.isDestroyed()) return;
@@ -1856,7 +1867,7 @@ function refreshApplicationMenu() {
       onSwitch: (id) => void workspaceMenuAction(() => switchEnvironment(id)),
       onAddFromClipboard: () => void addServerFromClipboard(),
       onConnect: () => void workspaceMenuAction(openWorkspaceSettings),
-      onOrganizationSignIn: () => queueOrganizationEntry("openmausbot://organization"),
+      onOrganizationSignIn: () => queueOrganizationEntry("socialcoffee-agent://organization"),
       onForget: (id) => void workspaceMenuAction(() => forgetEnvironment(id)),
       onOpenSettings: () => {
         if (mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send("app:open-settings");
@@ -1885,7 +1896,7 @@ function navigateMainWindow(url) {
 }
 
 /** The person's Cloud address for their account, kept while a check with
- * OMB Cloud is pending or failed (cloud-home.mjs rememberedCloudHome). */
+ * SocialCoffeeAgent Cloud is pending or failed (cloud-home.mjs rememberedCloudHome). */
 let rememberedHome = null;
 
 async function switchEnvironment(id) {
@@ -1897,7 +1908,7 @@ async function switchEnvironment(id) {
     try { await connectCloudHome(); return; } catch (error) {
       slog(`cloud home: could not connect from the Server menu (${error?.message ?? error})`);
       // Signed in there already, it opens as any server does. Otherwise
-      // Settings → OMB Cloud says the one next step (sign in again, or wait).
+      // Settings → SocialCoffeeAgent Cloud says the one next step (sign in again, or wait).
       if (!(await cloudHomeSignedIn(entry.origin))) { await openLendingSettings(); return; }
     }
   }
@@ -1962,13 +1973,13 @@ async function deliverOrganizationEntry() {
   return delivered;
 }
 
-/** openmausbot://cloud carries nothing, so all it does is bring this app to
- * Settings → OMB Cloud. Opened this way, that view signs in or connects to
+/** socialcoffee-agent://cloud carries nothing, so all it does is bring this app to
+ * Settings → SocialCoffeeAgent Cloud. Opened this way, that view signs in or connects to
  * My Cloud by itself (CloudAccountSettings). No prompt: a hosted server left
  * for it stays saved under Servers, and the Cloud replaces it anyway. */
 async function openCloudEntry() {
-  if (!app.isPackaged) throw new Error("OMB Cloud requires the installed desktop app.");
-  if (desktopRemoteAccess) throw new Error("This app is connected to another computer. Disconnect it to use OMB Cloud on this computer.");
+  if (!app.isPackaged) throw new Error("SocialCoffeeAgent Cloud requires the installed desktop app.");
+  if (desktopRemoteAccess) throw new Error("This app is connected to another computer. Disconnect it to use SocialCoffeeAgent Cloud on this computer.");
   if (!serverReady) throw new Error("This installation is unavailable. Restart the app and open your Cloud again.");
   // Let a saved sign-in finish restoring (a local read and one check with OMB
   // Cloud) first: the view must not take it for signed out and start another.
@@ -2493,14 +2504,14 @@ ipcMain.handle("desktop:export-diagnostics", localOnly("desktop:export-diagnosti
   return result.filePath;
 }));
 
-// Bots hand users files as markdown links to paths inside the OpenMausBot
+// Bots hand users files as markdown links to paths inside the SocialCoffeeAgent
 // home (workspaces, attachments). As plain anchors those resolved against the
 // page origin, so the click opened http://127.0.0.1:8799<path> in the default
 // browser and the server's SPA fallback answered with index.html — a second
 // copy of the chat UI instead of the file. Ask where to put it and copy it
 // there instead: a save dialog tells the user the file landed somewhere and
 // where, which a silent copy into ~/Downloads does not. The path is
-// renderer-controlled, so it must resolve inside ~/.openmausbot and be a
+// renderer-controlled, so it must resolve inside ~/.socialcoffee-agent and be a
 // regular file — never a symlink escape or directory.
 ipcMain.handle("desktop:save-file", localOnly("desktop:save-file", async (event, rawPath) => {
   return withSavableFile(rawPath, { home: os.homedir() }, async ({ defaultName, copyTo }) => {
@@ -2563,7 +2574,7 @@ ipcMain.handle("desktop:open-external", localOnly("desktop:open-external", async
 
 // The Boat VNC viewer must be a top-level page for its token exchange. A
 // sandboxed modal BrowserWindow satisfies that requirement while keeping the
-// live desktop inside OpenMausBot instead of sending the person to a browser.
+// live desktop inside SocialCoffeeAgent instead of sending the person to a browser.
 ipcMain.handle("desktop-viewer:open", localOnly("desktop-viewer:open", (event, rawUrl, title, contextId) => {
   const owner = BrowserWindow.fromWebContents(event.sender);
   return openDesktopViewer(owner, rawUrl, title, contextId);
@@ -2842,7 +2853,7 @@ ipcMain.handle("company-backups:restore", localWorkspaceOnly("company-backups:re
 
 // ── Copy this computer here (electron/cloud-move.mjs, docs/copy-workspace.md) ──
 // This computer's workspace to a server the person owns and added here, their
-// OMB Cloud included: started from Settings → Servers or Settings → OMB Cloud
+// SocialCoffeeAgent Cloud included: started from Settings → Servers or Settings → SocialCoffeeAgent Cloud
 // on this computer's own page. Where it goes comes only from main
 // (moveSenderDestination): this computer's own page names a saved server, a
 // server's own page (its card, its Settings → Backups) gets only itself, and
@@ -2860,7 +2871,7 @@ function ensureCloudMove() {
       return fetch(`http://127.0.0.1:${SERVER_PORT}${route}`, { ...init, redirect: "error", credentials: "omit",
         headers: { ...Object.fromEntries(new Headers(init.headers)), [DESKTOP_MUTATION_HEADER]: desktopMutationToken } });
     },
-    tempRoot: path.join(app.getPath("temp"), "openmaus-cloud-move"),
+    tempRoot: path.join(app.getPath("temp"), "socialcoffee-agent-cloud-move"),
     availableBytes: async directory => { const disk = await fs.promises.statfs(directory); return disk.bavail * disk.bsize; },
     onState: publishCloudMoveState,
   });
@@ -3067,7 +3078,7 @@ ipcMain.handle("sharing:save", localWorkspaceOnly("sharing:save", async (_event,
   return sharingController().save(env, { folders, terminal: input?.terminal === true, computer: input?.computer === true }, info);
 }));
 
-// "Let my Cloud use this Mac" (Settings → OMB Cloud; docs/cloud-pro.md).
+// "Let my Cloud use this Mac" (Settings → SocialCoffeeAgent Cloud; docs/cloud-pro.md).
 // Everything is decided here from the verified Cloud sign-in: the renderer
 // names no server, account or origin. No confirmation dialog: the switch and
 // the scopes the person picks are the consent.
@@ -3294,20 +3305,18 @@ app.whenReady().then(async () => {
       // Acquire before either plaintext credential migration reads or writes
       // config.json. The parent retains ownership across utility-child port
       // fallbacks and restarts for the entire desktop process lifetime.
-      desktopDataDirLease = acquireDataDirLease(desktopDataDir(), {
-        legacyDataDir: path.join(app.getPath("home"), ".opengrokbot"),
-      });
+      desktopDataDirLease = acquireDataDirLease(desktopDataDir());
     } catch (error) {
       dialog.showErrorBox(
-        "OpenMausBot could not start safely",
-        error?.message ?? "Another process is using this OpenMausBot data folder.",
+        "SocialCoffeeAgent could not start safely",
+        error?.message ?? "Another process is using this SocialCoffeeAgent data folder.",
       );
       app.quit();
       return;
     }
   }
   if (app.isPackaged) {
-    app.setAsDefaultProtocolClient("openmausbot");
+    app.setAsDefaultProtocolClient("socialcoffee-agent");
     // Chromium adds this capability below JavaScript, so renderer requests
     // can mutate the local harness while a Full-access shell using curl
     // cannot impersonate the person operating the desktop app.

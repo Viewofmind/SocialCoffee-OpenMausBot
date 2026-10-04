@@ -1,6 +1,6 @@
 # Sharing a whole team
 
-**Share team…** saves one team as a single file (`<team>-<version>.openmaus.json`).
+**Share team…** saves one team as a single file (`<team>-<version>.socialcoffee-agent.json`).
 Someone else adds it in **Templates → Import**, or an organization uploads it
 in Admin → Packages and its desktops add it from **Templates → From
 {Organization}** ([org-library.md](org-library.md)). Open it from the team's menu in the sidebar (right-click

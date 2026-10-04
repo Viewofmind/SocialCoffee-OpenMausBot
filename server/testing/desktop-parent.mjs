@@ -10,7 +10,7 @@ if (token) {
   Object.defineProperty(process, "parentPort", {
     value: {
       on(event, listener) {
-        if (event === "message") queueMicrotask(() => listener({ data: { type: "openmausbot:desktop-mutation-token", token } }));
+        if (event === "message") queueMicrotask(() => listener({ data: { type: "socialcoffee-agent:desktop-mutation-token", token } }));
       },
       postMessage() {},
     },

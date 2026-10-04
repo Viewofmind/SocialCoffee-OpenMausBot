@@ -16,7 +16,7 @@ export default defineConfig({
         bindings: {
           BETTER_AUTH_SECRET: TEST_AUTH_SECRET,
           CLOUDFLARE_API_TOKEN: TEST_CLOUDFLARE_TOKEN,
-          ALLOWED_ORIGINS: "https://app.openmausbot.test",
+          ALLOWED_ORIGINS: "https://app.socialcoffee-agent.test",
           // Production starts in observe (wrangler.jsonc); the suite exercises reclaiming.
           OMB_TUNNEL_RECLAIM: "on",
           TEST_MIGRATIONS: await readD1Migrations(`${root}migrations`),

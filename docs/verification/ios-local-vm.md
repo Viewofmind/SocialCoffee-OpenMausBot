@@ -17,7 +17,7 @@ sidecar address and a pairing code. The desktop is a captured Local VM session
 (`scripts/testing/fixtures/local-vm-desktop.png`, an XFCE desktop with a terminal
 open and nothing private on it); each capture types one more character at the
 prompt, so a refresh is visible. It never reaches a
-real container runtime, a VM, or the user's OpenMausBot data. Ctrl-C stops the
+real container runtime, a VM, or the user's SocialCoffeeAgent data. Ctrl-C stops the
 server and sidecar and removes the temporary data.
 
 The sidecar listens on all interfaces like the real one, but only a device
@@ -67,7 +67,7 @@ the join and relay rewrite by `companion/test/viewer-relay.test.ts` and
 
 ## Phones paired with the server directly
 
-A phone paired with `openmausbot serve` itself (a headless server, reached over
+A phone paired with `sc-agent serve` itself (a headless server, reached over
 Tailscale Serve or a tunnel) has no companion sidecar, so nothing rewrites the
 VM's noVNC address for it. The join route answers such a phone differently: a
 path on the server's own authenticated desktop proxy
@@ -75,7 +75,7 @@ path on the server's own authenticated desktop proxy
 conversation whose VM seat the join picked, plus the VNC password. The phone never sees a loopback address, and the
 proxy re-checks the lease and the session every few seconds and closes the
 socket when either lapses. Computer access is the pairing's scope: a Full
-access pairing (`openmausbot pair`) may; a chat-only one (`--client`) is
+access pairing (`sc-agent pair`) may; a chat-only one (`--client`) is
 answered 403, which the phone shows as computer access being off.
 
 Phone control is unavailable in shared and pool modes, through either connection

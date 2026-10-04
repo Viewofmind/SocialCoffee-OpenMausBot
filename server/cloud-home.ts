@@ -1,6 +1,6 @@
-// OMB Cloud Pro home machine: the boot contract, the places it offers, the
+// SocialCoffeeAgent Cloud Pro home machine: the boot contract, the places it offers, the
 // Admin's signed pairing request, and the volume the machine lives on. docs/cloud-pro.md is the
-// contract of record (and openmaus-cloud docs/consumer-cloud.md its Admin
+// contract of record (and socialcoffee-agent-cloud docs/consumer-cloud.md its Admin
 // half); keep them in step.
 //
 // One Fly app per customer runs this server behind an edge proxy on
@@ -116,8 +116,8 @@ export { cloudHomeOffersPlace } from "../shared/cloud-home.ts";
  * the person's, no Local VM), in the words the person reads; undefined for a
  * place it offers. A turn's error shows 160 characters, so each fits. */
 export function cloudHomePlaceRefusal(place: Surface): string | undefined {
-  if (place === "local") return "This computer isn't a place on your OMB Cloud: its bots run in the cloud. Set Works on to Auto, Cloud or Browser, or lend your Mac under Settings → OMB Cloud.";
-  if (place === "vm") return "Bots on your OMB Cloud can't use a Local VM: the cloud machine has no container runtime. Set Works on to Auto, Cloud or Browser.";
+  if (place === "local") return "This computer isn't a place on your SocialCoffeeAgent Cloud. Set Works on to Auto, Cloud or Browser, or lend your Mac in Settings → SocialCoffeeAgent Cloud.";
+  if (place === "vm") return "Bots on your SocialCoffeeAgent Cloud can't use a Local VM: the cloud machine has no container runtime. Set Works on to Auto, Cloud or Browser.";
   return undefined;
 }
 
@@ -140,7 +140,7 @@ export function firstCloudTurnPatch(turn: { cloudHome: boolean; recorded: string
   return { onboarding: { firstTurnAt: (turn.now ?? new Date()).toISOString() } };
 }
 
-/** The Admin's side of the signature (openmaus-cloud cloudPairingSignature). */
+/** The Admin's side of the signature (socialcoffee-agent-cloud cloudPairingSignature). */
 export function cloudPairingSignature(secret: string, timestamp: string, nonce: string, body: Buffer | string): string {
   const bodyHash = createHash("sha256").update(body).digest("base64url");
   return createHmac("sha256", secret).update(`v1\n${timestamp}\n${nonce}\nPOST\n${CLOUD_PAIRING_PATH}\n${bodyHash}`).digest("base64url");
@@ -203,7 +203,7 @@ export function createCloudPairing(options: {
       const ttl = Math.min((ttlSeconds as number | undefined) ?? CLOUD_PAIRING_DEFAULT_TTL_S, browser ? CLOUD_BROWSER_SIGN_IN_MAX_TTL_S : CLOUD_PAIRING_MAX_TTL_S);
       const opened = sessions.openPairing({
         scopes: ["admin", "client"],
-        label: typeof label === "string" && label.trim() ? label.trim() : "OMB Cloud",
+        label: typeof label === "string" && label.trim() ? label.trim() : "SocialCoffeeAgent Cloud",
         ttlMs: ttl * 1000,
         browser,
         ...(browser ? { owner: owner as string } : {}),

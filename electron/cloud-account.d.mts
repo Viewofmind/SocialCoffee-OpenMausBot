@@ -12,14 +12,14 @@ export interface CloudAccountState {
   entitlement?: { plan: "free" | "pro"; tier?: string; status: "active" | "inactive"; expiresAt: number | null; version: number };
   verifiedAt?: number;
   verifiedUntil?: number;
-  /** Connected, but the last checks with OMB Cloud failed; the snapshot is the last verified one. */
+  /** Connected, but the last checks with SocialCoffeeAgent Cloud failed; the snapshot is the last verified one. */
   checking?: true;
   /** Not connected (unavailable, or the sign-in ended): the paid plan last
    * verified for this account, for display only. It activates nothing. */
   lastPlan?: { tier?: string; active: boolean };
   /** The person's Cloud home machine, when their plan has one. */
   machine?: import("./cloud-home.mjs").CloudMachine;
-  /** A payment OMB Cloud received and is still linking to this account. */
+  /** A payment SocialCoffeeAgent Cloud received and is still linking to this account. */
   purchase?: import("./cloud-home.mjs").CloudPurchase;
 }
 export interface CloudAccountBridge {

@@ -29,7 +29,7 @@ applyFont(readFont());
  * check is a single fast request. */
 async function chooseRoot(): Promise<React.ReactNode> {
   if (location.pathname === "/pair") {
-    // The OMB Cloud page's "Use in your browser": whose Cloud it is, then one Continue.
+    // The SocialCoffeeAgent Cloud page's "Use in your browser": whose Cloud it is, then one Continue.
     const signIn = takeBrowserSignInFromLocation();
     if (signIn) {
       const preview = await previewBrowserSignIn(signIn);

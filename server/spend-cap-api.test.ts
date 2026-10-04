@@ -210,7 +210,7 @@ describe("spend cap and prices through real turns", () => {
     session = await launchVerificationServer({
       ...process.env,
       FAKE_CLAUDE_REPLIES: JSON.stringify([
-        'Delegating the check.<openmaus-goal>{"status":"continue","next":"Worker","instruction":"Check the draft"}</openmaus-goal>',
+        'Delegating the check.<sc-agent-goal>{"status":"continue","next":"Worker","instruction":"Check the draft"}</sc-agent-goal>',
         "The draft has been checked.",
       ]),
       FAKE_CLAUDE_REPLY_STATE: replyState,

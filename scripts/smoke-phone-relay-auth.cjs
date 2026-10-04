@@ -69,7 +69,7 @@ app.whenReady().then(async () => {
   const harness = fork("dist-server/index.js", { ...env, OMB_DESKTOP_PARENT: "1" });
   await until(() => api(harnessPort, "/api/health").catch(() => null));
   assert.equal((await api(harnessPort, "/api/bots", "POST", {})).status, 403);
-  harness.postMessage({ type: "openmausbot:desktop-mutation-token", token: owner, companionToken: relay });
+  harness.postMessage({ type: "socialcoffee-agent:desktop-mutation-token", token: owner, companionToken: relay });
   const sidecar = fork("dist-companion/index.js", env);
   await until(() => api(controlPort, "/state").catch(() => null));
   const pairing = await api(controlPort, "/pairing", "POST");
@@ -83,7 +83,7 @@ app.whenReady().then(async () => {
   assert.equal((await api(harnessPort, "/api/bots", "POST", {}, {
     "x-openmausbot-companion": "1", "x-openmausbot-companion-device": paired.body.device.id,
   })).status, 403);
-  sidecar.postMessage({ type: "openmausbot:companion-mutation-token", token: relay });
+  sidecar.postMessage({ type: "socialcoffee-agent:companion-mutation-token", token: relay });
   await until(async () => (await phone("/api/bots")).status === 200);
   const created = await phone("/api/bots", "POST", { modelSelection: { instanceId: "claude", model: "claude-sonnet-5" } }, {
     "x-openmausbot-companion-auth": "forged", "x-openmausbot-desktop-owner": "forged",
@@ -105,9 +105,9 @@ app.whenReady().then(async () => {
   sidecar.kill();
   await sidecarExited;
   const nextRelay = randomBytes(32).toString("base64url");
-  harness.postMessage({ type: "openmausbot:desktop-mutation-token", token: owner, companionToken: nextRelay });
+  harness.postMessage({ type: "socialcoffee-agent:desktop-mutation-token", token: owner, companionToken: nextRelay });
   const restarted = fork("dist-companion/index.js", env);
-  restarted.once("spawn", () => restarted.postMessage({ type: "openmausbot:companion-mutation-token", token: nextRelay }));
+  restarted.once("spawn", () => restarted.postMessage({ type: "socialcoffee-agent:companion-mutation-token", token: nextRelay }));
   await until(() => phone("/api/bots").then((r) => r.status === 200).catch(() => false));
   assert.equal((await phone(`/api/bots/${id}/read`, "POST", {})).status, 200);
   assert.equal((await api(phonePort, `/api/bots/${id}/read`, "POST", {})).status, 401);

@@ -87,7 +87,7 @@ describe("package fixtures", () => {
   it("refuses a newer file with a pointer to update, and unknown formats plainly", () => {
     expect(refusal(fixture("newer.v3.json"))).toMatchObject({ code: "newer_version", message: NEWER_PACKAGE_MESSAGE });
     expect(refusal({ ...fixture("full-team.v2.json"), version: 0 })).toMatchObject({ code: "unsupported_version" });
-    expect(refusal({ format: "openmaus.team", version: 2 })).toMatchObject({ code: "not_a_package" });
+    expect(refusal({ format: "socialcoffee-agent.team", version: 2 })).toMatchObject({ code: "not_a_package" });
     expect(refusal("# not a playbook")).toMatchObject({ code: "not_a_package" });
   });
 });

@@ -1,4 +1,4 @@
-// Shown on an OMB Cloud home in place of a chat until one of the person's own
+// Shown on a SocialCoffeeAgent Cloud home in place of a chat until one of the person's own
 // engines is signed in (docs/cloud-pro.md; lib/onboarding cloudSignInDue).
 // Cloud Pro includes no AI: the person brings a Claude or ChatGPT account, or
 // an API key. Each choice opens the setup that already exists for it: the

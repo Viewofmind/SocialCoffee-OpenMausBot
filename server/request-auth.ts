@@ -43,7 +43,7 @@ const SERVICE_SCOPES: readonly Scope[] = ["client"];
 /** What a `service`-trust loopback caller may reach, and nothing else:
  *
  * - liveness and identity: health, who-am-I, edition and brand;
- * - the cloud Slack worker (openmaus-cloud server/slack-worker.ts), which
+ * - the cloud Slack worker (socialcoffee-agent-cloud server/slack-worker.ts), which
  *   shares the workspace's network namespace and reads the bot list, a
  *   thread's messages and a bot's PNG picture, creates a thread, sends
  *   through the guarded route, watches and stops its exact request,
@@ -100,7 +100,7 @@ export function resolveLoopbackTrust(input: {
   env?: NodeJS.ProcessEnv;
   desktopManaged: boolean;
   hostedWorkspace: boolean;
-  /** An OMB Cloud home: every request from the network arrives through its
+  /** A SocialCoffeeAgent Cloud home: every request from the network arrives through its
    * edge proxy, so a bare loopback request is only ever a process on the
    * machine (a bot's shell). Always `service`, whatever the setting. */
   cloudHome?: boolean;
@@ -108,7 +108,7 @@ export function resolveLoopbackTrust(input: {
   const raw = (input.env ?? process.env).OMB_LOOPBACK_TRUST;
   const requested = raw?.trim().toLowerCase();
   if (input.cloudHome) {
-    return { trust: "service", reason: "OMB Cloud home", ...(raw !== undefined && requested !== "service" ? { warning: "OMB_LOOPBACK_TRUST is ignored on an OMB Cloud home: a local request is always a service" } : {}) };
+    return { trust: "service", reason: "SocialCoffeeAgent Cloud home", ...(raw !== undefined && requested !== "service" ? { warning: "OMB_LOOPBACK_TRUST is ignored on a SocialCoffeeAgent Cloud home: a local request is always a service" } : {}) };
   }
   if (input.desktopManaged) {
     return { trust: "owner", reason: "desktop app", ...(raw !== undefined ? { warning: "OMB_LOOPBACK_TRUST is ignored in the desktop app" } : {}) };
@@ -188,7 +188,7 @@ export function isProxied(req: IncomingMessage): boolean {
 
 /** A request over an IPC listener (a unix socket or a named pipe) has no peer
  * address. Only a gateway on this machine can reach such a listener, and it
- * is there to forward traffic from elsewhere (`openmausbot serve --tunnel`),
+ * is there to forward traffic from elsewhere (`sc-agent serve --tunnel`),
  * so the request is remote by construction: whatever headers it carries or
  * lacks, it never gets loopback trust. */
 export function ipcPeer(req: IncomingMessage): boolean {
@@ -414,7 +414,7 @@ export interface ResolveOptions {
   /** See LoopbackTrust. Absent is `owner`, the historical behaviour. Ignored
    * while a desktop capability is in force (loopbackMutationToken). */
   loopbackTrust?: LoopbackTrust;
-  /** Under `service`: a per-launch secret the `openmausbot serve` process
+  /** Under `service`: a per-launch secret the `sc-agent serve` process
    * that started this server handed it over the child's stdin (never the
    * environment, which the server's other children could read). It lets that
    * CLI, and nothing else, mint and list pairing codes. */

@@ -314,7 +314,7 @@ describe("whole-team export (package v2)", () => {
       { part: "connections[plain-http]", reason: "insecure_address" },
       { part: "routines[daily-digest].attachments", reason: "files_not_shared" },
     ]);
-    expect(result.filename).toBe("sales-desk-1.0.0.openmaus.json");
+    expect(result.filename).toBe("sales-desk-1.0.0.socialcoffee-agent.json");
   });
 
   it("adds starter notes only when asked, within the caps", () => {
@@ -364,7 +364,7 @@ describe("whole-team export (package v2)", () => {
     expect(second.document.package.agents.map((agent) => agent.key)).toEqual(["morgan", "scout"]);
     expect(second.document.package.rooms?.map((room) => room.key)).toEqual(["deal-desk"]);
     expect(second.document.package.routines?.map((routine) => routine.key)).toEqual(["daily-digest", "weekly-review"]);
-    expect(second.filename).toBe("sales-desk-1.0.1.openmaus.json");
+    expect(second.filename).toBe("sales-desk-1.0.1.socialcoffee-agent.json");
   });
 
   it("never gives a new bot a key recorded for one that left", () => {

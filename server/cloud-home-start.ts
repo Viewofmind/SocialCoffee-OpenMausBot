@@ -1,8 +1,8 @@
-// Entry point of the OMB Cloud Pro home image (deploy/fly/Dockerfile).
+// Entry point of the SocialCoffeeAgent Cloud Pro home image (deploy/fly/Dockerfile).
 //
 // Starts as root, hands a fresh Fly volume (mounted root-owned at /data) to
-// the unprivileged `maus` user, and stays a small root supervisor of two
-// children that run as `maus`: the OpenMausBot server on 127.0.0.1:8799
+// the unprivileged `scagent` user, and stays a small root supervisor of two
+// children that run as `scagent`: the SocialCoffeeAgent server on 127.0.0.1:8799
 // (and its webhook receiver on :8800) and the Caddy edge on 0.0.0.0:8080.
 // The edge is the only listener the network can reach, and it always
 // forwards with X-Forwarded-*, so request-auth.ts never grants a remote
@@ -17,8 +17,8 @@
 // them over an inherited pipe it reads first thing and closes
 // (cloud-secrets.ts), and an environment built from an allow-list, so a
 // secret the platform adds later never reaches it either. This process stays
-// root, so its own environment and memory are out of `maus`'s reach, and it
-// runs and trusts only code `maus` cannot change: the image's, never the
+// root, so its own environment and memory are out of `scagent`'s reach, and it
+// runs and trusts only code `scagent` cannot change: the image's, never the
 // volume's (codeTrustProblem).
 import { spawn, type ChildProcess } from "node:child_process";
 import { chownSync, readFileSync, statSync, type Stats } from "node:fs";
@@ -30,7 +30,7 @@ import {
 } from "./cloud-home.ts";
 import { restartPolicy } from "./restart.ts";
 
-const SERVICE_USER = "maus";
+const SERVICE_USER = "scagent";
 /** The descriptor the server reads its secrets from. */
 const SECRETS_FD = 3;
 
@@ -68,7 +68,7 @@ export function cloudHomeChildEnvironments(config: CloudHomeConfig, env: NodeJS.
   const allowed = Object.fromEntries(Object.entries(offered).filter(([name, value]) => value !== undefined && serverEnvironmentAllowed(name)));
   const dropped = Object.keys(offered).filter((name) => !serverEnvironmentAllowed(name) && name !== "HOME").sort();
   const server: NodeJS.ProcessEnv = {
-    ...allowed, HOME: home, OMB_DATA_DIR: env.OMB_DATA_DIR || posix.join(home, ".openmausbot"),
+    ...allowed, HOME: home, OMB_DATA_DIR: env.OMB_DATA_DIR || posix.join(home, ".socialcoffee-agent"),
     OMB_PORT: "8799", OMB_WEBHOOK_PORT: "8800", OMB_PUBLIC_URL: config.publicOrigin,
     OMB_WEBHOOK_PUBLIC_URL: env.OMB_WEBHOOK_PUBLIC_URL || config.publicOrigin,
     [CLOUD_SECRETS_FD_ENV]: String(SECRETS_FD),
@@ -83,8 +83,8 @@ export function cloudHomeChildEnvironments(config: CloudHomeConfig, env: NodeJS.
 
 /** Why the root supervisor must not run or trust `files`, or null: each
  * must be root's and not writable by anyone else (nor any folder above it),
- * and none may live on the volume `home`, which `maus` owns. The image makes its code
- * root's (deploy/fly/Dockerfile); a file `maus` could rewrite would run as
+ * and none may live on the volume `home`, which `scagent` owns. The image makes its code
+ * root's (deploy/fly/Dockerfile); a file `scagent` could rewrite would run as
  * root at the next start, or be handed the secrets. */
 export function codeTrustProblem(files: readonly string[], home: string, stat: (path: string) => Pick<Stats, "uid" | "mode"> = statSync): string | null {
   const volume = posix.join(home, "/");
@@ -117,11 +117,11 @@ export function spawnWithSecrets(command: string, args: string[], env: NodeJS.Pr
 export function startCloudHome(env: NodeJS.ProcessEnv = process.env) {
   process.umask(0o077);
   const config = cloudHomeConfiguration(env);
-  if (!config) throw new Error("This image runs an OMB Cloud home machine; set its boot contract (docs/cloud-pro.md).");
+  if (!config) throw new Error("This image runs a SocialCoffeeAgent Cloud home machine; set its boot contract (docs/cloud-pro.md).");
   // Logged here once: the server child never sees what they are about.
   for (const warning of config.warnings) console.warn(`cloud home: ${warning}`);
   const home = env.HOME || "/data";
-  // Who the children run as: `maus` when this starts as root (the image),
+  // Who the children run as: `scagent` when this starts as root (the image),
   // else whoever started it (a test, a dev machine).
   let ids: { uid: number; gid: number } | null = null;
   if (process.getuid?.() === 0) {
@@ -132,7 +132,7 @@ export function startCloudHome(env: NodeJS.ProcessEnv = process.env) {
     const stat = statSync(home);
     if (stat.uid !== ids.uid || stat.gid !== ids.gid) chownSync(home, ids.uid, ids.gid);
     process.setgroups?.([]);
-    // The volume is prepared as `maus`, so what it creates is theirs.
+    // The volume is prepared as `scagent`, so what it creates is theirs.
     process.setegid!(ids.gid);
     process.seteuid!(ids.uid);
     try { prepareCloudHomeVolume(home, config.machineId); } finally {

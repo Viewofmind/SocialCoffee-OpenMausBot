@@ -119,7 +119,7 @@ export function chatUrlTransform(value: string): string {
   // scheme must survive the allow-list so the anchor component sees it
   if (looksLikeThreadRefUrl(value)) return value;
   // Markdown-to-HTML percent-encodes a destination's backslashes, so
-  // C:\Users\Maus\report.md arrives as C:%5CUsers%5CMaus%5Creport.md and no
+  // C:\Users\Agent\report.md arrives as C:%5CUsers%5CMaus%5Creport.md and no
   // longer looked like a drive path: the link rendered dead and the image as
   // unavailable. Restore the separators; other escapes stay for the server's
   // single decode.
@@ -630,7 +630,7 @@ export function markdownImageName(src: string, alt?: string): string {
   const supplied = alt?.trim();
   if (supplied) return supplied;
   try {
-    const path = decodeURIComponent(new URL(src, "https://openmausbot.invalid").pathname);
+    const path = decodeURIComponent(new URL(src, "https://socialcoffee-agent.invalid").pathname);
     const name = path.split(/[\\/]/).filter(Boolean).at(-1)?.trim();
     if (name) return name;
   } catch {

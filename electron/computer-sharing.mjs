@@ -117,7 +117,7 @@ class Paused extends Error {}
  * Two kinds of grant share this connector. A maintainer grant (any server,
  * behind the local `features.sharedComputers` flag, exactly as before). A
  * Cloud grant (`cloud: { accountId, origin }`): the person's own Mac lent to
- * their own OMB Cloud home, gated by their Cloud sign-in (`cloud()`), never
+ * their own SocialCoffeeAgent Cloud home, gated by their Cloud sign-in (`cloud()`), never
  * by the maintainer flag. */
 export function createComputerSharing({ file, fetch: fetchImpl, environments, cuaConnection, hostControl, protectedPaths = [], enabled = async () => false, home = os.homedir(), activityFile, cloud = () => null, onChange = () => {} }) {
   // The grant store's own directory plus whatever the desktop shell names —
@@ -193,7 +193,7 @@ export function createComputerSharing({ file, fetch: fetchImpl, environments, cu
       bytes += chunk.length; if (bytes > 4_000_000) throw new Error("Server response exceeded limit");
       chunks.push(Buffer.from(chunk));
     }
-    let json; try { json = JSON.parse(Buffer.concat(chunks).toString("utf8")); } catch { throw new Error("This server does not support computer sharing. Update its OpenMausBot installation."); }
+    let json; try { json = JSON.parse(Buffer.concat(chunks).toString("utf8")); } catch { throw new Error("This server does not support computer sharing. Update its SocialCoffeeAgent installation."); }
     if (!response.ok) throw Object.assign(new Error(response.status === 401 || response.status === 403 ? "Pair this desktop again before sharing computer access." : `Server request failed (${response.status}). Update the server if needed.`), { status: response.status });
     return json;
   };
@@ -376,7 +376,7 @@ export function createComputerSharing({ file, fetch: fetchImpl, environments, cu
       disconnect(env, records[env.id]);
       store({ ...records, [env.id]: grant }); run(env, grant); changed(); return state(env.id);
     },
-    /** What this Mac lends to the person's Cloud, for Settings → OMB Cloud. */
+    /** What this Mac lends to the person's Cloud, for Settings → SocialCoffeeAgent Cloud. */
     cloudState,
     /** Lend this Mac to the person's own Cloud: chosen folders (read-only or
      * editable) and optionally apps and screen. Never a terminal. The Cloud

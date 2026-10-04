@@ -1,6 +1,6 @@
 # OpenCode
 
-OpenCode is an optional OpenMausBot engine. OpenMausBot runs the maintained
+OpenCode is an optional SocialCoffeeAgent engine. SocialCoffeeAgent runs the maintained
 OpenCode CLI through its ACP stdio interface, so sessions, streaming, coding
 tools, permission requests, MCP integrations, resume, and cancellation use the
 same runtime as the other ACP engines.
@@ -11,7 +11,7 @@ same runtime as the other ACP engines.
    [OpenCode installation guide](https://opencode.ai/docs/).
 2. Connect the providers you want in the OpenCode app, or run
    `opencode auth login`.
-3. Restart OpenMausBot. It reuses OpenCode's existing connections and model
+3. Restart SocialCoffeeAgent. It reuses OpenCode's existing connections and model
    configuration automatically.
 
 For OpenRouter, Fireworks AI, DeepSeek, Cline or your own provider, see
@@ -24,9 +24,9 @@ write-only and injected as `OPENCODE_API_KEY` only into the OpenCode child
 process; it is not sent to the renderer, logs, analytics, snapshots, error
 messages, or command arguments.
 
-OpenMausBot does not copy or rewrite `auth.json`. The OpenCode CLI remains the
+SocialCoffeeAgent does not copy or rewrite `auth.json`. The OpenCode CLI remains the
 owner of provider authentication, and the same Zen or Go connection used by
-the OpenCode desktop/TUI is used by OpenMausBot.
+the OpenCode desktop/TUI is used by SocialCoffeeAgent.
 
 ## Models
 

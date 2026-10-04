@@ -1,4 +1,4 @@
-# One OpenMausBot tenant: the harness server plus Caddy for TLS + login.
+# One SocialCoffeeAgent tenant: the harness server plus Caddy for TLS + login.
 #
 # Caddy runs in the server's network namespace, so it reaches the server on
 # 127.0.0.1 — the server never binds a public interface. Ports are therefore
@@ -14,7 +14,7 @@ services:
       args:
         ENGINES: ${ENGINES:-}
     # prebuilt on every main push; `docker compose up --build` builds from source instead
-    image: ghcr.io/milind-soni/openmausbot:latest
+    image: ghcr.io/viewofmind/socialcoffee-agent:latest
     restart: unless-stopped
     volumes:
       - data:/data

@@ -2,7 +2,7 @@
 
 An organization's Admin can share packages (whole teams, or skills on their
 own) with the desktops that belong to it, and with its Customers. In
-OpenMausBot they appear under **Templates → From {Organization}**, the first
+SocialCoffeeAgent they appear under **Templates → From {Organization}**, the first
 tab. One click on **Add** adds a package. There is no confirmation step,
 because the person's click is the decision. **Details** opens the same
 preview a shared file gets.
@@ -48,7 +48,7 @@ A bot added from the organization's library shows where it came from in
 imported from a file shows no such line, as before. This version never
 changes something it already added. When the catalog names a newer release,
 the card says "Version X available. Updates arrive automatically in an
-upcoming OpenMausBot update."
+upcoming SocialCoffeeAgent update."
 
 **Required** is treated as Available in this version, with a "Recommended
 by …" badge. Entries the organization switched **off** are hidden, and
@@ -76,12 +76,12 @@ the private utility port:
 
 ```jsonc
 // Electron main → runtime
-{ "type": "openmausbot:managed-library", "requestId": "…",
+{ "type": "socialcoffee-agent:managed-library", "requestId": "…",
   "library": { "adminOrigin": "https://admin.example.com", "organizationId": "<uuid>",
                "organizationName": "Customer Co", "digest": "<sha256 of the catalog body>",
                "catalog": "<the raw catalog body, or the parsed object>" } }   // or library: null
 // runtime → Electron main, at once, before any other work
-{ "type": "openmausbot:managed-desktop-result", "requestId": "…", "ok": true }
+{ "type": "socialcoffee-agent:managed-desktop-result", "requestId": "…", "ok": true }
 ```
 
 - A catalog body sent as a string must hash to `digest`.
@@ -100,7 +100,7 @@ releases, and sends a full snapshot back:
 
 ```jsonc
 // runtime → Electron main, which posts it to POST /api/desktop/library/report
-{ "type": "openmausbot:managed-library-state", "digest": "<applied digest>",
+{ "type": "socialcoffee-agent:managed-library-state", "digest": "<applied digest>",
   "packages": [ { "packageId": "<uuid>", "release": "1.3.0", "sha256": "…",
                   "state": "installed" | "failed" | "removed" | "withdrawn",
                   "reason": "blob_unavailable" | "invalid_package" | "import_failed" | "newer_app_required"

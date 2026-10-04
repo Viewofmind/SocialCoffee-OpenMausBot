@@ -42,12 +42,12 @@ const yamlEsmPlugin = {
 const ENTRY_POINTS = [
   "index.ts",
   "message-search.worker.ts",
-  // the `openmausbot` command (serve/pair/sessions/status) for the npm
+  // the `sc-agent` command (serve/pair/sessions/status) for the npm
   // package, the container image and checkouts; pair-cli.ts stays as an alias
-  "openmausbot.ts",
+  "sc-agent.ts",
   "pair-cli.ts",
   "workspace-backup.worker.ts",
-  // the OMB Cloud Pro home image's entry point (deploy/fly/Dockerfile): it
+  // the SocialCoffeeAgent Cloud Pro home image's entry point (deploy/fly/Dockerfile): it
   // spawns index.js beside it and the Caddy edge
   "cloud-home-start.ts",
   // the container image's entry point (Dockerfile, deploy/podman): it spawns
@@ -104,7 +104,7 @@ await build({
   logLevel: "info",
 });
 
-// `openmausbot serve --tunnel` (server/tunnel.ts) spawns the connector guardian
+// `sc-agent serve --tunnel` (server/tunnel.ts) spawns the connector guardian
 // as its own process, so it has to exist as a file beside the server, not only
 // as code inlined into the bundle that imports its neighbours. Bundled under
 // its own name: the same code the desktop app runs from

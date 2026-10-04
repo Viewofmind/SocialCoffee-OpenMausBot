@@ -4,7 +4,7 @@ The phone holds its own WebRTC audio to OpenAI GPT-Live; the paired computer
 creates the session (its OpenAI key never leaves it) and runs the call. The
 chat stays on screen with a call bar above the composer. Never pair a
 verification build with your everyday workspace, and never point one at the
-sidecar of the OpenMausBot you use day to day; the fixture below gets its own
+sidecar of the SocialCoffeeAgent you use day to day; the fixture below gets its own
 ports.
 
 ## Unit suites
@@ -85,7 +85,7 @@ node --experimental-strip-types server/testing/fake-openai-live.ts 0
 OMB_OPENAI_LIVE_URL=http://127.0.0.1:FAKE_PORT OMB_OPENAI_LIVE_KEY=sk-fake \
   node --experimental-strip-types scripts/control-omb.ts launch
 
-# 3. A sidecar for that fixture, on ports your everyday OpenMausBot does not use
+# 3. A sidecar for that fixture, on ports your everyday SocialCoffeeAgent does not use
 OMB_PORT=PORT OMB_WEBHOOK_PORT=$((PORT + 1)) OMB_COMPANION_PORT=8820 OMB_CONTROL_PORT=8821 \
   OMB_COMPANION_NAME="Verification fixture" OMB_COMPANION_DIR="$(mktemp -d)" \
   node --experimental-strip-types companion/src/index.ts
@@ -111,12 +111,12 @@ $SDK/platform-tools/adb install -r android/app/build/outputs/apk/preview/app-pre
 $SDK/platform-tools/adb shell am start -n com.openmausbot.companion.preview/com.openmausbot.companion.MainActivity
 ```
 
-In MausBot Preview, tap Connect my computer, then Other ways to connect, and
+In SocialCoffeeAgent Preview, tap Connect my computer, then Other ways to connect, and
 pair manually with the address `10.0.2.2:8820` and the code from the curl (the
 emulator reaches the host at 10.0.2.2; ask for a new code if the window
 closed). On Android 17 two system prompts come first:
 
-- **"Choose a device to connect"** lists every OpenMausBot computer the
+- **"Choose a device to connect"** lists every SocialCoffeeAgent computer the
   emulator can see on the network, the real one included. Tap **Don't
   connect**; never pick the real computer.
 - **Nearby devices** ("find, connect to, and determine the relative position
@@ -190,7 +190,7 @@ starts a fresh one with its own 20 seconds.
   the cross (leaving the app is not a drop), and the phone icon starts a
   fresh call.
 - Deny the microphone once: the bar reads "Live calls need Microphone access.
-  Enable it in Settings → MausBot." with only the cross (trying again cannot
+  Enable it in Settings → SocialCoffeeAgent." with only the cross (trying again cannot
   help until the setting changes); after allowing it in Settings, the phone
   icon asks again.
 
@@ -236,12 +236,12 @@ pre-PR check the spec requires, and there a call must go live and still be up
 at 0:21.
 
 Stop with `adb emu kill` and Ctrl-C in the three terminals; the fixture removes
-its temporary data (the log under `openmausbot-verification-evidence` stays).
+its temporary data (the log under `socialcoffee-agent-verification-evidence` stays).
 
 ## Sideloading
 
 `./gradlew :app:assemblePreview` writes
-`android/app/build/outputs/apk/preview/app-preview.apk` — **MausBot Preview**,
+`android/app/build/outputs/apk/preview/app-preview.apk` — **SocialCoffeeAgent Preview**,
 application id `com.openmausbot.companion.preview`, debug-signed. It installs
 beside the real app with its own pairing and data:
 

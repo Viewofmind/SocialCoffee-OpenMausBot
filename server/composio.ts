@@ -180,7 +180,7 @@ export function applyManagedBrokerMessage(message: unknown): boolean {
   const parsed = managedBrokerMessageSchema.safeParse(message);
   if (
     !parsed.success ||
-    parsed.data.type !== "openmausbot:managed-composio" ||
+    parsed.data.type !== "socialcoffee-agent:managed-composio" ||
     !Object.hasOwn(parsed.data, "access")
   ) {
     return false;
@@ -500,7 +500,7 @@ export async function prepareProjectSession(
     ) {
       return {
         apiKey: trimmed,
-        userId: existing.config?.user_id ?? current.userId ?? `openmausbot_${randomUUID()}`,
+        userId: existing.config?.user_id ?? current.userId ?? `socialcoffee_agent_${randomUUID()}`,
         sessionId: existing.session_id,
       };
     }
@@ -510,7 +510,7 @@ export async function prepareProjectSession(
     priorUserId = existing?.config?.user_id ?? priorUserId;
   }
 
-  const userId = priorUserId ?? `openmausbot_${randomUUID()}`;
+  const userId = priorUserId ?? `socialcoffee_agent_${randomUUID()}`;
   const sessionRequest: SessionCreateRequest = {
     user_id: userId,
     manage_connections: {
@@ -1063,7 +1063,7 @@ async function collectConnectorTools(cfg: AppConfig): Promise<Record<string, Con
     params: {
       protocolVersion: "2025-03-26",
       capabilities: {},
-      clientInfo: { name: "openmausbot-grant-editor", version: "1" },
+      clientInfo: { name: "socialcoffee-agent-grant-editor", version: "1" },
     },
   });
   if (initialize.status !== 200) {

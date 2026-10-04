@@ -492,7 +492,7 @@ describe("BoatAgentDriver credential and base URL", () => {
     expect(await recorder.until((e) => e.type === "turn.completed")).toMatchObject({ ok: true });
   };
 
-  it("never runs on an OMB Cloud's included account: unavailable, and nothing reaches the relay", async () => {
+  it("never runs on a SocialCoffeeAgent Cloud's included account: unavailable, and nothing reaches the relay", async () => {
     // The included account has no agent sign-ins and must not get any: they
     // would be the operator's model use on every customer's box.
     instance = await BoatAgentDriver.create({ instanceId: "computer", displayName: "Computer", environment: {}, enabled: true, config: { pollMs: 0 } });
