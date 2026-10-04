@@ -17,6 +17,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "openmausbot-android"
+rootProject.name = "socialcoffee-agent-android"
 include(":core")
 include(":app")

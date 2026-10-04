@@ -95,7 +95,7 @@ struct NeedsYouIsland: View {
                         // The hardware island covers the first 37pt of the
                         // square; the face sits clear of it, centred.
                         Button { open(shown.chat) } label: {
-                            ChatAvatarView(chat: shown.chat, size: 120, state: MausState.forChat(shown.chat, in: session.state), animated: attentionLive, comets: attentionLive)
+                            ChatAvatarView(chat: shown.chat, size: 120, state: MascotState.forChat(shown.chat, in: session.state), animated: attentionLive, comets: attentionLive)
                         }
                         .buttonStyle(.plain)
                         .task(id: shown.chat.conversationID) {
@@ -108,7 +108,7 @@ struct NeedsYouIsland: View {
                         VStack(spacing: 4) {
                             Label("\(shown.chat.name) needs you", systemImage: "hand.raised.fill")
                                 .font(.system(size: 13, weight: .semibold))
-                                .foregroundStyle(MausPalette.color(shown.chat.color))
+                                .foregroundStyle(MascotPalette.color(shown.chat.color))
                             Text(shown.line.isEmpty ? (shown.card?.title ?? "") : shown.line)
                                 .font(.system(size: 15))
                                 .foregroundStyle(.white)
@@ -129,7 +129,7 @@ struct NeedsYouIsland: View {
                                             .foregroundStyle(.white)
                                             .frame(maxWidth: .infinity)
                                             .frame(height: 40)
-                                            .background(Capsule().fill(MausPalette.color(shown.chat.color)))
+                                            .background(Capsule().fill(MascotPalette.color(shown.chat.color)))
                                     }
                                     .buttonStyle(.plain)
                                 } else {
@@ -150,7 +150,7 @@ struct NeedsYouIsland: View {
                                                     .frame(maxWidth: .infinity)
                                                     .frame(height: 40)
                                                     .background(
-                                                        Capsule().fill(CardStyle.isRefusal(option) ? Color.white.opacity(0.16) : MausPalette.color(shown.chat.color))
+                                                        Capsule().fill(CardStyle.isRefusal(option) ? Color.white.opacity(0.16) : MascotPalette.color(shown.chat.color))
                                                     )
                                             }
                                             .buttonStyle(.plain)

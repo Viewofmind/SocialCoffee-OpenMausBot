@@ -23,8 +23,8 @@
         path="__androidx_security_crypto_encrypted_prefs__.xml" />
     <exclude
         domain="sharedpref"
-        path="openmaus.permissions.xml" />
+        path="sc-agent.permissions.xml" />
     <exclude
         domain="sharedpref"
-        path="openmaus.onboarding.xml" />
+        path="sc-agent.onboarding.xml" />
 </full-backup-content>

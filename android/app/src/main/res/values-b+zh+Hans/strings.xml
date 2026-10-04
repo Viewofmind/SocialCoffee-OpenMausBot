@@ -27,7 +27,7 @@
     <string name="mobile_threads_3e761c97">/threads</string>
     <string name="mobile_text_c984aed0">000000</string>
     <string name="mobile_step_29869c51">1 个步骤</string>
-    <string name="mobile_open_openmausbot_settings_phone_38cfc5bb">1. 打开 SocialCoffeeAgent → 设置 → 手机</string>
+    <string name="mobile_open_socialcoffeeagent_settings_phone_38cfc5bb">1. 打开 SocialCoffeeAgent → 设置 → 手机</string>
     <string name="mobile_choose_set_up_a_phone_8fd474a9">2. 选择“设置手机”</string>
     <string name="mobile_a_frame_of_this_bot_s_computer_39b6a5bb">此机器人电脑画面的一格</string>
     <string name="mobile_account_alias_8cf27ca0">账户别名</string>
@@ -162,7 +162,7 @@
     <string name="mobile_open_desktop_cd6f8218">打开桌面</string>
     <string name="mobile_open_the_chat_to_review_skill_md_6225775b">打开聊天以检查 SKILL.md</string>
     <string name="mobile_open_updates_2c80d633">打开更新</string>
-    <string name="mobile_openmausbot_befe710d">SocialCoffeeAgent</string>
+    <string name="mobile_socialcoffeeagent_befe710d">SocialCoffeeAgent</string>
     <string name="mobile_or_enter_the_address_f74dcf1c">或输入地址</string>
     <string name="mobile_organize_bots_08f4197e">整理机器人</string>
     <string name="mobile_organize_bots_into_a_section_9293c5af">将机器人整理至区段</string>
@@ -225,7 +225,7 @@
     <string name="mobile_selected_days_7890ff6e">已选日期</string>
     <string name="mobile_send_9bc2575c">发送</string>
     <string name="mobile_send_to_b98cc23a">发送至</string>
-    <string name="mobile_send_to_openmausbot_4dffcb75">发送至 SocialCoffeeAgent</string>
+    <string name="mobile_send_to_socialcoffeeagent_4dffcb75">发送至 SocialCoffeeAgent</string>
     <string name="mobile_settings_c7f73bb5">设置</string>
     <string name="mobile_share_09ca55ca">分享</string>
     <string name="mobile_share_as_json_df80c8e6">以 JSON 分享</string>

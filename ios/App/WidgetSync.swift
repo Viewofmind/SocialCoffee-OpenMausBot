@@ -35,7 +35,7 @@ final class WidgetSyncBridge {
     /// the whole bridge a no-op rather than a crash in a development build.
     static func makeAppGroupBridge() -> WidgetSyncBridge {
         let container = FileManager.default.containerURL(
-            forSecurityApplicationGroupIdentifier: OpenMausSharedConfiguration.appGroupIdentifier
+            forSecurityApplicationGroupIdentifier: SocialCoffeeAgentSharedConfiguration.appGroupIdentifier
         )
         return WidgetSyncBridge(store: container.map { WidgetSnapshotStore(directory: $0) })
     }
@@ -88,7 +88,7 @@ final class WidgetSyncBridge {
             clockConnectionID = connectionID
         }
         let snapshot = state.widgetSnapshot(connectionID: connectionID, detail: .stored) { chat in
-            MausState.forChat(chat, in: state).rawValue
+            MascotState.forChat(chat, in: state).rawValue
         } since: { update in
             sinceClock.stamp(for: update.chat, kind: update.kind)
         }

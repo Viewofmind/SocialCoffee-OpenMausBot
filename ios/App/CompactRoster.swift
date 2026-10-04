@@ -96,7 +96,7 @@ struct CompactBotEntry: View {
                     UnreadDot(visible: row.showsUnreadDot, color: bot.color)
                     BotAvatarView(
                         bot: bot, size: face,
-                        state: MausState.forChat(.bot(bot), in: session.state),
+                        state: MascotState.forChat(.bot(bot), in: session.state),
                         animated: false
                     )
                     .accessibilityHidden(true)
@@ -576,7 +576,7 @@ private struct RoomFaces: View {
                 BotAvatarView(bot: first, size: size * 0.74, state: .happy, animated: false)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             } else {
-                MausAvatar(color: "blue", size: size, state: .happy, animated: false)
+                MascotAvatar(color: "blue", size: size, state: .happy, animated: false)
             }
             if members.count > 1 {
                 BotAvatarView(bot: members[1], size: size * 0.62, state: .happy, animated: false)
@@ -600,7 +600,7 @@ private struct UnreadDot: View {
         ZStack {
             if visible {
                 Circle()
-                    .fill(MausPalette.color(color))
+                    .fill(MascotPalette.color(color))
                     .frame(width: 8, height: 8)
                     .accessibilityLabel("Unread")
             }
@@ -627,7 +627,7 @@ private struct RowStatus: View {
             if waiting {
                 Image(systemName: "hand.raised.fill")
                     .font(.footnote)
-                    .foregroundStyle(MausPalette.color(color))
+                    .foregroundStyle(MascotPalette.color(color))
                     .accessibilityLabel("Waiting on you")
             }
             if working {

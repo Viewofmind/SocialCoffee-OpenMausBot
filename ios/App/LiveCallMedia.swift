@@ -51,7 +51,7 @@ protocol LiveCallMedia: AnyObject {
 final class WebRTCLiveCallMedia: NSObject, LiveCallMedia {
     static let iceTimeout: Duration = .seconds(10)
 
-    private static let log = Logger(subsystem: "com.openmausbot.app", category: "live-call-media")
+    private static let log = Logger(subsystem: "in.socialcoffee.agent.app", category: "live-call-media")
 
     /// One factory per process: it owns the audio device module.
     private static let factory: RTCPeerConnectionFactory = {

@@ -46,17 +46,17 @@ struct WidgetAnswerIntent: AppIntent {
             )
         else { return .result(dialog: "This request has changed. Open the chat to review it.") }
 
-        guard let connection = OpenMausSharedConnectionStore.loadRegistry()
+        guard let connection = SocialCoffeeAgentSharedConnectionStore.loadRegistry()
             .connection(id: snapshot.connectionID)
         else { return .result(dialog: "This request has changed. Open the chat to review it.") }
 
         let token: String
         do {
-            guard let paired = try OpenMausSharedKeychain.token(for: connection.id) else {
+            guard let paired = try SocialCoffeeAgentSharedKeychain.token(for: connection.id) else {
                 return .result(dialog: "This request has changed. Open the chat to review it.")
             }
             token = paired
-        } catch let error as OpenMausSharedKeychainError where error.isLocked {
+        } catch let error as SocialCoffeeAgentSharedKeychainError where error.isLocked {
             // errSecInteractionNotAllowed: the phone is locked and the
             // pairing is protected. Name the one thing that unblocks the
             // person instead of wearing a network error's clothes.

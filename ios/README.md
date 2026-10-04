@@ -108,9 +108,9 @@ ios/
   App/                           SwiftUI, and everything that needs a device
     CompanionApp.swift           entry; owns when the stream lives and dies
     Session.swift                connection, lifecycle, actions
-    Discovery.swift              NWBrowser for _openmausbot._tcp
+    Discovery.swift              NWBrowser for _sc-agent._tcp
     Keychain.swift               the device token
-    MausAvatar.swift             the mascot face, in the desktop's palette
+    MascotAvatar.swift             the mascot face, in the desktop's palette
     PairingView.swift            QR handoff, discovery, address and code fallback
     PairingScanner.swift         native QR camera, permission and recovery UI
     Glass.swift                  the one material the chrome is made of (Liquid Glass on 26+)
@@ -141,7 +141,7 @@ The app needs Xcode. The `.xcodeproj` is generated rather than committed:
 
 ```sh
 brew install xcodegen
-cd ios && xcodegen generate && open OpenMausCompanion.xcodeproj
+cd ios && xcodegen generate && open SocialCoffeeAgentCompanion.xcodeproj
 ```
 
 **Re-run `xcodegen generate` after pulling any change that adds a file to
@@ -256,7 +256,7 @@ companion.
   the bot's role beside its name (quiet text in compact, a chip in
   comfortable), timestamps that say "Yesterday"
   rather than a date, and a gap-based separator in the transcript instead of a
-  stamp on every message. The palette in `MausAvatar.swift` is copied verbatim
+  stamp on every message. The palette in `MascotAvatar.swift` is copied verbatim
   from `src/lib/mascot.ts`: a bot the user knows as "the orange one" should be
   the same orange on both screens.
 - **Return sends, Shift+Return breaks the line**, via `.onKeyPress`. Returning

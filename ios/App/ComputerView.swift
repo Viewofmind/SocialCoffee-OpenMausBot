@@ -369,7 +369,7 @@ struct ComputerView: View {
             notice(
                 systemImage: "lock.display",
                 title: "Computer access is off for this phone",
-                detail: Text("This phone was paired with chat-only access. Pair it again with Full access (openmausbot pair, without --client) to see and control the Local VM.")
+                detail: Text("This phone was paired with chat-only access. Pair it again with Full access (sc-agent pair, without --client) to see and control the Local VM.")
             )
         case .accessOff:
             notice(

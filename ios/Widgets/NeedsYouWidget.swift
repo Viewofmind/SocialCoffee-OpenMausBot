@@ -70,7 +70,7 @@ private struct NeedsYouView: View {
             }
         }
         // A widget with no ask on it taps into nothing; with one, it
-        // opens that chat — the same openmausbot://chat link the app
+        // opens that chat — the same sc-agent://chat link the app
         // routes from notifications.
         .widgetURL(asks.first.flatMap { WidgetChatLink.url(threadId: $0.chat.threadId) })
     }
@@ -78,9 +78,9 @@ private struct NeedsYouView: View {
     private func smallRow(_ row: WidgetSnapshot.Row) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
-                MausFaceStill(
+                MascotFaceStill(
                     color: row.chat.color,
-                    state: MausState(rawValue: row.face) ?? .idle,
+                    state: MascotState(rawValue: row.face) ?? .idle,
                     size: 30
                 )
                 Text(row.chat.name)
@@ -110,9 +110,9 @@ private struct NeedsYouView: View {
             }
             ForEach(asks.prefix(3), id: \.chat) { row in
                 HStack(spacing: 8) {
-                    MausFaceStill(
+                    MascotFaceStill(
                         color: row.chat.color,
-                        state: MausState(rawValue: row.face) ?? .idle,
+                        state: MascotState(rawValue: row.face) ?? .idle,
                         size: 26
                     )
                     VStack(alignment: .leading, spacing: 1) {
@@ -209,7 +209,7 @@ struct AnswerPills: View {
                                 Capsule().fill(
                                     OptionCard.isRefusal(option)
                                         ? Color.secondary.opacity(0.2)
-                                        : MausPalette.color(row.chat.color)
+                                        : MascotPalette.color(row.chat.color)
                                 )
                             )
                     }

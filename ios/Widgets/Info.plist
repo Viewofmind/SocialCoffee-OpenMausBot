@@ -25,7 +25,7 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.widgetkit-extension</string>
 	</dict>
-	<key>OpenMausKeychainAccessGroup</key>
-	<string>$(AppIdentifierPrefix)group.com.openmausbot.shared</string>
+	<key>SocialCoffeeAgentKeychainAccessGroup</key>
+	<string>$(AppIdentifierPrefix)group.in.socialcoffee.agent.shared</string>
 </dict>
 </plist>

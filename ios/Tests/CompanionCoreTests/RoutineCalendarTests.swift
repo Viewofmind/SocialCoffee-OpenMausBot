@@ -28,7 +28,7 @@ final class RoutineCalendarTests: XCTestCase {
         let created = ms(createdAt ?? calendar.date(byAdding: .day, value: -30, to: wednesday)!)
         let next = nextRunAt.map { ms($0) }.map { "\($0)" } ?? "null"
         let json = """
-        {"id":"\(id)","name":"\(id) name","prompt":"p","botId":"b1","runOn":"maus","enabled":\(enabled),
+        {"id":"\(id)","name":"\(id) name","prompt":"p","botId":"b1","runOn":"local","enabled":\(enabled),
          "schedule":\(schedule),"durationMinutes":30,"nextRunAt":\(next),"createdAt":\(created),"updatedAt":\(created)}
         """
         return try JSONDecoder().decode(Routine.self, from: Data(json.utf8))
@@ -36,7 +36,7 @@ final class RoutineCalendarTests: XCTestCase {
 
     private func run(_ id: String, routine: String, at date: Date, status: String = "completed") throws -> RoutineRun {
         let json = """
-        {"id":"\(id)","routineId":"\(routine)","routineName":"\(routine) name","botId":"b1","runOn":"maus",
+        {"id":"\(id)","routineId":"\(routine)","routineName":"\(routine) name","botId":"b1","runOn":"local",
          "scheduledFor":\(ms(date)),"status":"\(status)","manual":false,"createdAt":\(ms(date))}
         """
         return try JSONDecoder().decode(RoutineRun.self, from: Data(json.utf8))

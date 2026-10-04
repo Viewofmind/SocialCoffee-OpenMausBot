@@ -7,24 +7,24 @@ final class MessageAttachmentsTests: XCTestCase {
         let web = try XCTUnwrap(LocalMessageLink.resolve("https://example.com/report.md?q=1"))
         XCTAssertEqual(web, .web(try XCTUnwrap(URL(string: "https://example.com/report.md?q=1"))))
         XCTAssertEqual(
-            LocalMessageLink.resolve("/Users/milind/Documents/report.md"),
-            .desktopFile(path: "/Users/milind/Documents/report.md")
+            LocalMessageLink.resolve("/Users/manav/Documents/report.md"),
+            .desktopFile(path: "/Users/manav/Documents/report.md")
         )
         XCTAssertEqual(
-            LocalMessageLink.resolve("file:///Users/milind/My%20Report.md"),
-            .desktopFile(path: "/Users/milind/My Report.md")
+            LocalMessageLink.resolve("file:///Users/manav/My%20Report.md"),
+            .desktopFile(path: "/Users/manav/My Report.md")
         )
         XCTAssertEqual(
-            LocalMessageLink.resolve(#"C:\Users\Milind\report.md"#),
-            .desktopFile(path: #"C:\Users\Milind\report.md"#)
+            LocalMessageLink.resolve(#"C:\Users\Manav\report.md"#),
+            .desktopFile(path: #"C:\Users\Manav\report.md"#)
         )
         XCTAssertEqual(
-            LocalMessageLink.resolve(try XCTUnwrap(URL(string: #"C:\Users\Milind\report.md"#))),
-            .desktopFile(path: #"C:\Users\Milind\report.md"#)
+            LocalMessageLink.resolve(try XCTUnwrap(URL(string: #"C:\Users\Manav\report.md"#))),
+            .desktopFile(path: #"C:\Users\Manav\report.md"#)
         )
         XCTAssertEqual(
-            LocalMessageLink.resolve("file:///C:/Users/Milind/report.md"),
-            .desktopFile(path: "C:/Users/Milind/report.md")
+            LocalMessageLink.resolve("file:///C:/Users/Manav/report.md"),
+            .desktopFile(path: "C:/Users/Manav/report.md")
         )
         XCTAssertEqual(
             LocalMessageLink.resolve(#"\\server\share\report.md"#),
@@ -55,7 +55,7 @@ final class MessageAttachmentsTests: XCTestCase {
     func testRejectsMalformedEmptyAndCustomSchemeLinks() {
         XCTAssertNil(LocalMessageLink.resolve("#section"))
         XCTAssertNil(LocalMessageLink.resolve("?download=1"))
-        XCTAssertNil(LocalMessageLink.resolve("openmausbot://pair?token=secret"))
+        XCTAssertNil(LocalMessageLink.resolve("sc-agent://pair?token=secret"))
         XCTAssertNil(LocalMessageLink.resolve("javascript:alert(1)"))
         XCTAssertNil(LocalMessageLink.resolve("https:///missing-host.md"))
         XCTAssertNil(LocalMessageLink.resolve("file:///tmp/report.md?replace=1"))

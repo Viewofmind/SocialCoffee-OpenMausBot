@@ -487,7 +487,7 @@ struct ChatView: View {
             StreamingBubble(text: nil, reasoning: thinking, color: current.color)
                 .id(Self.liveBubbleId)
         } else if current.busy {
-            TypingIndicatorView(tintColor: MausPalette.color(current.color))
+            TypingIndicatorView(tintColor: MascotPalette.color(current.color))
                 .id(Self.liveBubbleId)
                 .accessibilityLabel("\(current.name) is working")
         }
@@ -529,7 +529,7 @@ struct ChatView: View {
                     Color.clear
                 }
             }
-            ChatAvatarView(chat: current, size: faceSize, state: MausState.forChat(current, in: session.state), animated: MausState.forChat(current, in: session.state).showsActivity || islandExpanded, comets: islandExpanded)
+            ChatAvatarView(chat: current, size: faceSize, state: MascotState.forChat(current, in: session.state), animated: MascotState.forChat(current, in: session.state).showsActivity || islandExpanded, comets: islandExpanded)
                 .offset(y: faceCentre - faceSize / 2)
                 .allowsHitTesting(false)
         }
@@ -1483,7 +1483,7 @@ struct ChatView: View {
                         : CommandSkillHUDView.defaultCommands.filter {
                             $0.id != "computer" && (current.supportsTasks || $0.id != "tasks")
                         },
-                    accentColor: MausPalette.color(current.color)
+                    accentColor: MascotPalette.color(current.color)
                 ) { command in
                     switch command.id {
                     case "computer":
@@ -1498,7 +1498,7 @@ struct ChatView: View {
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             } else if draft.isEmpty && attachments.isEmpty && !current.busy
                         && !hasPendingApproval && !storedChips.isEmpty {
-                PredictiveActionChipsView(chips: storedChips, accentColor: MausPalette.color(current.color)) { chip in
+                PredictiveActionChipsView(chips: storedChips, accentColor: MascotPalette.color(current.color)) { chip in
                     submit(chip.prompt)
                 }
                 .transition(.opacity)
@@ -1838,7 +1838,7 @@ struct MessageRow: View {
             if message.tool?.claudeUpdate == true, case let .bot(bot) = chat {
                 ClaudeUpdateCard(
                     instanceId: bot.currentTaskModelSelection.instanceId,
-                    tint: MausPalette.color(chat.color)
+                    tint: MascotPalette.color(chat.color)
                 )
             }
         case .compaction:
@@ -1862,7 +1862,7 @@ struct MessageRow: View {
                 RoutineRunCardView(
                     card: card,
                     at: message.date,
-                    tint: MausPalette.color(chat.color),
+                    tint: MascotPalette.color(chat.color),
                     openRun: routineRunOpener(card)
                 )
             } else if let text = message.text, !text.isEmpty {
@@ -1961,10 +1961,10 @@ struct TextBubble: View {
                 if let speaker, !mine {
                     Text(speaker.name)
                         .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(MausPalette.color(speaker.color))
+                        .foregroundStyle(MascotPalette.color(speaker.color))
                 }
                 ForEach(message.voiceNotes) { note in
-                    VoiceNoteBubble(note: note, tint: MausPalette.color(chat.color))
+                    VoiceNoteBubble(note: note, tint: MascotPalette.color(chat.color))
                 }
                 ForEach(message.generatedImages, id: \.path) { attachment in
                     TranscriptAttachmentView(
@@ -2164,7 +2164,7 @@ struct CredentialRequestCardView: View {
         let requestKey: String?
     }
 
-    private var tint: Color { MausPalette.color(message.from?.color ?? chat.color) }
+    private var tint: Color { MascotPalette.color(message.from?.color ?? chat.color) }
     private var requester: String { message.from?.name ?? chat.name }
     private var label: String { visible(secret.label) ?? "API credential" }
     private var accessibilityStatus: Text {
@@ -2608,7 +2608,7 @@ struct CardView: View {
     /// choice above so the two cannot drift apart.
     private static func isRefusal(_ option: String) -> Bool { OptionCard.isRefusal(option) }
 
-    private var tint: Color { MausPalette.color(chat.color) }
+    private var tint: Color { MascotPalette.color(chat.color) }
 
     var body: some View {
         if let card = message.card {
@@ -2814,7 +2814,7 @@ struct StreamingBubble: View {
                     AgentThoughtChamberView(
                         reasoning: reasoning,
                         botName: "Bot",
-                        mascotColor: MausPalette.color(color),
+                        mascotColor: MascotPalette.color(color),
                         isStreaming: true
                     )
                     .equatable()

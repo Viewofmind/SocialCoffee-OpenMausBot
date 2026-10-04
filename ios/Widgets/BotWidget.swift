@@ -146,14 +146,14 @@ enum ChatIdentityStore {
         guard all[entity.id] != entity else { return }
         all[entity.id] = entity
         guard let directory = FileManager.default.containerURL(
-            forSecurityApplicationGroupIdentifier: OpenMausSharedConfiguration.appGroupIdentifier
+            forSecurityApplicationGroupIdentifier: SocialCoffeeAgentSharedConfiguration.appGroupIdentifier
         ), let data = try? JSONEncoder().encode(Array(all.values)) else { return }
         try? data.write(to: directory.appendingPathComponent(fileName), options: .atomic)
     }
 
     static func saved() -> [String: ChatEntity] {
         guard let directory = FileManager.default.containerURL(
-            forSecurityApplicationGroupIdentifier: OpenMausSharedConfiguration.appGroupIdentifier
+            forSecurityApplicationGroupIdentifier: SocialCoffeeAgentSharedConfiguration.appGroupIdentifier
         ), let data = try? Data(contentsOf: directory.appendingPathComponent(fileName)) else { return [:] }
         let identities = (try? JSONDecoder().decode([ChatEntity].self, from: data)) ?? []
         return Dictionary(identities.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
@@ -192,7 +192,7 @@ struct BotTimelineProvider: AppIntentTimelineProvider {
         BotEntry(
             date: Date(),
             state: .quiet(WidgetSnapshot.empty()),
-            entity: ChatEntity(id: "demo", name: "Agent", color: "", face: MausState.idle.rawValue)
+            entity: ChatEntity(id: "demo", name: "Agent", color: "", face: MascotState.idle.rawValue)
         )
     }
 
@@ -287,9 +287,9 @@ struct BotWidgetView: View {
     private func content(for entity: ChatEntity) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
-                MausFaceStill(
+                MascotFaceStill(
                     color: entry.row?.chat.color ?? entity.color,
-                    state: MausState(rawValue: entry.row?.face ?? entity.face) ?? .idle,
+                    state: MascotState(rawValue: entry.row?.face ?? entity.face) ?? .idle,
                     size: 28
                 )
                 Text(entry.row?.chat.name ?? entity.name)

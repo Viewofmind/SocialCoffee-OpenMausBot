@@ -28,7 +28,7 @@
     <string name="mobile_threads_3e761c97">/threads</string>
     <string name="mobile_text_c984aed0">000000</string>
     <string name="mobile_step_29869c51">1 step</string>
-    <string name="mobile_open_openmausbot_settings_phone_38cfc5bb">1.  Open SocialCoffeeAgent → Settings → Phone</string>
+    <string name="mobile_open_socialcoffeeagent_settings_phone_38cfc5bb">1.  Open SocialCoffeeAgent → Settings → Phone</string>
     <string name="mobile_choose_set_up_a_phone_8fd474a9">2.  Choose Set up a phone</string>
     <string name="mobile_a_frame_of_this_bot_s_computer_39b6a5bb">A frame of this bot\'s computer</string>
     <string name="mobile_account_alias_8cf27ca0">Account alias</string>
@@ -163,7 +163,7 @@
     <string name="mobile_open_desktop_cd6f8218">Open desktop</string>
     <string name="mobile_open_the_chat_to_review_skill_md_6225775b">Open the chat to review SKILL.md</string>
     <string name="mobile_open_updates_2c80d633">Open updates</string>
-    <string name="mobile_openmausbot_befe710d">SocialCoffeeAgent</string>
+    <string name="mobile_socialcoffeeagent_befe710d">SocialCoffeeAgent</string>
     <string name="mobile_or_enter_the_address_f74dcf1c">Or enter the address</string>
     <string name="mobile_organize_bots_08f4197e">Organize bots</string>
     <string name="mobile_organize_bots_into_a_section_9293c5af">Organize bots into a section</string>
@@ -226,7 +226,7 @@
     <string name="mobile_selected_days_7890ff6e">Selected days</string>
     <string name="mobile_send_9bc2575c">Send</string>
     <string name="mobile_send_to_b98cc23a">Send to</string>
-    <string name="mobile_send_to_openmausbot_4dffcb75">Send to SocialCoffeeAgent</string>
+    <string name="mobile_send_to_socialcoffeeagent_4dffcb75">Send to SocialCoffeeAgent</string>
     <string name="mobile_settings_c7f73bb5">Settings</string>
     <string name="mobile_share_09ca55ca">Share</string>
     <string name="mobile_share_as_json_df80c8e6">Share as JSON</string>

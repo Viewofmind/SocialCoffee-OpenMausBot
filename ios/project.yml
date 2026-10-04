@@ -1,16 +1,16 @@
 # XcodeGen spec. The .xcodeproj is generated, not committed — a project
 # file is a merge-conflict machine and nothing in it is worth reviewing.
 #
-#   brew install xcodegen && cd ios && xcodegen generate && open OpenMausCompanion.xcodeproj
+#   brew install xcodegen && cd ios && xcodegen generate && open SocialCoffeeAgentCompanion.xcodeproj
 #
 # XcodeGen is a development tool, not a dependency of the app: the app's one
 # dependency is the WebRTC package below, for Live calls. If you'd rather not
 # install XcodeGen, make an iOS App target in Xcode by hand, add the App/
 # folder, the local CompanionCore package and the WebRTC package — the
 # Info.plist keys below are the part that is easy to miss.
-name: OpenMausCompanion
+name: SocialCoffeeAgentCompanion
 options:
-  bundleIdPrefix: com.openmausbot
+  bundleIdPrefix: in.socialcoffee.agent
   deploymentTarget:
     iOS: "16.0"
   createIntermediateGroups: true
@@ -47,18 +47,18 @@ packages:
     exactVersion: 153.0.0
 
 schemes:
-  OpenMausCompanion:
+  SocialCoffeeAgentCompanion:
     build:
       targets:
-        OpenMausCompanion: all
-        OpenMausCompanionUITests: [test]
+        SocialCoffeeAgentCompanion: all
+        SocialCoffeeAgentCompanionUITests: [test]
     test:
       config: Debug
       targets:
-        - OpenMausCompanionUITests
+        - SocialCoffeeAgentCompanionUITests
 
 targets:
-  OpenMausCompanion:
+  SocialCoffeeAgentCompanion:
     type: application
     platform: iOS
     sources:
@@ -69,11 +69,11 @@ targets:
       - package: CompanionCore
         product: CompanionCore
       - package: WebRTC
-      - target: OpenMausCompanionWidgets
-      - target: OpenMausShareExtension
+      - target: SocialCoffeeAgentCompanionWidgets
+      - target: SocialCoffeeAgentShareExtension
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.openmausbot.app
+        PRODUCT_BUNDLE_IDENTIFIER: in.socialcoffee.agent.app
         MARKETING_VERSION: "1.0.0"
         CURRENT_PROJECT_VERSION: "6"
         SWIFT_VERSION: "5.9"
@@ -81,13 +81,13 @@ targets:
         # The catalog lives in App/, which is already a source path.
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     entitlements:
-      path: App/OpenMausCompanion.entitlements
+      path: App/SocialCoffeeAgentCompanion.entitlements
       properties:
         com.apple.security.application-groups:
-          - group.com.openmausbot.shared
+          - group.in.socialcoffee.agent.shared
         keychain-access-groups:
-          - $(AppIdentifierPrefix)com.openmausbot.app
-          - $(AppIdentifierPrefix)group.com.openmausbot.shared
+          - $(AppIdentifierPrefix)in.socialcoffee.agent.app
+          - $(AppIdentifierPrefix)group.in.socialcoffee.agent.shared
     info:
       path: App/Info.plist
       properties:
@@ -101,14 +101,14 @@ targets:
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         LSApplicationCategoryType: public.app-category.productivity
         ITSAppUsesNonExemptEncryption: false
-        OpenMausKeychainAccessGroup: $(AppIdentifierPrefix)group.com.openmausbot.shared
+        SocialCoffeeAgentKeychainAccessGroup: $(AppIdentifierPrefix)group.in.socialcoffee.agent.shared
         # The bot's Live Activity — its face and ask in the Dynamic Island
         # and on the lock screen.
         NSSupportsLiveActivities: true
         CFBundleURLTypes:
-          - CFBundleURLName: com.openmausbot.companion.pairing
+          - CFBundleURLName: com.socialcoffee.agent.companion.pairing
             CFBundleURLSchemes:
-              - openmausbot
+              - sc-agent
         # REQUIRED, and easy to lose. Without a launch screen iOS runs the
         # app in compatibility scaling: letterboxed inside black bars, with
         # everything drawn oversized, on every modern iPhone. An empty
@@ -143,7 +143,7 @@ targets:
           SocialCoffeeAgent converts your speech into text so you can send it
           to a bot. Recognition runs on this phone when it can.
         NSBonjourServices:
-          - _openmausbot._tcp
+          - _sc-agent._tcp
         # The companion listener is plain HTTP on a local address. ATS has
         # to be told, and this is the narrowest way to say it: local
         # networking only, not a blanket exception.
@@ -164,26 +164,26 @@ targets:
               NSExceptionAllowsInsecureHTTPLoads: true
 
   # Native navigation coverage uses bundled synthetic data and no pairing.
-  OpenMausCompanionUITests:
+  SocialCoffeeAgentCompanionUITests:
     type: bundle.ui-testing
     platform: iOS
     sources:
       - path: UITests
     dependencies:
-      - target: OpenMausCompanion
+      - target: SocialCoffeeAgentCompanion
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.openmausbot.app.uitests
+        PRODUCT_BUNDLE_IDENTIFIER: in.socialcoffee.agent.app.uitests
         SWIFT_VERSION: "5.9"
         TARGETED_DEVICE_FAMILY: "1,2"
         GENERATE_INFOPLIST_FILE: YES
-        TEST_TARGET_NAME: OpenMausCompanion
+        TEST_TARGET_NAME: SocialCoffeeAgentCompanion
 
   # The system share sheet can send a link, text, image, or document straight
   # to a paired bot without first opening the containing app. Connection
   # metadata lives in the App Group; the bearer remains in the shared
   # Keychain access group.
-  OpenMausShareExtension:
+  SocialCoffeeAgentShareExtension:
     type: app-extension
     platform: iOS
     sources:
@@ -194,7 +194,7 @@ targets:
         product: CompanionCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.openmausbot.app.share
+        PRODUCT_BUNDLE_IDENTIFIER: in.socialcoffee.agent.app.share
         MARKETING_VERSION: "1.0.0"
         CURRENT_PROJECT_VERSION: "6"
         SWIFT_VERSION: "5.9"
@@ -202,19 +202,19 @@ targets:
         APPLICATION_EXTENSION_API_ONLY: YES
         SKIP_INSTALL: true
     entitlements:
-      path: ShareExtension/OpenMausShareExtension.entitlements
+      path: ShareExtension/SocialCoffeeAgentShareExtension.entitlements
       properties:
         com.apple.security.application-groups:
-          - group.com.openmausbot.shared
+          - group.in.socialcoffee.agent.shared
         keychain-access-groups:
-          - $(AppIdentifierPrefix)group.com.openmausbot.shared
+          - $(AppIdentifierPrefix)group.in.socialcoffee.agent.shared
     info:
       path: ShareExtension/Info.plist
       properties:
         CFBundleDisplayName: SocialCoffeeAgent
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
-        OpenMausKeychainAccessGroup: $(AppIdentifierPrefix)group.com.openmausbot.shared
+        SocialCoffeeAgentKeychainAccessGroup: $(AppIdentifierPrefix)group.in.socialcoffee.agent.shared
         # ATS is evaluated for URLSession work performed by the extension too.
         # Mirror the containing app's narrow local/Tailscale exceptions so a
         # share can reach the same already-paired routes. Local-network privacy
@@ -239,7 +239,7 @@ targets:
   # The Live Activity lives in a widget extension, alongside the home-screen
   # widgets. It shares the mascot's drawing and data with the app, and the
   # activity contract in Shared/.
-  OpenMausCompanionWidgets:
+  SocialCoffeeAgentCompanionWidgets:
     type: app-extension
     platform: iOS
     # Live Activities and the Dynamic Island arrived in 16.1, so this
@@ -253,20 +253,20 @@ targets:
       # answer intent resolves tokens through the same shared connection
       # store the Share extension uses.
       - path: AppShared
-      - path: App/MausAvatar.swift
-      - path: App/MausFaceData.swift
+      - path: App/MascotAvatar.swift
+      - path: App/MascotFaceData.swift
       # MascotState resolves the face for the post-answer refresh a widget
       # performs; it is self-contained above Core, so it rides along.
       - path: App/MascotState.swift
     dependencies:
-      # MausAvatar draws whichever body a bot wears, and the body catalog and
+      # MascotAvatar draws whichever body a bot wears, and the body catalog and
       # its path parser live in CompanionCore. The extension shares the
       # drawing with the app, so it has to share the catalog too.
       - package: CompanionCore
         product: CompanionCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.openmausbot.app.widgets
+        PRODUCT_BUNDLE_IDENTIFIER: in.socialcoffee.agent.app.widgets
         MARKETING_VERSION: "1.0.0"
         CURRENT_PROJECT_VERSION: "6"
         SWIFT_VERSION: "5.9"
@@ -278,18 +278,18 @@ targets:
     # keychain access group carries the tokens its answer intent will ask
     # for.
     entitlements:
-      path: Widgets/OpenMausCompanionWidgets.entitlements
+      path: Widgets/SocialCoffeeAgentCompanionWidgets.entitlements
       properties:
         com.apple.security.application-groups:
-          - group.com.openmausbot.shared
+          - group.in.socialcoffee.agent.shared
         keychain-access-groups:
-          - $(AppIdentifierPrefix)group.com.openmausbot.shared
+          - $(AppIdentifierPrefix)group.in.socialcoffee.agent.shared
     info:
       path: Widgets/Info.plist
       properties:
         CFBundleDisplayName: SocialCoffeeAgent
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
-        OpenMausKeychainAccessGroup: $(AppIdentifierPrefix)group.com.openmausbot.shared
+        SocialCoffeeAgentKeychainAccessGroup: $(AppIdentifierPrefix)group.in.socialcoffee.agent.shared
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension

@@ -112,9 +112,9 @@ struct WorkingMonitorProvider: TimelineProvider {
         guard
             let store = WidgetSnapshotStore.makeAppGroupStore(),
             let snapshot = store.read(),
-            let connection = OpenMausSharedConnectionStore.loadRegistry()
+            let connection = SocialCoffeeAgentSharedConnectionStore.loadRegistry()
                 .connection(id: snapshot.connectionID),
-            let token = try? OpenMausSharedKeychain.token(for: connection.id)
+            let token = try? SocialCoffeeAgentSharedKeychain.token(for: connection.id)
         else { return }
         await WidgetSnapshotRefresh.refresh(connection: connection, token: token, store: store)
     }
@@ -181,9 +181,9 @@ struct WorkingMonitorView: View {
     private func rowView(_ row: WidgetSnapshot.Row) -> some View {
         rowLink(row) {
             HStack(spacing: 8) {
-                MausFaceStill(
+                MascotFaceStill(
                     color: row.chat.color,
-                    state: MausState(rawValue: row.face) ?? .idle,
+                    state: MascotState(rawValue: row.face) ?? .idle,
                     size: 22
                 )
                 VStack(alignment: .leading, spacing: 1) {

@@ -18,7 +18,7 @@ import UIKit
 /// Stream lifecycle, in Console.app and the Xcode console. A companion that
 /// is silently not connected looks exactly like one with nothing to say, so
 /// the transitions are worth being able to read.
-private let log = Logger(subsystem: "com.openmausbot.companion", category: "stream")
+private let log = Logger(subsystem: "com.socialcoffee.agent.companion", category: "stream")
 
 private final class CachedAttachmentDownload: NSObject {
     let value: DownloadedFile
@@ -209,7 +209,7 @@ final class Session: ObservableObject {
            let fleet = try? JSONDecoder().decode(Fleet.self, from: data) {
             let preview = Connection(
                 id: "preview-current",
-                name: "Milind’s MacBook Pro",
+                name: "Manav’s MacBook Pro",
                 host: "preview.tailnet.ts.net",
                 port: 8810
             )
@@ -425,7 +425,7 @@ final class Session: ObservableObject {
     /// only the first should ever send someone back to the pairing screen.
     private func restore() {
         restorePending = false
-        registry = OpenMausSharedConnectionStore.loadRegistry()
+        registry = SocialCoffeeAgentSharedConnectionStore.loadRegistry()
         connections = registry.connections
         // The Share extension can target any saved computer, not only the
         // one active at launch. Move every inactive pre-extension token into
@@ -570,7 +570,7 @@ final class Session: ObservableObject {
                 )
             }
         } saveConnection: {
-            OpenMausSharedConnectionStore.saveRegistry(updatedRegistry)
+            SocialCoffeeAgentSharedConnectionStore.saveRegistry(updatedRegistry)
         }
 
         stopActiveRuntime()
@@ -611,7 +611,7 @@ final class Session: ObservableObject {
         return BrowserLiveClient(connection: route, token: token)
     }
 
-    /// `GET /.well-known/openmausbot/environment` on a server about to be
+    /// `GET /.well-known/socialcoffee-agent/environment` on a server about to be
     /// paired. Nothing there means this address is not a server; the message
     /// names the address, since that is what the person can fix. Any other
     /// answer — unreachable, a gateway error — is passed through as it is.
@@ -629,7 +629,7 @@ final class Session: ObservableObject {
     func receiveURL(_ url: URL) {
         guard let link = CompanionDeepLink.parse(url) else {
             // A link this app does not know — the desktop's own
-            // openmausbot://thread/… or openmausbot://cloud among them. Not
+            // sc-agent://thread/… or sc-agent://cloud among them. Not
             // the person's mistake, and not a pairing, so nothing to say.
             log.notice("ignored link \(url.scheme ?? "", privacy: .public)://\(url.host ?? "", privacy: .public)")
             return
@@ -832,7 +832,7 @@ final class Session: ObservableObject {
     }
 
     private func persistRegistry() {
-        OpenMausSharedConnectionStore.saveRegistry(registry)
+        SocialCoffeeAgentSharedConnectionStore.saveRegistry(registry)
     }
 
     private func persistActiveConnection(_ updated: Connection) {
@@ -1570,7 +1570,7 @@ final class Session: ObservableObject {
     ) throws -> DownloadedFile {
         let manager = FileManager.default
         let root = manager.temporaryDirectory
-            .appendingPathComponent("OpenMausBotFilePreviews", isDirectory: true)
+            .appendingPathComponent("SocialCoffeeAgentFilePreviews", isDirectory: true)
         let directory = root.appendingPathComponent(UUID().uuidString, isDirectory: true)
         try Task.checkCancellation()
         try manager.createDirectory(
@@ -1604,7 +1604,7 @@ final class Session: ObservableObject {
 
     private static func removeStaleFilePreviews() {
         let root = FileManager.default.temporaryDirectory
-            .appendingPathComponent("OpenMausBotFilePreviews", isDirectory: true)
+            .appendingPathComponent("SocialCoffeeAgentFilePreviews", isDirectory: true)
         try? FileManager.default.removeItem(at: root)
     }
 

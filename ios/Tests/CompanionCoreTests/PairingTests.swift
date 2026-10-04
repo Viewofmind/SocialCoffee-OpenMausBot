@@ -114,7 +114,7 @@ final class PairingTests: XCTestCase {
             name: "Mac",
             host: "mac.tail1234.ts.net",
             port: 8810,
-            hosts: ["mac.tail1234.ts.net", "192.168.1.42", "openmausbot-aa.local"]
+            hosts: ["mac.tail1234.ts.net", "192.168.1.42", "socialcoffee-agent-aa.local"]
         )
 
         await XCTAssertThrowsErrorAsync(
@@ -440,7 +440,7 @@ final class PairingTests: XCTestCase {
         XCTAssertTrue(PairingRequestStub.captured().allSatisfy { $0.url?.path == "/api/health" })
     }
 
-    func testRejectsAServiceThatDoesNotIdentifyAsOpenMausBot() async throws {
+    func testRejectsAServiceThatDoesNotIdentifyAsSocialCoffeeAgent() async throws {
         PairingRequestStub.reset { _ in .response(200, Data(#"{"app":"something-else"}"#.utf8)) }
         let connection = Connection(name: "Mac", host: "192.168.1.42", port: 8810)
 
@@ -467,7 +467,7 @@ final class PairingTests: XCTestCase {
             name: "Mac",
             host: "192.168.1.42",
             port: 8810,
-            hosts: ["openmausbot-aa.local"]
+            hosts: ["socialcoffee-agent-aa.local"]
         )
 
         do {
@@ -508,9 +508,9 @@ final class PairingTests: XCTestCase {
     /// "Pair on this Wi-Fi" on a Windows PC whose WSL and Hyper-V adapters enumerated first,
     /// written the way desktops before Oct 2026 wrote it ("+" for a space).
     private static let windowsQR = URL(string:
-        "openmausbot://pair?address=172.19.96.1%3A8810&token=\(credential)&name=Miguel%27s+computer" +
+        "sc-agent://pair?address=172.19.96.1%3A8810&token=\(credential)&name=Miguel%27s+computer" +
         "&hosts=172.19.96.1,172.27.208.1,192.168.1.34")!
-    private static let health = Data(#"{"app":"openmausbot","pid":42,"static":true}"#.utf8)
+    private static let health = Data(#"{"app":"socialcoffee-agent","pid":42,"static":true}"#.utf8)
     private static let paired = Data(
         #"{"token":"omb_device","device":{"id":"d","name":"iPhone","createdAt":1,"lastSeenAt":1},"serverName":"Mac","hosts":["192.168.1.42"]}"#.utf8
     )

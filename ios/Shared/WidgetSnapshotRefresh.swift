@@ -19,7 +19,7 @@ extension WidgetSnapshotStore {
     /// reader and writer in the extension goes through this one door.
     static func makeAppGroupStore() -> WidgetSnapshotStore? {
         FileManager.default.containerURL(
-            forSecurityApplicationGroupIdentifier: OpenMausSharedConfiguration.appGroupIdentifier
+            forSecurityApplicationGroupIdentifier: SocialCoffeeAgentSharedConfiguration.appGroupIdentifier
         ).map { WidgetSnapshotStore(directory: $0) }
     }
 }
@@ -102,7 +102,7 @@ enum WidgetSnapshotRefresh {
         // The extension cannot see the app's Activity setting; the snapshot
         // the app last wrote carries it, so a refresh folds the same way.
         let snapshot = state.widgetSnapshot(connectionID: connection.id, detail: previous?.detail ?? .phoneDefault) { chat in
-            MausState.forChat(chat, in: state).rawValue
+            MascotState.forChat(chat, in: state).rawValue
         } since: { update in
             sinceClock.stamp(for: update.chat, kind: update.kind)
         }

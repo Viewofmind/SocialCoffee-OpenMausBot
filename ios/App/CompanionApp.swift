@@ -42,7 +42,7 @@ struct CompanionApp: App {
                 // on the App, not here, so the connection survives.
                 .id(language)
                 .onAppear {
-                    OpenMausSharedInbox.removeDirectories(olderThan: 60 * 60)
+                    SocialCoffeeAgentSharedInbox.removeDirectories(olderThan: 60 * 60)
                     session.connect()
                     liveActivities.attach(to: session)
                     widgetSync.attach(to: session)
@@ -57,7 +57,7 @@ struct CompanionApp: App {
                     if LiveCallLifecycle.endsCall(on: phase.liveCallPhase) { liveCall.leaveForeground() }
                     switch phase {
                     case .active:
-                        OpenMausSharedInbox.removeDirectories(olderThan: 60 * 60)
+                        SocialCoffeeAgentSharedInbox.removeDirectories(olderThan: 60 * 60)
                         session.connect()
                         Task { await session.refreshNotificationAuthorization() }
                     case .background:

@@ -159,9 +159,9 @@ struct UpdatesDigestView: View {
     ) -> some View {
         rowLink(row) {
             HStack(spacing: 8) {
-                MausFaceStill(
+                MascotFaceStill(
                     color: row.chat.color,
-                    state: MausState(rawValue: row.face) ?? .idle,
+                    state: MascotState(rawValue: row.face) ?? .idle,
                     size: faceSize
                 )
                 VStack(alignment: .leading, spacing: 1) {
@@ -210,14 +210,14 @@ struct UpdatesDigestView: View {
         case .needsYou:
             Image(systemName: "hand.raised.fill")
                 .font(.system(size: 12, weight: .bold))
-                .foregroundStyle(MausPalette.color(row.chat.color))
+                .foregroundStyle(MascotPalette.color(row.chat.color))
         case .working:
             Image(systemName: "circle.dotted")
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundStyle(.secondary)
         case .toReview:
             Circle()
-                .fill(MausPalette.color(row.chat.color))
+                .fill(MascotPalette.color(row.chat.color))
                 .frame(width: 8, height: 8)
         }
     }
@@ -234,12 +234,12 @@ struct UpdatesDigestView: View {
         case .quiet:
             // No chat to take a colour from, so the face wears the
             // palette's own fallback grey.
-            MausFaceStill(color: "", state: .idle, size: 44)
+            MascotFaceStill(color: "", state: .idle, size: 44)
         case .fresh, .stale:
             ZStack(alignment: .bottom) {
-                MausFaceStill(
+                MascotFaceStill(
                     color: faceRow?.chat.color ?? "",
-                    state: faceRow.map { MausState(rawValue: $0.face) ?? .idle } ?? .idle,
+                    state: faceRow.map { MascotState(rawValue: $0.face) ?? .idle } ?? .idle,
                     size: 44
                 )
                 if let ask = asks.first {
@@ -250,7 +250,7 @@ struct UpdatesDigestView: View {
                         .foregroundStyle(.white)
                         .padding(.horizontal, 7)
                         .padding(.vertical, 2)
-                        .background(Capsule().fill(MausPalette.color(ask.chat.color)))
+                        .background(Capsule().fill(MascotPalette.color(ask.chat.color)))
                 }
             }
             .opacity(isStale ? 0.7 : 1)
@@ -267,9 +267,9 @@ struct UpdatesDigestView: View {
         case .fresh, .stale:
             if let row = rows.first {
                 HStack(spacing: 8) {
-                    MausFaceStill(
+                    MascotFaceStill(
                         color: row.chat.color,
-                        state: MausState(rawValue: row.face) ?? .idle,
+                        state: MascotState(rawValue: row.face) ?? .idle,
                         size: 20
                     )
                     VStack(alignment: .leading, spacing: 1) {
@@ -310,7 +310,7 @@ struct UpdatesDigestView: View {
                 HStack(spacing: 4) {
                     Image(systemName: "hand.raised.fill")
                         .font(.system(size: 13, weight: .bold))
-                        .foregroundStyle(MausPalette.color(ask.chat.color))
+                        .foregroundStyle(MascotPalette.color(ask.chat.color))
                     Text("\(asks.count) need you")
                 }
             } else if rows.isEmpty {
@@ -370,6 +370,6 @@ private struct DigestSection: Identifiable {
     /// The section header's colour: the first ask's own under Needs you —
     /// the sheet tints it the same way — secondary elsewhere.
     var tint: Color {
-        kind == .needsYou ? MausPalette.color(rows[0].chat.color) : .secondary
+        kind == .needsYou ? MascotPalette.color(rows[0].chat.color) : .secondary
     }
 }

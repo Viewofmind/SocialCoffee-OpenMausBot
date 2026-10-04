@@ -55,7 +55,7 @@ struct UpdatesSheet: View {
     private func section(_ title: LocalizedStringKey, tint: Color?, kind: ChatUpdate.Kind) -> some View {
         let items = updates.filter { $0.kind == kind }
         if !items.isEmpty {
-            let color = kind == .needsYou ? MausPalette.color(items[0].chat.color) : Color.secondary
+            let color = kind == .needsYou ? MascotPalette.color(items[0].chat.color) : Color.secondary
             Text(title)
                 .textCase(.uppercase)
                 .font(.system(size: 12, weight: .bold))
@@ -81,7 +81,7 @@ private struct UpdateRow: View {
     var body: some View {
         Button(action: open) {
             HStack(alignment: .top, spacing: 12) {
-                ChatAvatarView(chat: update.chat, size: 40, state: MausState.forChat(update.chat, in: session.state))
+                ChatAvatarView(chat: update.chat, size: 40, state: MascotState.forChat(update.chat, in: session.state))
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(update.chat.name)
@@ -126,7 +126,7 @@ private struct UpdateRow: View {
                                                 Capsule().fill(
                                                     CardStyle.isRefusal(option)
                                                         ? Color.secondary.opacity(0.18)
-                                                        : MausPalette.color(update.chat.color)
+                                                        : MascotPalette.color(update.chat.color)
                                                 )
                                             )
                                     }
@@ -148,7 +148,7 @@ private struct UpdateRow: View {
                     ProgressView().controlSize(.small).padding(.top, 10)
                 case .toReview:
                     HStack(spacing: 6) {
-                        Circle().fill(MausPalette.color(update.chat.color)).frame(width: 10, height: 10)
+                        Circle().fill(MascotPalette.color(update.chat.color)).frame(width: 10, height: 10)
                         Image(systemName: "chevron.right")
                             .font(.system(size: 13, weight: .semibold))
                             .foregroundStyle(Color.secondary.opacity(0.5))

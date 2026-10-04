@@ -5,9 +5,9 @@ The app is native Swift and uses XcodeGen; EAS commands do not apply.
 ## One-time Apple setup
 
 1. Enrol in the Apple Developer Program.
-2. Register the bundle IDs `com.openmausbot.app`, `com.openmausbot.app.widgets`, and `com.openmausbot.app.share` (or change them in `project.yml` before the first upload).
-3. Register the App Group `group.com.openmausbot.shared`. Enable App Groups and Keychain Sharing for the app and Share extension identifiers, then add the group to both. Keep the app's legacy `$(AppIdentifierPrefix)com.openmausbot.app` Keychain group during upgrades so existing pairings can migrate safely.
-4. Create the matching app in App Store Connect with the name **OpenMaus Mobile**, primary category **Productivity**, and a unique SKU.
+2. Register the bundle IDs `in.socialcoffee.agent.app`, `in.socialcoffee.agent.app.widgets`, and `in.socialcoffee.agent.app.share` (or change them in `project.yml` before the first upload).
+3. Register the App Group `group.in.socialcoffee.agent.shared`. Enable App Groups and Keychain Sharing for the app and Share extension identifiers, then add the group to both. Keep the app's legacy `$(AppIdentifierPrefix)in.socialcoffee.agent.app` Keychain group during upgrades so existing pairings can migrate safely.
+4. Create the matching app in App Store Connect with the name **SocialCoffeeAgent Mobile**, primary category **Productivity**, and a unique SKU.
 5. Create or select Apple Distribution certificates and App Store provisioning profiles for the containing app and both extensions.
 6. Add the review contact details in App Store Connect; do not commit private contact data or App Store Connect keys.
 

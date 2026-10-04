@@ -273,7 +273,7 @@ public struct WidgetSnapshotStore: Sendable {
 /// an unpair clears every earlier write before a later pairing is published.
 public final class WidgetSnapshotWriter: @unchecked Sendable {
     private let store: WidgetSnapshotStore
-    private let queue = DispatchQueue(label: "com.openmausbot.widget.snapshot", qos: .utility)
+    private let queue = DispatchQueue(label: "com.socialcoffee-agent.widget.snapshot", qos: .utility)
     // These two fields are accessed only on queue.
     private var lastWritten: WidgetSnapshot?
     private var publishedUnpaired = false

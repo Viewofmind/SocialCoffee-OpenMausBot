@@ -1,4 +1,4 @@
-// Deep links: the openmausbot:// scheme's whole vocabulary.
+// Deep links: the sc-agent:// scheme's whole vocabulary.
 //
 // Pairing was the scheme's only word; home-screen widgets and notifications
 // add "open this exact chat". Parsing lives in Core so the app and the
@@ -8,20 +8,20 @@ import Foundation
 
 public enum CompanionDeepLink: Equatable, Sendable {
     case pairing(PairingInvite)
-    /// An openmausbot://pair link that did not parse: a QR code read halfway,
+    /// An sc-agent://pair link that did not parse: a QR code read halfway,
     /// a link a chat app mangled. Unlike a link this app does not know, the
     /// person meant to pair, so the app opens pairing and says so there.
     case invalidPairing
     case chat(threadId: String)
 
-    /// Parses one openmausbot:// URL, or a server pair link. Anything the
+    /// Parses one sc-agent:// URL, or a server pair link. Anything the
     /// app does not recognize returns nil and is ignored rather than
     /// surfaced as an error: the person holding the phone did not type it.
-    /// The desktop's own links (openmausbot://thread/…, openmausbot://cloud)
+    /// The desktop's own links (sc-agent://thread/…, sc-agent://cloud)
     /// are among those — they name things on the computer, not in this app.
     public static func parse(_ url: URL) -> CompanionDeepLink? {
         if let invite = PairingInvite.parse(url) { return .pairing(invite) }
-        guard url.scheme?.lowercased() == "openmausbot" else { return nil }
+        guard url.scheme?.lowercased() == "sc-agent" else { return nil }
         switch url.host?.lowercased() {
         case "pair": return .invalidPairing
         case "chat": return chat(url)

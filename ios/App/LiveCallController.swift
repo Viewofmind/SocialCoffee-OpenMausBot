@@ -41,7 +41,7 @@ final class LiveCallController: ObservableObject {
 
     private let makeMedia: MediaFactory
     private let requestMic: MicPermission
-    private let log = Logger(subsystem: "com.openmausbot.app", category: "live-call")
+    private let log = Logger(subsystem: "in.socialcoffee.agent.app", category: "live-call")
     private weak var session: Session?
     private var media: LiveCallMedia?
     /// The last call's media while its `session.close` is still leaving.

@@ -20,7 +20,7 @@ private final class RouteProbeStub: URLProtocol {
         }
         let response = HTTPURLResponse(url: request.url!, statusCode: Self.status, httpVersion: "HTTP/1.1", headerFields: nil)!
         client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
-        client?.urlProtocol(self, didLoad: Data(#"{"app":"openmausbot"}"#.utf8))
+        client?.urlProtocol(self, didLoad: Data(#"{"app":"socialcoffee-agent"}"#.utf8))
         client?.urlProtocolDidFinishLoading(self)
     }
 

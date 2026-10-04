@@ -166,7 +166,7 @@ final class ShareViewModel: ObservableObject {
         } else if items != nil {
             phase = .loading
             do {
-                let registry = OpenMausSharedConnectionStore.loadRegistry()
+                let registry = SocialCoffeeAgentSharedConnectionStore.loadRegistry()
                 let selected = selectedComputerID.flatMap { registry.connection(id: $0) }
                     ?? registry.activeConnection
                 guard let selected else { throw ShareExtensionError.notPaired }
@@ -197,7 +197,7 @@ final class ShareViewModel: ObservableObject {
     func chooseComputer(_ id: String) async {
         guard id != selectedComputerID,
               phase == .ready || phase == .failed,
-              let selected = OpenMausSharedConnectionStore.loadRegistry().connection(id: id)
+              let selected = SocialCoffeeAgentSharedConnectionStore.loadRegistry().connection(id: id)
         else { return }
         requestedComputerID = id
         selectedComputerID = id
@@ -347,7 +347,7 @@ final class ShareViewModel: ObservableObject {
                 ignoredCount: loaded.ignoredCount
             )
 
-            let registry = OpenMausSharedConnectionStore.loadRegistry()
+            let registry = SocialCoffeeAgentSharedConnectionStore.loadRegistry()
             computers = registry.connections.map {
                 ShareComputer(id: $0.id, name: $0.name, routeLabel: "Automatic")
             }
@@ -386,7 +386,7 @@ final class ShareViewModel: ObservableObject {
             }
             try Task.checkCancellation()
             if let connection {
-                OpenMausSharedConfiguration.sharedDefaults?.set(
+                SocialCoffeeAgentSharedConfiguration.sharedDefaults?.set(
                     delivery.destination.id,
                     forKey: destinationKey(for: connection.id)
                 )
@@ -423,7 +423,7 @@ final class ShareViewModel: ObservableObject {
     }
 
     private func connect(to selectedConnection: Connection) async throws {
-        guard let pairedToken = try OpenMausSharedKeychain.token(for: selectedConnection.id) else {
+        guard let pairedToken = try SocialCoffeeAgentSharedKeychain.token(for: selectedConnection.id) else {
             throw ShareExtensionError.notPaired
         }
         connection = selectedConnection
@@ -454,7 +454,7 @@ final class ShareViewModel: ObservableObject {
         )
         guard !destinations.isEmpty else { throw ShareExtensionError.noDestinations }
 
-        let remembered = OpenMausSharedConfiguration.sharedDefaults?
+        let remembered = SocialCoffeeAgentSharedConfiguration.sharedDefaults?
             .string(forKey: destinationKey(for: selectedConnection.id))
         rememberedDestinationID = remembered
         selectedDestinationID = destinations.contains(where: { $0.id == remembered })

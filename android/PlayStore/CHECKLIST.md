@@ -8,7 +8,7 @@ commit and artifact being submitted; unchecked items remain release work.
 - [ ] Record the release commit and intended version from
   `android/app/build.gradle.kts`; confirm the version against Console uploads.
 - [ ] Confirm Android branding is SocialCoffeeAgent and desktop references are SocialCoffeeAgent.
-- [ ] Confirm package `com.openmausbot.companion` and the release SDK settings.
+- [ ] Confirm application ID `in.socialcoffee.agent.companion` and the release SDK settings.
 - [ ] Have the release owner confirm signing configuration, certificate identity,
   key backups, and supported installation/upgrade paths.
 - [ ] Configure signing securely and run `./gradlew :app:bundleRelease` from
