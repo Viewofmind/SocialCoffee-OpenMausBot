@@ -397,7 +397,7 @@ data class PairingInvite(val connection: Connection, val credential: String) {
             if (url.scheme.equals("https", true) || url.scheme.equals("http", true)) {
                 return parseServerLink(url)
             }
-            if (!url.scheme.equals("socialcoffee-agent", ignoreCase = true) ||
+            if (!url.scheme.equals("sc-agent", ignoreCase = true) ||
                 !url.host.equals("pair", ignoreCase = true)
             ) {
                 return null
