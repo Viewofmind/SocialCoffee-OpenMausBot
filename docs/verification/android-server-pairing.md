@@ -1,7 +1,7 @@
 # Android server QR pairing
 
-Android now accepts the `/pair#code=…` links printed by `openmausbot serve`
-and `openmausbot pair`, as well as the existing desktop companion QR format.
+Android now accepts the `/pair#code=…` links printed by `sc-agent serve`
+and `sc-agent pair`, as well as the existing desktop companion QR format.
 A scan fills a confirmation screen; no request is sent until the user confirms.
 The manual form also accepts the server's twelve-character code. Remote public
 addresses require HTTPS; HTTP supports `.ts.net` tailnet names, `localhost`,

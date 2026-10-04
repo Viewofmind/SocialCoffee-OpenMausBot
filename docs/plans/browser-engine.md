@@ -12,7 +12,7 @@ Stagehand, browser-use, browserless, Lightpanda) is summarised at the end.
   sandbox, and Electron 43 exits before ready with it on Windows
   (electron/electron#51761). A browser that is its own Chrome process, driven
   over CDP, does not depend on that.
-- **Servers have no browser today.** `openmausbot serve` and the Docker stack
+- **Servers have no browser today.** `sc-agent serve` and the Docker stack
   run without Electron, so `availableBrowserConnection()` is null and the
   toggle is greyed.
 - **One engine, one contract.** A skill written on a Mac runs on a VPS.
@@ -68,7 +68,7 @@ capability. Native session identity and encryption keys stay in the server.
   "desktop" | "headless" | "unavailable"` (+ reason), and the Settings toggle
   and the per-bot switch key off it instead of `window.ogb.browser`.
 - Docker: `npm install -g agent-browser@<pinned>` and `agent-browser install
-  --with-deps` at build time, as root, before `USER maus`.
+  --with-deps` at build time, as root, before `USER scagent`.
 - Tests: resolver and download pinning (stub server), the integration spec
   (mutation-check the guards), an e2e turn against a fake `agent-browser`
   binary that speaks MCP.

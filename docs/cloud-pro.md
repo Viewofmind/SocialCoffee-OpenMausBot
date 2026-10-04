@@ -1,21 +1,21 @@
-# OMB Cloud: the home machine
+# SocialCoffeeAgent Cloud: the home machine
 
-OMB Cloud (the Personal, Pro and Max plans) gives one person an always-on
-OpenMausBot server of their own. The plans differ in machine size, disk and
+SocialCoffeeAgent Cloud (the Personal, Pro and Max plans) gives one person an always-on
+SocialCoffeeAgent server of their own. The plans differ in machine size, disk and
 included allowances; everything on this page applies to all of them. Each
 customer gets one Fly app with one `home` machine that is always on, a volume
 at `/data`, and TLS at `https://<app>.fly.dev`. The desktop app, the phone and
 the web are windows onto it. Local use of the app is unchanged and free.
 
-OMB Cloud includes no AI usage. The person signs in on their machine with their
+SocialCoffeeAgent Cloud includes no AI usage. The person signs in on their machine with their
 own Claude or ChatGPT subscription, or an API key, through the same sign-in
-flows as any OpenMausBot server. Nothing on a Cloud home is routed to a
+flows as any SocialCoffeeAgent server. Nothing on a Cloud home is routed to a
 platform model gateway.
 
-This page is the OpenMausBot half of a contract with three parties:
+This page is the SocialCoffeeAgent half of a contract with three parties:
 
 - **the home machine**: this repository's `deploy/fly/` image;
-- **the Admin** (openmaus-cloud, `docs/consumer-cloud.md` there): provisions
+- **the Admin** (socialcoffee-agent-cloud, `docs/consumer-cloud.md` there): provisions
   the app, holds the machine's signing secret, and answers the desktop's Cloud
   session;
 - **the desktop app**: signs in to Cloud, lists the machine under Servers,
@@ -26,7 +26,7 @@ Contract version: `1` (`cloudContractVersion` on the wire).
 ## What the person sees
 
 1. They subscribe on the Cloud site. The Admin creates the Fly app and machine.
-2. They open the desktop app, go to **Settings → OMB Cloud** and sign in (the
+2. They open the desktop app, go to **Settings → SocialCoffeeAgent Cloud** and sign in (the
    existing device sign-in). A **Your Cloud** card says **Setting up** until
    the machine is up.
 3. When it is ready, the machine appears under **Servers** as **My Cloud**, and
@@ -57,7 +57,7 @@ replayed from Settings).
 1. Get the phone app: the menu under your name → **Get the phone app** (App
    Store for iPhone, APK for Android).
 2. The same menu → **Connect your phone · to your Cloud (always on)**, or
-   **Settings → OMB Cloud → Use your Cloud on your phone**. The Cloud opens in
+   **Settings → SocialCoffeeAgent Cloud → Use your Cloud on your phone**. The Cloud opens in
    the app window at its phone pairing.
 3. **Create pairing code**, and scan the QR code with the phone app.
 
@@ -74,14 +74,14 @@ How it fits together (`src/lib/phone-pairing.ts`):
   Cloud (always on)* first, which does what **Use your Cloud on your phone**
   does, then *to this computer*. A paid plan whose Cloud is not Ready keeps
   the single *to this computer* line, with a note that the Cloud will show
-  there. A failed switch opens Settings → OMB Cloud.
+  there. A failed switch opens Settings → SocialCoffeeAgent Cloud.
 - **Use your Cloud on your phone** shows for a paid plan. With a Ready Cloud it
   calls `cloud-account:connectHomeForPhone`, which takes no arguments and
   connects as **Connect to my Cloud** does, adding the one fixed request
   `?desktop-settings=phone` (on `/pair` too, which carries it on once paired).
   The Cloud's page opens Settings on its phone pairing. It never makes a code
   by itself. Before the Cloud is Ready, or if opening it failed, the card
-  lists the two steps instead. On the Cloud itself, Settings → OMB Cloud
+  lists the two steps instead. On the Cloud itself, Settings → SocialCoffeeAgent Cloud
   offers the same button and opens the pairing directly.
 
 ### Only your own devices
@@ -90,7 +90,7 @@ A Cloud home is personal (`server/cloud-owner.ts`): only the owner's own
 devices connect (the desktop app, a phone, a browser signed in from the Cloud
 page), each with an admin session that the Admin's signed pairing, or one of
 those devices, gave it. The server mints and accepts nothing else, and says
-so in one line, "OMB Cloud is personal: only your own devices can connect.":
+so in one line, "SocialCoffeeAgent Cloud is personal: only your own devices can connect.":
 
 - `POST /api/auth/pairing` refuses a window without admin scope (Remote
   access offers no chat-only choice there), and `POST /api/auth/pair` and
@@ -209,7 +209,7 @@ box the person ticks:
    stopped one) in a bot's conversation or a room. The onboarding record never
    travels with a copy, so copied-in chats do not count.
 4. **Optional: Let your Cloud use this Mac**: only in the desktop app on
-   macOS. **Choose what to lend** opens Settings → OMB Cloud on this Mac,
+   macOS. **Choose what to lend** opens Settings → SocialCoffeeAgent Cloud on this Mac,
    leaving the Cloud's page as the menu-bar item's **Lending settings…** does
    (`cloudLending.open()`: no arguments, answered only for the verified Cloud
    page or the app's own window). Done when `GET /api/shared-computers` lists
@@ -251,12 +251,12 @@ Cloud use this Mac**, below), through the shared-computer tools.
 `shared/cloud-home.ts` decides which places are offered, for the server and
 the app alike.
 
-### Open in the app: `openmausbot://cloud`
+### Open in the app: `socialcoffee-agent://cloud`
 
-The Cloud page (`https://cloud.openmausbot.com/cloud`) can offer **Open in the
-app** as a link to exactly `openmausbot://cloud`. The app accepts that string
+The Cloud page (`https://cloud.socialcoffee.in/cloud`) can offer **Open in the
+app** as a link to exactly `socialcoffee-agent://cloud`. The app accepts that string
 and nothing else: no path, query, fragment or trailing slash, and it ignores
-any other form. Like `openmausbot://organization`, it is an action, not a
+any other form. Like `socialcoffee-agent://organization`, it is an action, not a
 router. It never carries an address, a pairing code or a credential; the app
 decides everything from its own verified state (`electron/cloud-entry.mjs`).
 
@@ -265,7 +265,7 @@ decides everything from its own verified state (`electron/cloud-entry.mjs`).
    that arrives before the app is ready). If the window already shows
    **My Cloud**, coming forward is all it does.
 2. Otherwise the window returns to this computer (a hosted server that was
-   showing stays saved under **Servers**) and opens **Settings → OMB Cloud**.
+   showing stays saved under **Servers**) and opens **Settings → SocialCoffeeAgent Cloud**.
    Before that view acts, the app gives a saved Cloud sign-in up to five
    seconds to finish restoring, so it is never mistaken for signed out.
 3. Opened this way, the view acts on its own, with no confirmation:
@@ -283,11 +283,11 @@ sign-out in that view starts nothing) and one automatic connection per link.
 A failed connection shows the card's error; clicking the link again retries.
 Closing Settings or choosing another section ends it. While it is open, the
 first-run welcome waits, as it does for Organization settings. A normal visit
-to **Settings → OMB Cloud** never signs in or connects by itself.
+to **Settings → SocialCoffeeAgent Cloud** never signs in or connects by itself.
 
 The link does nothing in development builds, and in companion client mode it
 explains that the app must be disconnected from the other computer first.
-The `openmausbot` scheme belongs to the installed app: on macOS through the
+The `sc-agent` scheme belongs to the installed app: on macOS through the
 app bundle, on Linux through the `.deb`'s desktop entry, and on Windows (and
 for an AppImage) once the installed app has started at least once, since it
 registers itself at startup. Before that, or if the app is not installed, the
@@ -378,7 +378,7 @@ computer sharing exactly as before: off unless a maintainer sets
 
 ### What the person sees
 
-In **Settings → OMB Cloud**, the **Your Cloud** card has a **Let my Cloud use
+In **Settings → SocialCoffeeAgent Cloud**, the **Your Cloud** card has a **Let my Cloud use
 this Mac** switch under **Connect to my Cloud** (it is part of connecting, not
 a dialog). Turning it on shows what can be lent; each change applies at once,
 with no confirmation. The switch and the chosen scopes are the consent.
@@ -419,7 +419,7 @@ On the Mac (the authority; `electron/computer-sharing.mjs`,
 - **Bound to the account and the machine.** The grant records the Cloud
   account id and the machine's origin from the verified Cloud session
   (`cloud-account.mjs`), and the Cloud home's environment id on first contact.
-  Signing out of OMB Cloud, another account signing in, the Cloud moving to
+  Signing out of SocialCoffeeAgent Cloud, another account signing in, the Cloud moving to
   another machine, or another server answering at that address ends lending
   and switches it off (turning it back on is the person's choice). A Cloud
   sign-in that must be renewed pauses lending; a minute's re-verification or an
@@ -602,7 +602,7 @@ the `list_shared_computers` and `shared_computer` tools.
 ## The image
 
 `deploy/fly/Dockerfile` builds on the published server image
-(`ghcr.io/milind-soni/openmausbot`) and adds:
+(`ghcr.io/viewofmind/socialcoffee-agent`) and adds:
 
 - the engine CLIs from `ENGINES` (default Claude Code and Codex; the base
   image already carries agent-browser and its Chrome);
@@ -611,14 +611,14 @@ the `list_shared_computers` and `shared_computer` tools.
   as the entry point.
 
 ```sh
-docker build -t openmausbot .
-docker build -f deploy/fly/Dockerfile --build-arg BASE_IMAGE=openmausbot -t omb-cloud-home .
+docker build -t socialcoffee-agent .
+docker build -f deploy/fly/Dockerfile --build-arg BASE_IMAGE=socialcoffee-agent -t omb-cloud-home .
 ```
 
 At boot the launcher, running as root, hands the volume's mount point to the
-`maus` user, binds the volume to this machine as `maus`
+`scagent` user, binds the volume to this machine as `scagent`
 (`/data/.omb-cloud-home.json`; another machine's volume, or an unmarked
-volume with data on it, is refused), and runs two children as `maus`: the
+volume with data on it, is refused), and runs two children as `scagent`: the
 server on `127.0.0.1:8799` (webhooks on `127.0.0.1:8800`) and Caddy on
 `:8080`. It stays a small root supervisor: if either child exits, both stop
 and Fly restarts the machine. The one exception: after a restore commits
@@ -639,17 +639,17 @@ what the image sets and the parts of the boot contract that are not secret
 (`serverEnvironmentAllowed`). Anything else, a secret the platform adds
 later included, never reaches it; the launcher logs the names it left out,
 never their values. The launcher's own environment and memory belong to
-root, out of `maus`'s reach. A server started without the pipe (tests,
+root, out of `scagent`'s reach. A server started without the pipe (tests,
 development) reads them from its environment and says so in its log.
 
-The launcher runs and trusts only code `maus` cannot change: the image
+The launcher runs and trusts only code `scagent` cannot change: the image
 makes `/app` root's and not writable by anyone else, and the launcher
 refuses to start if Node, itself, the server's entry point, Caddy or its
 config (or any folder above them) is not root's, is writable by others, or
-is on the volume. Only the `/data` volume is `maus`'s.
+is on the volume. Only the `/data` volume is `scagent`'s.
 
-`HOME=/data`, so `~/.claude`, `~/.codex` and OpenMausBot's own data
-(`/data/.openmausbot`) persist on the volume.
+`HOME=/data`, so `~/.claude`, `~/.codex` and SocialCoffeeAgent's own data
+(`/data/.socialcoffee-agent`) persist on the volume.
 
 ### Why the server stays on loopback
 
@@ -674,7 +674,7 @@ own Fly private network, so no machine can reach another's over 6PN.
 
 ## Boot contract
 
-Set by openmaus-cloud's provisioner (`server/cloud-machines.ts`). Any of the
+Set by socialcoffee-agent-cloud's provisioner (`server/cloud-machines.ts`). Any of the
 first four switches the server into Cloud home mode; then all of them are
 required and the whole contract is validated. A partial or invalid contract
 stops the server before it serves, with a message that names the variable and
@@ -684,20 +684,20 @@ never echoes a secret.
 | --- | --- | --- |
 | `OMB_CLOUD_ROLE` | env | `home`. (`desktop` belongs to the Cloud desktop image and is refused here.) |
 | `OMB_CLOUD_MACHINE_ID` | env | The Admin's machine id (a UUID). Binds the volume. |
-| `OMB_CLOUD_ADMIN_URL` | secret | The Cloud origin, exact `https://`, e.g. `https://cloud.openmausbot.com`. |
+| `OMB_CLOUD_ADMIN_URL` | secret | The Cloud origin, exact `https://`, e.g. `https://cloud.socialcoffee.in`. |
 | `OMB_CLOUD_BOOTSTRAP_SECRET` | secret | 43 base64url characters (256 bits): the key the Admin signs pairing requests with. |
 | `OMB_PUBLIC_URL` | env | The machine's exact `https://` origin, `https://<app>.fly.dev`. |
 
 - The machine must not also carry `OMB_ADMIN_URL`, `OMB_ADMIN_WORKSPACE` or
   `OMB_ADMIN_MEMBERSHIP`: a Cloud home is a personal server with pairing codes
   on, not a hosted team workspace with portal membership.
-- `HOME=/data` and `OMB_DATA_DIR=/data/.openmausbot` are set by the image.
+- `HOME=/data` and `OMB_DATA_DIR=/data/.socialcoffee-agent` are set by the image.
 - The server keeps the secret in memory and removes it from its environment at
   startup; no engine or tool it starts ever inherits it.
 
 ### No model gateway
 
-OMB Cloud includes no AI, so the contract has no model gateway. If a Cloud
+SocialCoffeeAgent Cloud includes no AI, so the contract has no model gateway. If a Cloud
 home is ever given `OMB_HOSTED_MODEL_URL`, `OMB_HOSTED_MODEL_TOKEN` or
 `OMB_HOSTED_MODELS` (an Admin from before this decision set all three), it
 still boots, logs one warning naming the variables (never their values), and
@@ -718,12 +718,12 @@ For each service the Admin has configured, it also sets:
 
 | Variable | Fly | Value |
 | --- | --- | --- |
-| `OMB_CLOUD_BOAT_URL` | env | `https://cloud.openmausbot.com/api/cloud/services/boat/api/box/v1`, the Admin's Boat relay. It keeps Boat's own `/api/box/v1` ending, so the Computer engine's model catalog (`<root>/api/provider-models`) resolves through the relay too. |
+| `OMB_CLOUD_BOAT_URL` | env | `https://cloud.socialcoffee.in/api/cloud/services/boat/api/box/v1`, the Admin's Boat relay. It keeps Boat's own `/api/box/v1` ending, so the Computer engine's model catalog (`<root>/api/provider-models`) resolves through the relay too. |
 | `OMB_CLOUD_BOAT_TOKEN` | secret | This machine's Boat relay token (`box_omb_…`). It is not a Boat key and works only through the relay. |
-| `OMB_CLOUD_VOICE_URL` | env | `https://cloud.openmausbot.com/api/cloud/services/voice/v1`, the Admin's voice relay. |
+| `OMB_CLOUD_VOICE_URL` | env | `https://cloud.socialcoffee.in/api/cloud/services/voice/v1`, the Admin's voice relay. |
 | `OMB_CLOUD_VOICE_TOKEN` | secret | This machine's voice relay token (`omb_voice_…`). |
 | `OMB_TTS_DEFAULT_VOICE` | env | An ElevenLabs voice id, used until the person picks a voice or another speech provider in Settings. |
-| `OMB_CLOUD_DECIDER_URL` | env | `https://cloud.openmausbot.com/api/cloud/services/decider`, the Admin's Jev relay. It is a Jev base URL, used as it is: the decider adds `/v1/systemone`, the relay's only route, so every included decision goes to exactly `<OMB_CLOUD_DECIDER_URL>/v1/systemone`. |
+| `OMB_CLOUD_DECIDER_URL` | env | `https://cloud.socialcoffee.in/api/cloud/services/decider`, the Admin's Jev relay. It is a Jev base URL, used as it is: the decider adds `/v1/systemone`, the relay's only route, so every included decision goes to exactly `<OMB_CLOUD_DECIDER_URL>/v1/systemone`. |
 | `OMB_CLOUD_DECIDER_TOKEN` | secret | This machine's decision relay token (`omb_decide_…`). It is not a Jev key and works only through the relay. |
 
 A service is included only when both its URL and its token are set
@@ -776,11 +776,11 @@ computers belong to this machine on every request.
   starts inherits them, including tools that copy its environment as it is
   (the browser, docker, ssh, MCP bridges), and no process finds them in the
   server's `/proc/<pid>/environ`. They are still in the server's memory, and
-  that is the remaining exposure: the server runs as `maus`, like every
+  that is the remaining exposure: the server runs as `scagent`, like every
   engine, so a process running as the same user that may trace it (the
   kernel's ptrace policy, `kernel.yama.ptrace_scope`, decides) could read
   them there. That is why a guest's turn gets no shell (above); the complete
-  fix is engines under a user of their own. A relay token is only this customer's own OMB Cloud
+  fix is engines under a user of their own. A relay token is only this customer's own SocialCoffeeAgent Cloud
   allowance: it works only through the Admin, only on this machine's cloud
   computers, voice and decisions, and only up to the monthly caps.
 - A refusal from the Boat or voice relay (for example, the month's cloud
@@ -803,7 +803,7 @@ x-omb-cloud-timestamp: 1790000000
 x-omb-cloud-nonce: <base64url, 16–128 characters>
 x-omb-cloud-signature: v1=<base64url HMAC-SHA256(OMB_CLOUD_BOOTSTRAP_SECRET, canonical)>
 
-{"label":"OpenMausBot app (Cloud)","ttlSeconds":300}
+{"label":"SocialCoffeeAgent app (Cloud)","ttlSeconds":300}
 ```
 
 where `canonical` is
@@ -901,15 +901,15 @@ being linked, or whose state is unknown is offered a plan anywhere in the app.
 
 In the Server menu, **My Cloud** goes through the same connection as
 **Connect to my Cloud** (no pairing code to type); when it cannot, the app
-opens **Settings → OMB Cloud**, which says the next step. In the desktop app a
+opens **Settings → SocialCoffeeAgent Cloud**, which says the next step. In the desktop app a
 `/pair#code=` link connects without a second click; a browser still asks. On a
 Cloud home the pairing page says where its connection starts (the environment
 descriptor's `capabilities.cloudHome`).
 
-On the person's own Cloud, open in the app's window, **Settings → OMB Cloud**
+On the person's own Cloud, open in the app's window, **Settings → SocialCoffeeAgent Cloud**
 shows the plan read only (`cloud-plan:*`: its name and whether it is active,
 **Manage in your browser** and **Switch to this computer**). It is listed only
-on an OMB Cloud home (`config.cloudHome`), never on another server open in the
+on an SocialCoffeeAgent Cloud home (`config.cloudHome`), never on another server open in the
 window. Main answers it for the Cloud this account verified, or last verified
 while a check is failing or the sign-in has ended, so that page says
 "checking" or "sign in again on your computer" rather than an error; where the
@@ -935,12 +935,12 @@ section is only what the Cloud adds.
 
 - **The Admin's grant.** Main signs in to the Cloud through the Admin: it
   opens a single-use pairing window for the signed-in owner
-  (`POST /api/cloud/desktop/pairing`, `pairHome`), so **Settings → OMB Cloud**
+  (`POST /api/cloud/desktop/pairing`, `pairHome`), so **Settings → SocialCoffeeAgent Cloud**
   can copy before the Cloud was ever opened in this app. No session in the
   window yet is therefore not a block on the Cloud, as it is on other servers.
   A saved "My Cloud" entry that is not this account's verified Cloud is copied
   to like any other server.
-- **Settings → OMB Cloud**, under Your Cloud once it is Ready, opens the same
+- **Settings → SocialCoffeeAgent Cloud**, under Your Cloud once it is Ready, opens the same
   panel as Settings → Servers, named "My Cloud".
 - **The setup checklist.** While the Cloud's setup checklist is up, the copy
   offer is its second step instead of a card (Setup checklist, above).
@@ -997,8 +997,8 @@ section is only what the Cloud adds.
 ## Published image
 
 Every push to `main` and every release tag publishes the home machine image as
-`ghcr.io/milind-soni/openmausbot-cloud-home`, tagged `latest` (main only), `sha-<commit>` and the release tag.
+`ghcr.io/viewofmind/socialcoffee-agent-cloud-home`, tagged `latest` (main only), `sha-<commit>` and the release tag.
 It is built from `deploy/fly/Dockerfile` on top of the server image for the same commit, with Claude Code and
 Codex installed. The Docker workflow's summary prints the digest. Set it in the Admin as
-`OMB_CLOUD_HOME_IMAGE=ghcr.io/milind-soni/openmausbot-cloud-home@sha256:…`; changing it rolls the new image
+`OMB_CLOUD_HOME_IMAGE=ghcr.io/viewofmind/socialcoffee-agent-cloud-home@sha256:…`; changing it rolls the new image
 out to existing machines one at a time, reverting automatically on a failed health check.
