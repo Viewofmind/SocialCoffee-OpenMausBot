@@ -137,7 +137,16 @@ About 920 files. By area:
 ## Verification
 
 On the branch: `pnpm install --frozen-lockfile`, `pnpm typecheck`, `pnpm lint` and
-`node scripts/generate-locale.mjs --check` pass. Test results are in the pull request description.
+`pnpm i18n:check` pass. `pnpm broker:test`, `pnpm test:electron` and `pnpm test:packaged-server`
+pass. In `vitest run`, four files fail on this build machine and fail the same way on `main`, so
+they are not caused by the rename:
+
+- `server/engine-install.test.ts` and `server/harness/registry.test.ts`: the reduced test `PATH`
+  has no `node` (`/usr/bin/env: 'node': No such file or directory`).
+- `server/config.test.ts` (permission/owner change) and two `server/lending-memory.test.ts`
+  filesystem fingerprint cases: environment-dependent file metadata on this machine.
+
+`electron/updater-handoff.electron.test.mjs` needs an X display (`DISPLAY` and `XAUTHORITY`).
 
 ## Follow-ups
 
