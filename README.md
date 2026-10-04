@@ -398,8 +398,8 @@ AI-provider sign-in. Devices pair once with a short code. The deployment guide i
 [Apache License 2.0](LICENSE). Copyright 2026 Milind Soni and OpenMausBot contributors; modifications
 Copyright 2026 SocialCoffee DigiTech Pvt Ltd. See [NOTICE](NOTICE).
 
-`enterprise/` is not Apache-2.0: it is upstream's proprietary code under its own
-[license](enterprise/LICENSE), carried unchanged and not relicensed by SocialCoffee DigiTech Pvt Ltd.
+`enterprise/` is not Apache-2.0: it is SocialCoffeeAgent Enterprise, proprietary to SocialCoffee
+DigiTech Pvt Ltd under its own [license](enterprise/LICENSE), and is not the upstream enterprise build.
 Delete that folder and what remains is the open-source edition. Details are in
 [LICENSING.md](LICENSING.md) and [BRANDING.md](BRANDING.md).
 

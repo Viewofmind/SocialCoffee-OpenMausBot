@@ -35,7 +35,9 @@ const routeModules = readdirSync(ROUTES_DIR).filter((name) => name.endsWith(".ts
 const serverSource = [join(ROOT, "server", "index.ts"), ...routeModules.map((name) => join(ROUTES_DIR, name))]
   .map((file) => readFileSync(file, "utf8")).join("\n");
 const hooksSource = readFileSync(join(ROOT, "server", "webhook-ingress.ts"), "utf8");
-const hostedSource = readFileSync(join(ROOT, "enterprise", "server", "workspace-access.ts"), "utf8");
+// The optional hosted sign-in adapter; this distribution's enterprise layer does not ship one.
+const hostedAdapter = join(ROOT, "enterprise", "server", "workspace-access.ts");
+const hostedSource = existsSync(hostedAdapter) ? readFileSync(hostedAdapter, "utf8") : "";
 // Only constants named in the public handler's accepted-path guard are routes.
 // Outbound post("/api/handoff/...") calls belong to the identity service, not us.
 const hostedConstants = new Map([...hostedSource.matchAll(/const ([A-Z_]+) = "(\/api\/[^"\n]+)";/g)].map(match => [match[1]!, match[2]!]));
@@ -88,7 +90,7 @@ describe("docs/verification recipes cite things that exist", () => {
     expect([...new Set(refs.filter((hit) => !registered(target(hit))))]).toEqual([]);
   });
 
-  it("distinguishes delegated public routes from external identity backchannels", () => {
+  it.skipIf(!existsSync(hostedAdapter))("distinguishes delegated public routes from external identity backchannels", () => {
     expect([...hostedPublicRoutes]).toEqual(["/api/auth/hosted/start", "/api/auth/hosted/callback"]);
     expect(hostedPublicRoutes.has("/api/handoff/consume")).toBe(false);
     expect(hostedPublicRoutes.has("/api/handoff/check")).toBe(false);

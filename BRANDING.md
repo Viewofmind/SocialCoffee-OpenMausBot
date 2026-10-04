@@ -89,25 +89,33 @@ clients, servers, store accounts, or third-party contracts:
 - `third_party/` and `public/novnc-NOTICE.txt` are unchanged.
 - Milind Soni copyright lines are kept. The SocialCoffee DigiTech Pvt Ltd copyright is added only to
   the About panel, `electron-builder.yml`, and the README license section.
-- `CLA.md` is upstream's contributor agreement and is left as written; it needs a SocialCoffee
-  replacement (see Follow-ups) before accepting outside contributions to this fork.
+- `CLA.md` (upstream's agreement, which granted rights to the upstream author for `enterprise/`) was
+  removed with upstream's `enterprise/`. `enterprise/` here takes no outside contributions; the
+  `contributors` workflow refuses outside pull requests that touch it.
 
 ## Enterprise split
 
-On this fork, the Apache core is our distribution. `enterprise/` is not:
+`enterprise/` on this fork is SocialCoffeeAgent Enterprise: our distribution, separate from upstream's.
 
-- `enterprise/LICENSE` is "Copyright (c) 2026 Milind Soni. All rights reserved". Section 3 forbids
-  redistributing modified versions, white-labelling, and removing the license check without a
-  written partner agreement. This repository is public, so rebranding `enterprise/` or replacing its
-  LICENSE would redistribute modified proprietary code without permission.
-- `enterprise/` is therefore carried unchanged and is not relicensed by SocialCoffee DigiTech Pvt Ltd.
-  The entitlement gate is unchanged; deleting `enterprise/` still boots the open-source edition.
-- Core-side (Apache) code that talks to the enterprise layer was rebranded like the rest of the core.
-- Upstream maintains its own enterprise build. Any SocialCoffeeAgent enterprise edition on this fork
-  must be written fresh under our own license, or rebranded only with a written agreement. Options:
-  1. delete `enterprise/` and ship the open-source edition;
-  2. keep it as-is under upstream's license;
-  3. obtain a written agreement that allows rebranding.
+- Upstream's `enterprise/` (Copyright Milind Soni, all rights reserved; its license forbids modified
+  redistribution and white-labelling) was deleted, not rebranded. Upstream maintains its own
+  enterprise build; none of it is in the current tree. Earlier commits in this fork's history still
+  carry it unchanged, under upstream's license.
+- The new `enterprise/` was written from scratch against the Apache-licensed hook in
+  `server/enterprise.ts` (`register()` returning customer, features and expiry). Upstream's
+  enterprise source was not used as a reference. It is proprietary to SocialCoffee DigiTech Pvt Ltd
+  under `enterprise/LICENSE`.
+- Keys are `sca1.<claims>.<signature>`, Ed25519-signed by SocialCoffee DigiTech and checked offline
+  against `enterprise/server/trusted-keys.ts`. That list ships empty, so until a public key is added
+  every key is refused and builds run the open-source edition. `enterprise/scripts/keygen.ts` and
+  `issue-license.ts` run on the issuer's machine; the private key never enters the repository or CI.
+- Entitlements (`enterprise/FEATURES`): `whitelabel`, `admin`, `budgets`, `billing`. The features
+  themselves are in the Apache core behind `entitled()`; the layer only verifies the key.
+- No hosted-workspace sign-in adapter is shipped, so a server configured with `OMB_ADMIN_URL` fails
+  closed. `server/hosted-access.test.ts` skips itself while the adapter is absent.
+- The entitlement gate is unchanged, and deleting `enterprise/` still boots the open-source edition
+  (CI job `open-source edition builds without enterprise/`).
+- `OMB_LICENSE_KEY` and `OMB_ENTERPRISE_DIR` keep their names (compatibility env vars).
 
 ## Updates and signing
 
@@ -134,6 +142,9 @@ About 920 files. By area:
   copy in Swift, Kotlin, `Localizable.xcstrings` and every Android `strings.xml`, the launcher and
   notification icons (`ic_launcher_*`, `ic_maus_mark.xml`, `launcher_background`, iOS `AppIcon`), store
   icon sources, and store text. Upstream store screenshots and the feature graphic are removed.
+- Enterprise: `enterprise/` replaced (new `LICENSE`, `README.md`, `FEATURES`, `server/`, `scripts/`),
+  `CLA.md` removed, `.github/workflows/contributors.yml`, the hosted and verification-docs tests,
+  `docs/verification/enterprise-license.md` and `hosted-workspaces.md`.
 - Docs and repo meta: `README.md`, `NOTICE`, `LICENSING.md`, `BRANDING.md`, `AGENTS.md`,
   `CONTRIBUTING.md`, `SECURITY.md`, `docs/`, `apps/docs/`, `.github/`.
 
@@ -175,6 +186,8 @@ they are not caused by the rename:
   Replacing that needs an Xcode and Android SDK build, which this branch could not run. Icons and
   copy are already rebranded. Not compiled here: the iOS and Android string and icon changes.
 - **Store artwork:** capture new App Store and Play screenshots and a feature graphic.
-- **CLA:** replace `CLA.md` with a SocialCoffee DigiTech Pvt Ltd agreement.
-- **Enterprise:** decide among the three options above.
+- **Enterprise signing key:** run `node enterprise/scripts/keygen.ts` offline, add the printed public
+  key to `enterprise/server/trusted-keys.ts`, and keep the private key backed up offline.
+- **Enterprise legal review:** have counsel review `enterprise/LICENSE` and the customer agreement.
+- **Hosted workspaces:** write our own sign-in adapter if hosted team workspaces are needed.
 - **Alias:** remove `pnpm omb` next release.
