@@ -6,7 +6,6 @@ import { useBotEditor } from "./bot-settings/BotEditorContext";
 import { imageAttachmentFromFile } from "@/lib/composer-attachments";
 import { cn } from "@/lib/cn";
 import {
-  PICKABLE_STATES,
   MARK_COLORS,
   MARK_COLOR_NAMES,
   type MarkMotion,
@@ -22,8 +21,7 @@ import {
   clampAvatarZoom,
   type BotAvatarCrop,
 } from "../../shared/bot-avatar";
-import { MASCOT_BODIES, MASCOT_BODY_IDS } from "../../shared/mascot-bodies";
-import { BotAvatar, MarkAvatar } from "./Avatar";
+import { BotAvatar } from "./Avatar";
 import { AvatarImageGenerator } from "./AvatarImageGenerator";
 import { useOrganizationBranding } from "@/lib/use-organization-branding";
 
@@ -311,29 +309,6 @@ export function BotProfileAvatarCard({
         {crop === "mascot" && (
           <>
             <div className="mb-2 mt-4 text-[12px] font-medium uppercase tracking-[0.08em] text-ink-secondary">
-              Expression
-            </div>
-            <div className="grid grid-cols-5 gap-2">
-              {PICKABLE_STATES.map((expression) => (
-                <button
-                  key={expression}
-                  type="button"
-                  disabled={busy}
-                  aria-pressed={activeState === expression}
-                  onClick={() => onPatch({ mascotExpression: expression })}
-                  className={cn(
-                    "flex h-[58px] items-center justify-center rounded-xl bg-inset transition-colors hover:bg-control disabled:opacity-50",
-                    activeState === expression && "ring-2 ring-accent-border",
-                  )}
-                  title={expression}
-                  aria-label={`Use ${expression} expression`}
-                >
-                  <MarkAvatar color={bot.color} bodyId={bot.mascotBody ?? undefined} state={expression} size={42} animated={false} />
-                </button>
-              ))}
-            </div>
-
-            <div className="mb-2 mt-4 text-[12px] font-medium uppercase tracking-[0.08em] text-ink-secondary">
               Color
             </div>
             <div className="flex flex-wrap gap-2.5">
@@ -352,30 +327,6 @@ export function BotProfileAvatarCard({
                   title={color}
                   aria-label={`Use ${color} mascot color`}
                 />
-              ))}
-            </div>
-
-            <div className="mb-2 mt-4 text-[12px] font-medium uppercase tracking-[0.08em] text-ink-secondary">
-              Body
-            </div>
-            <div className="grid grid-cols-5 gap-1.5">
-              {MASCOT_BODY_IDS.map((id) => (
-                <button
-                  key={id}
-                  type="button"
-                  disabled={busy}
-                  aria-pressed={(bot.mascotBody ?? "cursor") === id}
-                  aria-label={`Use the ${MASCOT_BODIES[id].name} body`}
-                  onClick={() => onPatch({ mascotBody: id })}
-                  className={cn(
-                    "flex items-center justify-center rounded-lg py-1.5 disabled:opacity-50",
-                    (bot.mascotBody ?? "cursor") === id
-                      ? "bg-control text-ink"
-                      : "text-ink-secondary hover:bg-control/60",
-                  )}
-                >
-                  <MarkAvatar color={bot.color} bodyId={id} size={34} animated={false} trackPointer={false} />
-                </button>
               ))}
             </div>
           </>

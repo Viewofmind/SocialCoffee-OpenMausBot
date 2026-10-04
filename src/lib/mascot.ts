@@ -1,14 +1,51 @@
-import { CURSOR_STATES, type CursorState } from "@/components/CursorAvatar";
 import { botShowsUnread } from "./bot-unread";
 import { lastNonReceipt } from "./receipts";
 
-/** The mascot's behaviour vocabulary — CursorAvatar's 39 states, under the
- * app's historical names. */
-export type MarkState = CursorState;
-export const MARK_STATES = CURSOR_STATES;
+/** The bot avatar's behaviour vocabulary, under the app's historical names. */
+export const MARK_STATES = [
+  "sleeping",
+  "waking",
+  "idle",
+  "listening",
+  "thinking",
+  "searching",
+  "working",
+  "excited",
+  "surprised",
+  "suspicious",
+  "angry",
+  "drowsy",
+  "happy",
+  "curious",
+  "confused",
+  "bored",
+  "proud",
+  "shy",
+  "sad",
+  "laughing",
+  "scared",
+  "playful",
+  "celebrate",
+  "orbit",
+  "radar",
+  "progress",
+  "spawning",
+  "humming",
+  "loading",
+  "dictating",
+  "writing",
+  "sending",
+  "receiving",
+  "uploading",
+  "notifying",
+  "alerting",
+  "dragging",
+  "bouncing",
+  "powering-down",
+] as const;
+export type MarkState = (typeof MARK_STATES)[number];
 
-/** CursorAvatar ships French group labels; the app shows these instead. The
- * memberships mirror its STATE_GROUPS exactly. */
+/** Display groups for MARK_STATES. */
 export const STATE_GROUPS = {
   Lifecycle: ["sleeping", "waking", "idle", "listening", "thinking", "searching", "working"],
   Reactions: [
