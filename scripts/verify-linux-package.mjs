@@ -424,7 +424,7 @@ const fields = execFileSync(
 for (const expected of [
   "Package: socialcoffee-agent",
   "Architecture: amd64",
-  "Maintainer: Milind Soni",
+  "Maintainer: SocialCoffee DigiTech Pvt Ltd",
   "Section: utils",
   "Priority: optional",
 ]) {
