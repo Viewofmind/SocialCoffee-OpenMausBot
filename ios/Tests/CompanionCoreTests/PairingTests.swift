@@ -138,7 +138,7 @@ final class PairingTests: XCTestCase {
 
     // Oct 3: a Windows PC's QR led with WSL's and Hyper-V's addresses; the phone tried only
     // the first. Every local address the QR carries is tried; the credential still goes only
-    // to the first that identifies itself as OpenMausBot.
+    // to the first that identifies itself as SocialCoffeeAgent.
     func testADesktopQRPairsThroughWhicheverOfItsLocalAddressesAnswers() async throws {
         PairingRequestStub.reset { request in
             guard request.url?.host == "192.168.1.34" else { return .failure(.timedOut) }
@@ -178,7 +178,7 @@ final class PairingTests: XCTestCase {
                 error.localizedDescription,
                 "Your phone couldn’t reach Miguel's computer on this network. Put the phone on the same " +
                     "Wi-Fi as the computer. If it already is, the computer’s firewall may be blocking " +
-                    "OpenMausBot: on a Windows PC, set its network to Private. Or open Settings → " +
+                    "SocialCoffeeAgent: on a Windows PC, set its network to Private. Or open Settings → " +
                     "Remote access on the computer and sign in so the phone can connect from " +
                     "anywhere.\nTried: http://172.19.96.1:8810, " +
                     "http://172.27.208.1:8810, http://192.168.1.34:8810"
@@ -189,7 +189,7 @@ final class PairingTests: XCTestCase {
     func testRouteFailureNamesTheNextStepForTheRoutesTried() {
         XCTAssertEqual(
             PairingRouteError(attemptedHosts: ["https://mac.companion.example"], computerName: "Mac").errorDescription,
-            "Couldn’t reach Mac. Make sure the computer is awake with OpenMausBot open, then try again.\n" +
+            "Couldn’t reach Mac. Make sure the computer is awake with SocialCoffeeAgent open, then try again.\n" +
                 "Tried: https://mac.companion.example"
         )
         XCTAssertEqual(

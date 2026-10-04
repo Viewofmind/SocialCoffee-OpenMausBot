@@ -522,24 +522,24 @@
         }
       }
     },
-    "Add the shared Fish Audio key in OpenMausBot on your computer. The key is never returned to iOS.": {
+    "Add the shared Fish Audio key in SocialCoffeeAgent on your computer. The key is never returned to iOS.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Adicione a chave compartilhada do Fish Audio no OpenMausBot no computador. A chave nunca é devolvida ao iOS."
+            "value": "Adicione a chave compartilhada do Fish Audio no SocialCoffeeAgent no computador. A chave nunca é devolvida ao iOS."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "请在电脑上的 OpenMausBot 中加入共用的 Fish Audio 密钥。密钥永远不会传回 iOS。"
+            "value": "请在电脑上的 SocialCoffeeAgent 中加入共用的 Fish Audio 密钥。密钥永远不会传回 iOS。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "請在電腦上的 OpenMausBot 中加入共用的 Fish Audio 金鑰。金鑰永遠不會傳回 iOS。"
+            "value": "請在電腦上的 SocialCoffeeAgent 中加入共用的 Fish Audio 金鑰。金鑰永遠不會傳回 iOS。"
           }
         }
       }
@@ -720,24 +720,24 @@
         }
       }
     },
-    "Alerts arrive while OpenMausBot is open or was recently in the background. Closed-app delivery is not available yet.": {
+    "Alerts arrive while SocialCoffeeAgent is open or was recently in the background. Closed-app delivery is not available yet.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Os alertas chegam enquanto o OpenMausBot está aberto ou esteve em segundo plano há pouco. A entrega com o app fechado ainda não está disponível."
+            "value": "Os alertas chegam enquanto o SocialCoffeeAgent está aberto ou esteve em segundo plano há pouco. A entrega com o app fechado ainda não está disponível."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "OpenMausBot 打开中或最近在背景运行时会收到提醒。目前尚无法在应用程序关闭时发送提醒。"
+            "value": "SocialCoffeeAgent 打开中或最近在背景运行时会收到提醒。目前尚无法在应用程序关闭时发送提醒。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "OpenMausBot 開啟中或最近在背景執行時會收到提醒。目前尚無法在應用程式關閉時傳送提醒。"
+            "value": "SocialCoffeeAgent 開啟中或最近在背景執行時會收到提醒。目前尚無法在應用程式關閉時傳送提醒。"
           }
         }
       }
@@ -764,24 +764,24 @@
         }
       }
     },
-    "Allow camera access to scan the pairing QR code shown by OpenMausBot.": {
+    "Allow camera access to scan the pairing QR code shown by SocialCoffeeAgent.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Permita o acesso à câmera para escanear o QR code de pareamento mostrado pelo OpenMausBot."
+            "value": "Permita o acesso à câmera para escanear o QR code de pareamento mostrado pelo SocialCoffeeAgent."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "允许使用相机扫描 OpenMausBot 显示的配对 QR Code。"
+            "value": "允许使用相机扫描 SocialCoffeeAgent 显示的配对 QR Code。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "允許使用相機掃描 OpenMausBot 顯示的配對 QR Code。"
+            "value": "允許使用相機掃描 SocialCoffeeAgent 顯示的配對 QR Code。"
           }
         }
       }
@@ -1204,24 +1204,24 @@
         }
       }
     },
-    "Changes the language inside OpenMausMobile. Buttons drawn by iOS itself follow the phone's language, which you can set for this app in iOS Settings.": {
+    "Changes the language inside SocialCoffeeAgent. Buttons drawn by iOS itself follow the phone's language, which you can set for this app in iOS Settings.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Muda o idioma dentro do OpenMausMobile. Os botões desenhados pelo próprio iOS seguem o idioma do telefone, que você pode definir para este app nos Ajustes do iOS."
+            "value": "Muda o idioma dentro do SocialCoffeeAgent. Os botões desenhados pelo próprio iOS seguem o idioma do telefone, que você pode definir para este app nos Ajustes do iOS."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "变更 OpenMausMobile 接口使用的语言。由 iOS 绘制的按钮会依照手机语言显示；你可以在 iOS 设置中为此 App 选择语言。"
+            "value": "变更 SocialCoffeeAgent 接口使用的语言。由 iOS 绘制的按钮会依照手机语言显示；你可以在 iOS 设置中为此 App 选择语言。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "變更 OpenMausMobile 介面使用的語言。由 iOS 繪製的按鈕會依照手機語言顯示；你可以在 iOS 設定中為此 App 選擇語言。"
+            "value": "變更 SocialCoffeeAgent 介面使用的語言。由 iOS 繪製的按鈕會依照手機語言顯示；你可以在 iOS 設定中為此 App 選擇語言。"
           }
         }
       }
@@ -2930,46 +2930,46 @@
         }
       }
     },
-    "Dictation needs Microphone access. Enable it in Settings → OpenMausMobile.": {
+    "Dictation needs Microphone access. Enable it in Settings → SocialCoffeeAgent.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "O ditado precisa de acesso ao Microfone. Ative em Ajustes → OpenMausMobile."
+            "value": "O ditado precisa de acesso ao Microfone. Ative em Ajustes → SocialCoffeeAgent."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "听写功能需要麦克风权限。请前往「设置 → OpenMausMobile」激活。"
+            "value": "听写功能需要麦克风权限。请前往「设置 → SocialCoffeeAgent」激活。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "聽寫功能需要麥克風權限。請前往「設定 → OpenMausMobile」啟用。"
+            "value": "聽寫功能需要麥克風權限。請前往「設定 → SocialCoffeeAgent」啟用。"
           }
         }
       }
     },
-    "Dictation needs Speech Recognition access. Enable it in Settings → OpenMausMobile.": {
+    "Dictation needs Speech Recognition access. Enable it in Settings → SocialCoffeeAgent.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "O ditado precisa de acesso ao Reconhecimento de Fala. Ative em Ajustes → OpenMausMobile."
+            "value": "O ditado precisa de acesso ao Reconhecimento de Fala. Ative em Ajustes → SocialCoffeeAgent."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "听写功能需要语音辨识权限。请前往「设置 → OpenMausMobile」激活。"
+            "value": "听写功能需要语音辨识权限。请前往「设置 → SocialCoffeeAgent」激活。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "聽寫功能需要語音辨識權限。請前往「設定 → OpenMausMobile」啟用。"
+            "value": "聽寫功能需要語音辨識權限。請前往「設定 → SocialCoffeeAgent」啟用。"
           }
         }
       }
@@ -3769,24 +3769,24 @@
         }
       }
     },
-    "Get alerts while OpenMausBot is open or was recently in the background. Alerts stop after iOS fully suspends or closes the app.": {
+    "Get alerts while SocialCoffeeAgent is open or was recently in the background. Alerts stop after iOS fully suspends or closes the app.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Receba alertas enquanto o OpenMausBot está aberto ou esteve em segundo plano há pouco. Os alertas param depois que o iOS suspende ou fecha o app por completo."
+            "value": "Receba alertas enquanto o SocialCoffeeAgent está aberto ou esteve em segundo plano há pouco. Os alertas param depois que o iOS suspende ou fecha o app por completo."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "OpenMausBot 打开中或最近在背景运行时会收到提醒。iOS 完全暂停或关闭 App 后，提醒就会停止。"
+            "value": "SocialCoffeeAgent 打开中或最近在背景运行时会收到提醒。iOS 完全暂停或关闭 App 后，提醒就会停止。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "OpenMausBot 開啟中或最近在背景執行時會收到提醒。iOS 完全暫停或關閉 App 後，提醒就會停止。"
+            "value": "SocialCoffeeAgent 開啟中或最近在背景執行時會收到提醒。iOS 完全暫停或關閉 App 後，提醒就會停止。"
           }
         }
       }
@@ -5373,24 +5373,24 @@
         }
       }
     },
-    "On your computer, open OpenMausBot → Settings → Phone.": {
+    "On your computer, open SocialCoffeeAgent → Settings → Phone.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "No seu computador, abra OpenMausBot → Ajustes → Telefone."
+            "value": "No seu computador, abra SocialCoffeeAgent → Ajustes → Telefone."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "请在电脑上打开 OpenMausBot →「设置」→「手机」。"
+            "value": "请在电脑上打开 SocialCoffeeAgent →「设置」→「手机」。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "請在電腦上開啟 OpenMausBot →「設定」→「手機」。"
+            "value": "請在電腦上開啟 SocialCoffeeAgent →「設定」→「手機」。"
           }
         }
       }
@@ -5439,24 +5439,24 @@
         }
       }
     },
-    "Only continue on a network you trust. Local connections are authenticated but are not encrypted by OpenMausBot.": {
+    "Only continue on a network you trust. Local connections are authenticated but are not encrypted by SocialCoffeeAgent.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Só continue em uma rede em que você confia. As conexões locais são autenticadas, mas não são criptografadas pelo OpenMausBot."
+            "value": "Só continue em uma rede em que você confia. As conexões locais são autenticadas, mas não são criptografadas pelo SocialCoffeeAgent."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "仅在你信任的网络上继续。局域网路连接会经过验证，但 OpenMausBot 不会加密这些连接。"
+            "value": "仅在你信任的网络上继续。局域网路连接会经过验证，但 SocialCoffeeAgent 不会加密这些连接。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "僅在你信任的網路上繼續。區域網路連線會經過驗證，但 OpenMausBot 不會加密這些連線。"
+            "value": "僅在你信任的網路上繼續。區域網路連線會經過驗證，但 SocialCoffeeAgent 不會加密這些連線。"
           }
         }
       }
@@ -5681,27 +5681,27 @@
         }
       }
     },
-    "OpenMausBot": {
+    "SocialCoffeeAgent": {
       "shouldTranslate": false
     },
-    "OpenMausBot is trying the saved connection automatically.": {
+    "SocialCoffeeAgent is trying the saved connection automatically.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "O OpenMausBot está tentando a conexão salva automaticamente."
+            "value": "O SocialCoffeeAgent está tentando a conexão salva automaticamente."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "OpenMausBot 正在自动尝试已保存的连接。"
+            "value": "SocialCoffeeAgent 正在自动尝试已保存的连接。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "OpenMausBot 正在自動嘗試已儲存的連線。"
+            "value": "SocialCoffeeAgent 正在自動嘗試已儲存的連線。"
           }
         }
       }
@@ -5948,24 +5948,24 @@
         }
       }
     },
-    "Pair this device with OpenMausBot to see your chats and respond to your bots.": {
+    "Pair this device with SocialCoffeeAgent to see your chats and respond to your bots.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pareie este dispositivo com o OpenMausBot para ver suas conversas e responder aos seus bots."
+            "value": "Pareie este dispositivo com o SocialCoffeeAgent para ver suas conversas e responder aos seus bots."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "将此设备与 OpenMausBot 配对，即可查看聊天并回复机器人。"
+            "value": "将此设备与 SocialCoffeeAgent 配对，即可查看聊天并回复机器人。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "將此裝置與 OpenMausBot 配對，即可查看聊天並回覆機器人。"
+            "value": "將此裝置與 SocialCoffeeAgent 配對，即可查看聊天並回覆機器人。"
           }
         }
       }
@@ -7161,24 +7161,24 @@
         }
       }
     },
-    "Runs the agent and its tools inside its Boat virtual machine. The VM wakes automatically for each run; keep OpenMausBot running so its scheduler can launch the job.": {
+    "Runs the agent and its tools inside its Boat virtual machine. The VM wakes automatically for each run; keep SocialCoffeeAgent running so its scheduler can launch the job.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Roda o agente e as ferramentas dele dentro da máquina virtual Boat. A VM acorda automaticamente a cada execução; mantenha o OpenMausBot rodando para que o agendador consiga iniciar o trabalho."
+            "value": "Roda o agente e as ferramentas dele dentro da máquina virtual Boat. A VM acorda automaticamente a cada execução; mantenha o SocialCoffeeAgent rodando para que o agendador consiga iniciar o trabalho."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在 Box 虚拟机中运行机器人及其工具。每次运行时 VM 都会自动启动；请保持 OpenMausBot 运行，调度器才能启动工作。"
+            "value": "在 Box 虚拟机中运行机器人及其工具。每次运行时 VM 都会自动启动；请保持 SocialCoffeeAgent 运行，调度器才能启动工作。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "在 Box 虛擬機器中執行機器人及其工具。每次執行時 VM 都會自動啟動；請保持 OpenMausBot 執行，排程器才能啟動工作。"
+            "value": "在 Box 虛擬機器中執行機器人及其工具。每次執行時 VM 都會自動啟動；請保持 SocialCoffeeAgent 執行，排程器才能啟動工作。"
           }
         }
       }
@@ -7337,24 +7337,24 @@
         }
       }
     },
-    "Scan the QR code in OpenMausBot. We'll securely choose the best way to connect.": {
+    "Scan the QR code in SocialCoffeeAgent. We'll securely choose the best way to connect.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Escaneie o QR code no OpenMausBot. Vamos escolher com segurança a melhor forma de conectar."
+            "value": "Escaneie o QR code no SocialCoffeeAgent. Vamos escolher com segurança a melhor forma de conectar."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "扫描 OpenMausBot 中的 QR Code。我们会安全地选择最佳连接方式。"
+            "value": "扫描 SocialCoffeeAgent 中的 QR Code。我们会安全地选择最佳连接方式。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "掃描 OpenMausBot 中的 QR Code。我們會安全地選擇最佳連線方式。"
+            "value": "掃描 SocialCoffeeAgent 中的 QR Code。我們會安全地選擇最佳連線方式。"
           }
         }
       }
@@ -7799,24 +7799,24 @@
         }
       }
     },
-    "Showing what was connected last time. Your computer could not open its credential store just now, so these could not be re-checked. Nothing has been disconnected — restarting OpenMausBot on your computer usually clears this.": {
+    "Showing what was connected last time. Your computer could not open its credential store just now, so these could not be re-checked. Nothing has been disconnected — restarting SocialCoffeeAgent on your computer usually clears this.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mostrando o que estava conectado da última vez. O seu computador não conseguiu abrir o cofre de credenciais agora, então não foi possível verificá-las de novo. Nada foi desconectado — reiniciar o OpenMausBot no seu computador costuma resolver."
+            "value": "Mostrando o que estava conectado da última vez. O seu computador não conseguiu abrir o cofre de credenciais agora, então não foi possível verificá-las de novo. Nada foi desconectado — reiniciar o SocialCoffeeAgent no seu computador costuma resolver."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "显示上次连接的项目。你的电脑目前无法打开凭证保存区，因此无法重新检查。没有任何连接遭到中断 — 通常重新启动电脑上的 OpenMausBot 即可解决。"
+            "value": "显示上次连接的项目。你的电脑目前无法打开凭证保存区，因此无法重新检查。没有任何连接遭到中断 — 通常重新启动电脑上的 SocialCoffeeAgent 即可解决。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "顯示上次連線的項目。你的電腦目前無法開啟憑證儲存區，因此無法重新檢查。沒有任何連線遭到中斷 — 通常重新啟動電腦上的 OpenMausBot 即可解決。"
+            "value": "顯示上次連線的項目。你的電腦目前無法開啟憑證儲存區，因此無法重新檢查。沒有任何連線遭到中斷 — 通常重新啟動電腦上的 SocialCoffeeAgent 即可解決。"
           }
         }
       }
@@ -8261,24 +8261,24 @@
         }
       }
     },
-    "Switches OpenMausMobile to this computer": {
+    "Switches SocialCoffeeAgent to this computer": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Muda o OpenMausMobile para este computador"
+            "value": "Muda o SocialCoffeeAgent para este computador"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "将 OpenMausMobile 切换至此电脑"
+            "value": "将 SocialCoffeeAgent 切换至此电脑"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "將 OpenMausMobile 切換至此電腦"
+            "value": "將 SocialCoffeeAgent 切換至此電腦"
           }
         }
       }
@@ -8547,24 +8547,24 @@
         }
       }
     },
-    "That isn't an OpenMausBot pairing QR code.": {
+    "That isn't an SocialCoffeeAgent pairing QR code.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esse não é um QR code de pareamento do OpenMausBot."
+            "value": "Esse não é um QR code de pareamento do SocialCoffeeAgent."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "这不是 OpenMausBot 配对 QR Code。"
+            "value": "这不是 SocialCoffeeAgent 配对 QR Code。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "這不是 OpenMausBot 配對 QR Code。"
+            "value": "這不是 SocialCoffeeAgent 配對 QR Code。"
           }
         }
       }
@@ -9031,24 +9031,24 @@
         }
       }
     },
-    "This pairing predates secure phone entry. Scan a fresh QR from OpenMausBot, or finish this request on your computer.": {
+    "This pairing predates secure phone entry. Scan a fresh QR from SocialCoffeeAgent, or finish this request on your computer.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Este pareamento é anterior à digitação segura pelo telefone. Escaneie um novo QR do OpenMausBot ou conclua esta solicitação no seu computador."
+            "value": "Este pareamento é anterior à digitação segura pelo telefone. Escaneie um novo QR do SocialCoffeeAgent ou conclua esta solicitação no seu computador."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "此配对创建于安全手机输入功能推出之前。请扫描 OpenMausBot 中的新 QR Code，或在电脑上完成此要求。"
+            "value": "此配对创建于安全手机输入功能推出之前。请扫描 SocialCoffeeAgent 中的新 QR Code，或在电脑上完成此要求。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "此配對建立於安全手機輸入功能推出之前。請掃描 OpenMausBot 中的新 QR Code，或在電腦上完成此要求。"
+            "value": "此配對建立於安全手機輸入功能推出之前。請掃描 SocialCoffeeAgent 中的新 QR Code，或在電腦上完成此要求。"
           }
         }
       }
@@ -9075,24 +9075,24 @@
         }
       }
     },
-    "This removes the connection from this device only. It does not revoke this device on your Mac. To remove Mac-side access, open OpenMausBot → Settings → Phone and remove it there.": {
+    "This removes the connection from this device only. It does not revoke this device on your Mac. To remove Mac-side access, open SocialCoffeeAgent → Settings → Phone and remove it there.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Isto remove a conexão apenas deste dispositivo. Não revoga este dispositivo no seu Mac. Para remover o acesso do lado do Mac, abra OpenMausBot → Ajustes → Telefone e remova por lá."
+            "value": "Isto remove a conexão apenas deste dispositivo. Não revoga este dispositivo no seu Mac. Para remover o acesso do lado do Mac, abra SocialCoffeeAgent → Ajustes → Telefone e remova por lá."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "这只会从此设备移除连接，不会撤销 Mac 上此设备的访问权。若要移除 Mac 端的访问权，请在 Mac 上打开 OpenMausBot →「设置」→「手机」，并从该处移除。"
+            "value": "这只会从此设备移除连接，不会撤销 Mac 上此设备的访问权。若要移除 Mac 端的访问权，请在 Mac 上打开 SocialCoffeeAgent →「设置」→「手机」，并从该处移除。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "這只會從此裝置移除連線，不會撤銷 Mac 上此裝置的存取權。若要移除 Mac 端的存取權，請在 Mac 上開啟 OpenMausBot →「設定」→「手機」，並從該處移除。"
+            "value": "這只會從此裝置移除連線，不會撤銷 Mac 上此裝置的存取權。若要移除 Mac 端的存取權，請在 Mac 上開啟 SocialCoffeeAgent →「設定」→「手機」，並從該處移除。"
           }
         }
       }
@@ -9141,24 +9141,24 @@
         }
       }
     },
-    "This routine uses a schedule added by a newer OpenMausBot. Choose One time, Selected days, or Every X minutes before saving.": {
+    "This routine uses a schedule added by a newer SocialCoffeeAgent. Choose One time, Selected days, or Every X minutes before saving.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esta rotina usa um agendamento adicionado por um OpenMausBot mais novo. Escolha Uma vez, Dias selecionados ou A cada X minutos antes de salvar."
+            "value": "Esta rotina usa um agendamento adicionado por um SocialCoffeeAgent mais novo. Escolha Uma vez, Dias selecionados ou A cada X minutos antes de salvar."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "此例行工作使用较新版 OpenMausBot 添加的调度。保存前请选择「单次」、「指定日期」或「每隔 X 分钟」。"
+            "value": "此例行工作使用较新版 SocialCoffeeAgent 添加的调度。保存前请选择「单次」、「指定日期」或「每隔 X 分钟」。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "此例行工作使用較新版 OpenMausBot 新增的排程。儲存前請選擇「單次」、「指定日期」或「每隔 X 分鐘」。"
+            "value": "此例行工作使用較新版 SocialCoffeeAgent 新增的排程。儲存前請選擇「單次」、「指定日期」或「每隔 X 分鐘」。"
           }
         }
       }
@@ -9251,24 +9251,24 @@
         }
       }
     },
-    "To generate images, configure the shared image provider in OpenMausBot on your computer. Provider keys cannot be added from this device.": {
+    "To generate images, configure the shared image provider in SocialCoffeeAgent on your computer. Provider keys cannot be added from this device.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Para gerar imagens, configure o provedor de imagens compartilhado no OpenMausBot no seu computador. Não é possível adicionar chaves de provedor por este dispositivo."
+            "value": "Para gerar imagens, configure o provedor de imagens compartilhado no SocialCoffeeAgent no seu computador. Não é possível adicionar chaves de provedor por este dispositivo."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "若要产生图片，请在电脑上的 OpenMausBot 设置共用图片提供者。无法从此设备添加提供者密钥。"
+            "value": "若要产生图片，请在电脑上的 SocialCoffeeAgent 设置共用图片提供者。无法从此设备添加提供者密钥。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "若要產生圖片，請在電腦上的 OpenMausBot 設定共用圖片提供者。無法從此裝置新增提供者金鑰。"
+            "value": "若要產生圖片，請在電腦上的 SocialCoffeeAgent 設定共用圖片提供者。無法從此裝置新增提供者金鑰。"
           }
         }
       }
@@ -10329,24 +10329,24 @@
         }
       }
     },
-    "Your computer could not open its credential store, so it cannot say which accounts are connected. Nothing has been disconnected — restarting OpenMausBot on your computer usually clears this.": {
+    "Your computer could not open its credential store, so it cannot say which accounts are connected. Nothing has been disconnected — restarting SocialCoffeeAgent on your computer usually clears this.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "O seu computador não conseguiu abrir o cofre de credenciais, então não sabe dizer quais contas estão conectadas. Nada foi desconectado — reiniciar o OpenMausBot no seu computador costuma resolver."
+            "value": "O seu computador não conseguiu abrir o cofre de credenciais, então não sabe dizer quais contas estão conectadas. Nada foi desconectado — reiniciar o SocialCoffeeAgent no seu computador costuma resolver."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "你的电脑无法打开凭证保存区，因此无法确认哪些帐户已连接。没有任何连接遭到中断 — 通常重新启动电脑上的 OpenMausBot 即可解决。"
+            "value": "你的电脑无法打开凭证保存区，因此无法确认哪些帐户已连接。没有任何连接遭到中断 — 通常重新启动电脑上的 SocialCoffeeAgent 即可解决。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "你的電腦無法開啟憑證儲存區，因此無法確認哪些帳戶已連線。沒有任何連線遭到中斷 — 通常重新啟動電腦上的 OpenMausBot 即可解決。"
+            "value": "你的電腦無法開啟憑證儲存區，因此無法確認哪些帳戶已連線。沒有任何連線遭到中斷 — 通常重新啟動電腦上的 SocialCoffeeAgent 即可解決。"
           }
         }
       }
@@ -10415,12 +10415,12 @@
         }
       }
     },
-    "Turn on Allow computer view for this phone in OpenMausBot → Settings → Remote access on your computer.": {
+    "Turn on Allow computer view for this phone in SocialCoffeeAgent → Settings → Remote access on your computer.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ative Permitir ver o computador para este celular em OpenMausBot → Configurações → Acesso remoto no seu computador."
+            "value": "Ative Permitir ver o computador para este celular em SocialCoffeeAgent → Configurações → Acesso remoto no seu computador."
           }
         }
       }
@@ -10675,12 +10675,12 @@
         }
       }
     },
-    "Runs the agent and its tools inside its Box virtual machine. The VM wakes automatically for each run; keep OpenMausBot running so its scheduler can launch the job.": {
+    "Runs the agent and its tools inside its Box virtual machine. The VM wakes automatically for each run; keep SocialCoffeeAgent running so its scheduler can launch the job.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Roda o agente e as ferramentas dele dentro da máquina virtual Box. A VM acorda automaticamente a cada execução; mantenha o OpenMausBot rodando para que o agendador consiga iniciar o trabalho."
+            "value": "Roda o agente e as ferramentas dele dentro da máquina virtual Box. A VM acorda automaticamente a cada execução; mantenha o SocialCoffeeAgent rodando para que o agendador consiga iniciar o trabalho."
           }
         }
       }
@@ -10765,12 +10765,12 @@
         }
       }
     },
-    "Live calls need Microphone access. Enable it in Settings → MausBot.": {
+    "Live calls need Microphone access. Enable it in Settings → SocialCoffeeAgent.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "As ligações ao vivo precisam de acesso ao Microfone. Ative em Ajustes → MausBot."
+            "value": "As ligações ao vivo precisam de acesso ao Microfone. Ative em Ajustes → SocialCoffeeAgent."
           }
         }
       }
@@ -10895,12 +10895,12 @@
         }
       }
     },
-    "Call ended: OpenMausBot restarted.": {
+    "Call ended: SocialCoffeeAgent restarted.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ligação encerrada: o OpenMausBot reiniciou."
+            "value": "Ligação encerrada: o SocialCoffeeAgent reiniciou."
           }
         }
       }

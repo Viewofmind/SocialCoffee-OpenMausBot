@@ -1,4 +1,4 @@
-# MausBot Play release checklist
+# SocialCoffeeAgent Play release checklist
 
 Use with the [release preparation guide](README.md). Complete this for the exact
 commit and artifact being submitted; unchecked items remain release work.
@@ -7,7 +7,7 @@ commit and artifact being submitted; unchecked items remain release work.
 
 - [ ] Record the release commit and intended version from
   `android/app/build.gradle.kts`; confirm the version against Console uploads.
-- [ ] Confirm Android branding is MausBot and desktop references are OpenMausBot.
+- [ ] Confirm Android branding is SocialCoffeeAgent and desktop references are SocialCoffeeAgent.
 - [ ] Confirm package `com.openmausbot.companion` and the release SDK settings.
 - [ ] Have the release owner confirm signing configuration, certificate identity,
   key backups, and supported installation/upgrade paths.
@@ -25,12 +25,11 @@ commit and artifact being submitted; unchecked items remain release work.
 ## Listing and reviewer access
 
 - [ ] Write the description and release notes from features verified in this
-  release, including its OpenMausBot desktop dependency.
+  release, including its SocialCoffeeAgent desktop dependency.
 - [ ] Exclude unmerged call-mode and voice-key setup claims (#739/#1531).
 - [ ] Review icon, feature graphic, and each selected screenshot against the
-  release, with MausBot branding and no private data.
-- [ ] Keep `assets/screenshots/03-call.png` excluded: it is unapproved and unusable
-  until the actual release supports and verifies the depicted call feature.
+  release, with SocialCoffeeAgent branding and no private data.
+- [ ] Capture new SocialCoffeeAgent screenshots and a feature graphic; the upstream store artwork is not shipped.
 - [ ] Check current Console asset requirements and use only reviewed images.
 - [ ] Confirm support contacts, website, category, pricing, and distribution
   choices with the release owner.

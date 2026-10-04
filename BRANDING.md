@@ -60,6 +60,9 @@ clients, servers, store accounts, or third-party contracts:
   (checked by the CLI, Electron boot probe, companion, Docker/compose health checks).
 - `x-openmausbot-*` request headers, `/.well-known/openmausbot/*` paths, `_openmausbot._tcp` mDNS
   type, and the `application/x-openmausbot-sidebar-section` drag type.
+- `openmausbot://pair` pairing links and `openmausbot://thread/` thread links: the iOS and Android
+  companions register `openmausbot://` natively, and their ids are unchanged. The desktop's own
+  deep links (install, cloud, organization, settings) use `socialcoffee-agent://`.
 - Routine `runOn: "maus"` and the agents-catalog `run_on` enum value `"maus"` (stored data and the
   tool schema the agents call).
 - `OMB_*` environment variables, `OPENMAUSBOT_KEYSTORE_*` CI secrets, and internal constants.
@@ -120,8 +123,10 @@ About 920 files. By area:
   `electron/resources/app-icon.png`, `src/components/Avatar.tsx`, `src/components/CursorAvatar.tsx`
   (removed), `mascot-preview.html` and `src/mascot-preview.*` (removed), `docs/screenshots/` (marketing
   shots removed), `apps/docs/components/product-screenshot.tsx` (removed).
-- Mobile display names: `ios/project.yml`, `ios/Widgets/Info.plist`,
-  `android/app/src/{main,preview}/res/values/strings.xml`.
+- Mobile: display names (`ios/project.yml`, `ios/Widgets/Info.plist`, Android `strings.xml`), in-app
+  copy in Swift, Kotlin, `Localizable.xcstrings` and every Android `strings.xml`, the launcher and
+  notification icons (`ic_launcher_*`, `ic_maus_mark.xml`, `launcher_background`, iOS `AppIcon`), store
+  icon sources, and store text. Upstream store screenshots and the feature graphic are removed.
 - Docs and repo meta: `README.md`, `NOTICE`, `LICENSING.md`, `BRANDING.md`, `AGENTS.md`,
   `CONTRIBUTING.md`, `SECURITY.md`, `docs/`, `apps/docs/`, `.github/`.
 
@@ -144,6 +149,11 @@ On the branch: `pnpm install --frozen-lockfile`, `pnpm typecheck`, `pnpm lint` a
   stand up the services or clear the defaults before relying on hosted features.
 - **Icon pack:** a designed icon set (tray, dock, store, docs favicon) to replace the generated "SC"
   wordmark; delete the unused mascot geometry once Android stops generating from it.
+- **Mobile mascot:** the iOS and Android companions still draw the bot avatars with the old
+  silhouette in native code (`MausSilhouette` and friends) and offer a "Use mascot" avatar option.
+  Replacing that needs an Xcode and Android SDK build, which this branch could not run. Icons and
+  copy are already rebranded. Not compiled here: the iOS and Android string and icon changes.
+- **Store artwork:** capture new App Store and Play screenshots and a feature graphic.
 - **CLA:** replace `CLA.md` with a SocialCoffee DigiTech Pvt Ltd agreement.
 - **Enterprise:** decide among the three options above.
 - **Alias:** remove `pnpm omb` next release.

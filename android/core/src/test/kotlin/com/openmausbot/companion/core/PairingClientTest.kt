@@ -63,7 +63,7 @@ class PairingClientTest {
 
     // Oct 3: a Windows PC's QR led with WSL's 172.19.96.1 and Hyper-V's 172.27.208.1; the
     // phone tried only the first and failed. Every local address the QR carries is tried, the
-    // credential still goes only to the first that identifies itself as OpenMausBot.
+    // credential still goes only to the first that identifies itself as SocialCoffeeAgent.
     @Test
     fun aDesktopQrPairsThroughWhicheverOfItsLocalAddressesAnswers() = runBlocking {
         val wsl = endpoint("http://172.19.96.1:8810", CompanionEndpointKind.LAN, 0)
@@ -107,7 +107,7 @@ class PairingClientTest {
             // network Windows calls Public, so the message does not stop at "same Wi-Fi".
             "Your phone couldn't reach Miguel's computer on this network. Put the phone on the " +
                 "same Wi-Fi as the computer. If it already is, the computer's firewall may be " +
-                "blocking OpenMausBot: on a Windows PC, set its network to Private. Or open " +
+                "blocking SocialCoffeeAgent: on a Windows PC, set its network to Private. Or open " +
                 "Settings → Remote access on the computer and sign in so the phone can connect " +
                 "from anywhere.\n" +
                 "Tried: http://172.19.96.1:8810, http://192.168.1.34:8810",
@@ -118,12 +118,12 @@ class PairingClientTest {
     @Test
     fun whenAnHttpsRouteWasTriedTooTheErrorSaysWakeTheComputer() {
         assertEquals(
-            "Couldn't reach Mac. Make sure the computer is awake with OpenMausBot open, then try again.\n" +
+            "Couldn't reach Mac. Make sure the computer is awake with SocialCoffeeAgent open, then try again.\n" +
                 "Tried: https://mac.companion.example, http://192.168.1.42:8810",
             PairingRouteError(listOf("https://mac.companion.example", "http://192.168.1.42:8810"), computerName = "Mac").message,
         )
         assertEquals(
-            "Couldn't reach this computer. Make sure the computer is awake with OpenMausBot open, " +
+            "Couldn't reach this computer. Make sure the computer is awake with SocialCoffeeAgent open, " +
                 "then try again.\nTried: https://mac.companion.example",
             PairingRouteError(listOf("https://mac.companion.example"), computerName = " ").message,
         )

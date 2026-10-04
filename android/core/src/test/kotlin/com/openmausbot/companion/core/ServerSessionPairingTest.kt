@@ -45,7 +45,7 @@ class ServerSessionPairingTest {
         Fixture { request -> if (request.url.encodedPath.contains("well-known")) 404 to "{}" else null }.use { f ->
             val error = assertFailsWith<ServerAddressError> { f.session.pair(f.invite) }
             assertEquals(
-                "https://mini.example isn't an OpenMausBot server. Check the address and try again.",
+                "https://mini.example isn't an SocialCoffeeAgent server. Check the address and try again.",
                 error.message,
             )
             assertNull(f.store.saved)

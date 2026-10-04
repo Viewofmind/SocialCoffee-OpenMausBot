@@ -195,7 +195,7 @@ public enum ConnectionAdvice {
         case .cannotFindHost:
             advice = "\u{201C}\(host)\u{201D} didn't resolve. If that's a Tailscale name, this phone may not be on the tailnet."
         case .cannotConnectToHost:
-            advice = "Reached your computer, but Phone access isn't answering on port \(port) — open OpenMausBot → Settings → Phone."
+            advice = "Reached your computer, but Phone access isn't answering on port \(port) — open SocialCoffeeAgent → Settings → Phone."
         case .timedOut:
             advice = "No route to your computer at \(host) — different network, or a firewall."
         case .notConnectedToInternet:
@@ -217,7 +217,7 @@ public enum ConnectionAdvice {
         tryingNext next: String? = nil
     ) -> String {
         if error.code == .notConnectedToInternet, error.networkUnavailableReason == .cellular {
-            return "Cellular data is off for MausBot. Turn it on in Settings → MausBot → Cellular Data, or join Wi-Fi."
+            return "Cellular data is off for SocialCoffeeAgent. Turn it on in Settings → SocialCoffeeAgent → Cellular Data, or join Wi-Fi."
         }
         return message(for: error.code, host: host, port: port, tryingNext: next)
     }
