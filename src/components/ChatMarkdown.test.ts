@@ -439,14 +439,14 @@ describe("#Title thread links in markdown", () => {
   });
 
   it("renders a sent canonical link as a chip that opens the thread", () => {
-    const markup = render("done in [QA PR 245](socialcoffee-agent://thread/qa-245?bot=scout) today");
+    const markup = render("done in [QA PR 245](openmausbot://thread/qa-245?bot=scout) today");
     expect(markup).toContain('<button type="button" data-thread-link="qa-245"');
     expect(markup).toContain(">QA PR 245</button>");
     expect(markup).not.toContain('href="socialcoffee-agent://');
   });
 
   it("keeps a dead thread link as plain text, never an external anchor", () => {
-    const markup = render("see [Gone](socialcoffee-agent://thread/dead?bot=scout)");
+    const markup = render("see [Gone](openmausbot://thread/dead?bot=scout)");
     expect(markup).toContain(">Gone<");
     expect(markup).not.toContain("data-thread-link");
     expect(markup).not.toContain('href="socialcoffee-agent://');
@@ -494,7 +494,7 @@ describe("message-scoped file targets", () => {
     expect(chatUrlTransform("C:/Users/Agent/report.md")).toBe("C:/Users/Agent/report.md");
     expect(chatUrlTransform("\\\\server\\share\\report.md")).toBe("\\\\server\\share\\report.md");
     // What rendering hands over for C:\Users\Agent\release notes.md.
-    expect(chatUrlTransform("C:%5CUsers%5CMaus%5Crelease%20notes.md")).toBe("C:\\Users\\Agent\\release%20notes.md");
+    expect(chatUrlTransform("C:%5CUsers%5CAgent%5Crelease%20notes.md")).toBe("C:\\Users\\Agent\\release%20notes.md");
     expect(chatUrlTransform("javascript:alert(1)")).toBe("");
     expect(chatUrlTransform("https://example.test/report.md")).toBe("https://example.test/report.md");
   });

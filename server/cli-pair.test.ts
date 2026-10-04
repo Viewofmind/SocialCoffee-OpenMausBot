@@ -179,7 +179,7 @@ describe("the phone-app link `sc-agent pair` prints", () => {
   const printed = () => vi.mocked(console.log).mock.calls.map(([line]) => String(line)).join("\n");
 
   it("prints the server's own invite unchanged", async () => {
-    const serverInvite = `socialcoffee-agent://pair?address=${encodeURIComponent(advertisedOrigin)}&token=${credential}&name=Miguel's%20computer`;
+    const serverInvite = `openmausbot://pair?address=${encodeURIComponent(advertisedOrigin)}&token=${credential}&name=Miguel's%20computer`;
     pairingResponse({ url: `${advertisedOrigin}/pair#code=${code}`, inviteUrl: serverInvite });
     expect(await runPair({ ...options, label: "Pixel" })).toBe(0);
     expect(printed()).toContain(`phone app:     ${serverInvite}\n`);
@@ -188,11 +188,11 @@ describe("the phone-app link `sc-agent pair` prints", () => {
   it("builds the invite for --public-url from the server's credential and name", async () => {
     pairingResponse({
       url: `${advertisedOrigin}/pair#code=${code}`,
-      inviteUrl: `socialcoffee-agent://pair?address=${encodeURIComponent(advertisedOrigin)}&token=${credential}&name=Miguel's%20computer`,
+      inviteUrl: `openmausbot://pair?address=${encodeURIComponent(advertisedOrigin)}&token=${credential}&name=Miguel's%20computer`,
     });
     expect(await runPair({ ...options, label: "Pixel", publicUrl: explicitOrigin })).toBe(0);
     expect(printed()).toContain(
-      `phone app:     socialcoffee-agent://pair?address=${encodeURIComponent(explicitOrigin)}&token=${credential}&name=Miguel's%20computer\n`,
+      `phone app:     openmausbot://pair?address=${encodeURIComponent(explicitOrigin)}&token=${credential}&name=Miguel's%20computer\n`,
     );
     expect(printed()).not.toContain(encodeURIComponent(advertisedOrigin));
   });

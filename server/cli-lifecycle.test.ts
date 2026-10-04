@@ -248,9 +248,9 @@ describe("CLI startup lifecycle", () => {
     const expiresAt = Date.now() + 300_000;
     const pairingUrl = `${origin}/pair#code=${code}`;
     // A real server mints both encodings of one window; Android can only scan
-    // the socialcoffee-agent:// one (android/core Connection.kt).
+    // the openmausbot:// one (android/core Connection.kt).
     const credential = `omb_pair_${"a".repeat(43)}`;
-    const inviteUrl = `socialcoffee-agent://pair?address=${encodeURIComponent(origin)}&token=${credential}&name=fixture`;
+    const inviteUrl = `openmausbot://pair?address=${encodeURIComponent(origin)}&token=${credential}&name=fixture`;
     let healthRequests = 0;
     const fetcher = vi.fn(async (url: string | URL | Request, init?: RequestInit) => {
       const address = String(url);
@@ -265,7 +265,7 @@ describe("CLI startup lifecycle", () => {
         // the public address with --public-url and must build both from that.
         return Response.json({ code, url: null, expiresAt, credential, serverName: "fixture", hint: "set OMB_PUBLIC_URL" });
       }
-      expect(address).toMatch(/\/\.well-known\/socialcoffee-agent\/environment$/);
+      expect(address).toMatch(/\/\.well-known\/openmausbot\/environment$/);
       expect(init?.method).not.toBe("POST");
       expect(init?.body).toBeUndefined();
       return Response.json({ environmentId: workspaceId });

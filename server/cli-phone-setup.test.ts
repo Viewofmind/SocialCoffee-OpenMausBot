@@ -48,7 +48,7 @@ afterEach(() => vi.unstubAllGlobals());
 describe("phone origin validation", () => {
   it.each([
     ["https://agent.example", "https://agent.example"],
-    ["  https://MAUS.example:443/  ", "https://agent.example"],
+    ["  https://AGENT.example:443/  ", "https://agent.example"],
     ["https://mini.tail1234.ts.net:8443", "https://mini.tail1234.ts.net:8443"],
     ["https://[2001:db8::1]:8443/", "https://[2001:db8::1]:8443"],
   ])("normalizes an HTTPS origin without claiming reachability: %s", (input, expected) => {
@@ -63,7 +63,7 @@ describe("phone origin validation", () => {
     "https://[::ffff:0.0.0.0]", "https://user:password@agent.example", "https://agent.example/pair",
     "https://agent.example/?token=secret", "https://agent.example/#code=ABCD-EFGH-JKLM",
     "https://agent.example/?", "https://agent.example/#", "https://scagent.\nexample",
-    "https://agent.example\\private", "socialcoffee-agent://pair?token=secret",
+    "https://agent.example\\private", "openmausbot://pair?token=secret",
   ])("rejects a local, credential-bearing or non-origin input: %s", (input) => {
     expect(normalizePhoneOrigin(input)).toBeNull();
   });

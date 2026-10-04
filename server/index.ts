@@ -1934,7 +1934,7 @@ type DesktopPrivateMessage = BrowserCleanupWireRequest | {
   botId: string;
   held: true;
 } | {
-  type: "socialcoffee-agent:phone-secret-save";
+  type: "openmausbot:phone-secret-save";
   requestId: string;
   target: string;
   value: string;
@@ -15539,7 +15539,7 @@ const handleRequest = async (req: IncomingMessage, res: ServerResponse) => {
     if (method === "GET" && path === "/.well-known/openmausbot/environment") {
       return json(res, 200, environmentDescriptor({ environmentId: ENVIRONMENT_ID, desktopManaged: DESKTOP_MANAGED, emailSignIn: !HOSTED_WORKSPACE && !CLOUD_HOME && emailSignIn.enabled(), sharedComputers: lendingEnabled(), cloudHome: Boolean(CLOUD_HOME) }));
     }
-    const domainCheck = /^\/\.well-known\/socialcoffee-agent\/domain-check\/([a-f0-9]{64})$/.exec(path);
+    const domainCheck = /^\/\.well-known\/openmausbot\/domain-check\/([a-f0-9]{64})$/.exec(path);
     if (method === "GET" && domainCheck) {
       res.setHeader("cache-control", "no-store");
       const challenge = customDomainVerifier.challenge(domainCheck[1]);
