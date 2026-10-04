@@ -669,7 +669,7 @@ The Admin creates the machine through the Machines API; `deploy/fly/fly.toml`
 is the same shape for a manual deploy: `internal_port = 8080`, `force_https`,
 no auto-stop, one machine always running, a volume `omb_home` at `/data`,
 restart policy `always`, and an HTTP check on `GET /api/health` (it answers
-`{"app":"openmausbot"}` with no session). Each customer's app lives in its
+`{"app":"socialcoffee-agent"}` with no session). Each customer's app lives in its
 own Fly private network, so no machine can reach another's over 6PN.
 
 ## Boot contract

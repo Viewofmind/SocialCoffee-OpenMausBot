@@ -108,7 +108,7 @@ $SDK/emulator/emulator -avd YOUR_ARM64_API35_PLUS_AVD -no-snapshot &      # add 
 $SDK/platform-tools/adb wait-for-device
 until [ "$($SDK/platform-tools/adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ]; do sleep 5; done
 $SDK/platform-tools/adb install -r android/app/build/outputs/apk/preview/app-preview.apk
-$SDK/platform-tools/adb shell am start -n com.openmausbot.companion.preview/com.openmausbot.companion.MainActivity
+$SDK/platform-tools/adb shell am start -n in.socialcoffee.agent.companion.preview/com.socialcoffee.agent.companion.MainActivity
 ```
 
 In SocialCoffeeAgent Preview, tap Connect my computer, then Other ways to connect, and
@@ -125,7 +125,7 @@ closed). On Android 17 two system prompts come first:
   **Don't allow**, Connect fails with "Couldn't reach this computer through any
   available route (http://10.0.2.2:8820)". Tap **Allow**, or grant it from the
   host and tap Connect again:
-  `adb shell pm grant com.openmausbot.companion.preview android.permission.ACCESS_LOCAL_NETWORK`.
+  `adb shell pm grant in.socialcoffee.agent.companion.preview android.permission.ACCESS_LOCAL_NETWORK`.
 
 Android 15 shows only the Nearby devices prompt, and pairs by address with
 Don't allow. Skip the notifications screen with Not now.
@@ -242,7 +242,7 @@ its temporary data (the log under `socialcoffee-agent-verification-evidence` sta
 
 `./gradlew :app:assemblePreview` writes
 `android/app/build/outputs/apk/preview/app-preview.apk` — **SocialCoffeeAgent Preview**,
-application id `com.openmausbot.companion.preview`, debug-signed. It installs
+application id `in.socialcoffee.agent.companion.preview`, debug-signed. It installs
 beside the real app with its own pairing and data:
 
 ```sh

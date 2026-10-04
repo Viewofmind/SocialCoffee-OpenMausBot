@@ -489,7 +489,7 @@ and take a 5-minute ticket from `POST /api/auth/stream-ticket` for the
 event stream, because `EventSource` cannot set headers:
 `GET /api/events?ticket=…`.
 
-`GET /.well-known/openmausbot/environment` is public and tells a client what
+`GET /.well-known/socialcoffee-agent/environment` is public and tells a client what
 it is talking to: a stable `environmentId`, the label, the version and
 capabilities. Saved connections check the id so a reused address that now
 points at a different server is refused loudly.

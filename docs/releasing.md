@@ -95,7 +95,7 @@ The Developer ID Application certificate, exported from the Mac that
 currently signs releases:
 
 ```sh
-# Keychain Access → My Certificates → "Developer ID Application: Milind Soni
+# Keychain Access → My Certificates → "Developer ID Application: SocialCoffee DigiTech Pvt Ltd
 # (993D98NH4J)" → right-click → Export… → .p12 with a strong password, then:
 base64 -i DeveloperID.p12 | pbcopy   # → MAC_CERT_P12_BASE64
 # the export password             → MAC_CERT_PASSWORD

@@ -101,7 +101,7 @@ release on disposal.
 
 Generate the iOS project and use a fresh disposable simulator as described in
 [iOS thread verification](ios-threads.md), selecting
-`-only-testing:OpenMausCompanionUITests/BrowserControlUITests`. That case uses
+`-only-testing:SocialCoffeeAgentCompanionUITests/BrowserControlUITests`. That case uses
 the Debug-only `-browser-preview` URLProtocol fixture to exercise the real
 SwiftUI screen, ownership, touch mapping, soft keyboard, hand-back and release
 when leaving. Keep the result bundle and its screenshot; remove only the

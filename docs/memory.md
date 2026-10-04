@@ -190,7 +190,7 @@ guesses. Three things close that gap without attaching transcripts:
 
 - **The recent-work brief.** Every turn's system prompt, 1:1 or room, carries
   a short block: the newest thing the bot said in each of its *other*
-  conversations over the last two days — `today 09:05 · 1:1 with Milind ·
+  conversations over the last two days — `today 09:05 · 1:1 with Manav ·
   "Invoice reconciliation" · you said: "Sent the three flagged invoices…"`.
   At most ten lines and about 350 tokens; the current conversation is not
   listed. When a brief in a room names a private 1:1 chat, the room gets a

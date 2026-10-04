@@ -9,11 +9,11 @@ For the native UI, generate the project with `xcodegen generate` inside `ios/`,
 create a disposable iOS simulator, then run:
 
 ```sh
-xcodebuild -project OpenMausCompanion.xcodeproj -scheme OpenMausCompanion \
+xcodebuild -project SocialCoffeeAgentCompanion.xcodeproj -scheme SocialCoffeeAgentCompanion \
   -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
   -resultBundlePath /tmp/omb-ios-transcript.xcresult \
   -parallel-testing-enabled NO \
-  -only-testing:OpenMausCompanionUITests/TranscriptPresentationUITests \
+  -only-testing:SocialCoffeeAgentCompanionUITests/TranscriptPresentationUITests \
   CODE_SIGNING_ALLOWED=NO test
 ```
 

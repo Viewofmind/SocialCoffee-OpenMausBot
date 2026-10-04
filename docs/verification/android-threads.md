@@ -160,7 +160,7 @@ without any task-switch POST or change to the server-selected thread.
 - 621 core tests and 971 app tests passed (`cleanTest :core:test
   :app:testDebugUnitTest`), with no failures or skips. `:app:assembleDebug` and
   `:app:assemblePreview` succeeded; the preview APK's v2 signature and its
-  `com.openmausbot.companion.preview` application ID were verified.
+  `in.socialcoffee.agent.companion.preview` application ID were verified.
 - Fixtures were synthetic and confined to a loopback server. No emulator,
   device installation, pairing or live-provider test was performed.
 

@@ -51,36 +51,52 @@ This file records how the fork was rebranded, what was deliberately left alone, 
 `scripts/omb-alias.mjs`, which prints `use sc-agent` and exits 1. It is not documented anywhere else.
 Remove it in the next release.
 
-## Kept on purpose (not user-facing, or a wire / native contract)
+## Kept on purpose
 
-These still contain the old name because renaming them would break compatibility with existing
-clients, servers, store accounts, or third-party contracts:
+Everything else that carried an upstream name has been renamed (see "Internal names" below). These
+are the only places the old names remain, and each is either attribution or a file we must not edit:
 
-- `/api/health` app marker `{"app":"openmausbot"}` and the hosted `service: "openmausbot"` marker
-  (checked by the CLI, Electron boot probe, companion, Docker/compose health checks).
-- `x-openmausbot-*` request headers, `/.well-known/openmausbot/*` paths, `_openmausbot._tcp` mDNS
-  type, and the `application/x-openmausbot-sidebar-section` drag type.
-- File format ids inside saved files: `openmaus.package`, `openmaus.backup` and
-  `openmaus.workspace-backup`. Team packages and backups already shared keep importing.
-- `openmausbot://pair` pairing links and `openmausbot://thread/` thread links: the iOS and Android
-  companions register `openmausbot://` natively, and their ids are unchanged. The desktop's own
-  deep links (install, cloud, organization, settings) use `socialcoffee-agent://`.
-- Routine `runOn: "maus"` and the agents-catalog `run_on` enum value `"maus"` (stored data and the
-  tool schema the agents call).
-- `OMB_*` environment variables, `OPENMAUSBOT_KEYSTORE_*` CI secrets, and internal constants.
-- Native ids: iOS bundle ids, Android `applicationId` / `com.openmausbot.companion` package.
-  Changing these needs new Apple and Play store records; only display names were changed.
-- `electron/vendor/electron-updater.cjs` (vendored third-party code; only our relaunch patch now uses `socialcoffee-agent://organization`).
-- Mascot body geometry (`shared/mascot-bodies.ts`, `src/components/cursor-face-data.ts`,
-  `scripts/gen-mascot-bodies.ts`, `scripts/mascot-bodies/`): data and a generator kept so stored
-  `mascotBody` values still validate and the Android generator still builds. The desktop app no
-  longer renders it.
-- Historical engineering notes under `docs/plans/` and `docs/superpowers/`.
-
+- `NOTICE`, the attribution paragraph in `README.md` and at the top of this file, and every
+  "Copyright 2026 Milind Soni and OpenMausBot contributors" line (the About panel,
+  `electron-builder.yml`, source headers). Apache-2.0 requires them; they credit the upstream
+  authors and are not a connection to the upstream project.
+- `third_party/` (unchanged licenses and patches), including `third_party/cua-driver/SBOM.cdx.json`.
+  The SBOM property names written by `scripts/generate-cua-sbom.mjs` stay `openmausbot:*` so they
+  match that file.
+- Git history.
 - The pinned Windows browser engine build input (`server/browser-engine-release.ts`) still
-  downloads `agent-browser-win32-x64-0.36.0-omb.1.exe` from the upstream release, verified by its
-  pinned SHA-256. This fork has no such release yet. Follow-up: mirror it to a fork release and
-  repoint the URL. This is a build input, not the updater feed.
+  downloads `agent-browser-win32-x64-0.36.0-omb.1.exe` from upstream's GitHub release, verified by
+  its pinned SHA-256. It is a build-time download only, never the updater feed, and sends nothing
+  upstream. Follow-up: publish the same bytes (or a rebuild from
+  `scripts/build-windows-browser-vendor.mjs`) as a release on this repository and repoint the URL.
+- The repository name `SocialCoffee-OpenMausBot` in links, until the GitHub repository is renamed.
+
+### Internal names
+
+Renamed on both the desktop/server side and the phone companions together, with no compatibility
+fallback (no SocialCoffeeAgent build has shipped with the old values):
+
+| Old | New |
+| --- | --- |
+| `{"app":"openmausbot"}` health marker, hosted `service: "openmausbot"` | `socialcoffee-agent` |
+| `x-openmausbot-*`, `x-openmaus-*` headers | `x-sc-agent-*` |
+| `/.well-known/openmausbot/*` | `/.well-known/socialcoffee-agent/*` |
+| `_openmausbot._tcp` mDNS type | `_sc-agent._tcp` |
+| `application/x-openmausbot-*`, `application/x-openmaus-bot` drag types | `application/x-sc-agent-*` |
+| Phone `openmausbot://pair`, `openmausbot://thread/` | `sc-agent://pair`, `sc-agent://thread/` |
+| `openmausbot:phone-secret-*`, `openmausbot-phone-credential-v1` | `sc-agent:phone-secret-*`, `sc-agent-phone-credential-v1` |
+| `openmaus.package`, `openmaus.backup`, `openmaus.workspace-backup` | `socialcoffee-agent.package`, `.backup`, `.workspace-backup` |
+| Routine / agents-catalog `runOn` `"maus"` | `"local"` |
+| iOS bundle ids `com.openmausbot.app*`, App Group `group.com.openmausbot.shared` | `in.socialcoffee.agent.app*`, `group.in.socialcoffee.agent.shared` |
+| iOS project and targets `OpenMausCompanion*`, `OpenMaus*` types | `SocialCoffeeAgentCompanion*`, `SocialCoffeeAgent*` |
+| Android `applicationId` `com.openmausbot.companion` | `in.socialcoffee.agent.companion` |
+| Android Kotlin package / namespace `com.openmausbot.companion` | `com.socialcoffee.agent.companion` (`in` is a Kotlin keyword) |
+| `OPENMAUSBOT_KEYSTORE_*` signing variables | `SC_AGENT_KEYSTORE_*` |
+| `Maus*` mascot types (`MausState`, `MausFaceData`, ...) | `Mascot*` |
+| Sample names in tests and docs | neutral names |
+
+The new bundle ids and application ids need fresh App Store and Play records under SocialCoffee
+DigiTech Pvt Ltd; upstream's ids belong to upstream's store accounts.
 
 ## Legal
 
@@ -140,7 +156,7 @@ About 920 files. By area:
   shots removed), `apps/docs/components/product-screenshot.tsx` (removed).
 - Mobile: display names (`ios/project.yml`, `ios/Widgets/Info.plist`, Android `strings.xml`), in-app
   copy in Swift, Kotlin, `Localizable.xcstrings` and every Android `strings.xml`, the launcher and
-  notification icons (`ic_launcher_*`, `ic_maus_mark.xml`, `launcher_background`, iOS `AppIcon`), store
+  notification icons (`ic_launcher_*`, `ic_sc_mark.xml`, `launcher_background`, iOS `AppIcon`), store
   icon sources, and store text. Upstream store screenshots and the feature graphic are removed.
 - Enterprise: `enterprise/` replaced (new `LICENSE`, `README.md`, `FEATURES`, `server/`, `scripts/`),
   `CLA.md` removed, `.github/workflows/contributors.yml`, the hosted and verification-docs tests,
@@ -169,25 +185,23 @@ they are not caused by the rename:
 - Updater feed: builds carry no `app-update.yml`, and the packaging gates in CI check that it is absent.
   When signing and a release feed exist, set `publish` and restore those gates, plus the
   `pnpm smoke:linux-update` step in `.github/workflows/package-linux.yml`.
-- SBOM property names in `scripts/generate-cua-sbom.mjs` stay `openmausbot:*`, so they match the
-  unchanged `third_party/cua-driver/SBOM.cdx.json`.
 - **Signing:** Apple Developer ID and notarization, and a Windows code-signing certificate.
 - **Release channel:** set up an update feed on this fork before turning `publish` back on.
-- **Store listing:** new App Store and Play records under SocialCoffee DigiTech Pvt Ltd; then move
-  iOS bundle ids and the Android package off `com.openmausbot.*`. Until then the app links point at
-  this repository's releases.
+- **Store listing:** create App Store and Play records under SocialCoffee DigiTech Pvt Ltd for
+  `in.socialcoffee.agent.app` and `in.socialcoffee.agent.companion`.
 - **Domain:** hosted defaults that used openmausbot.com now point at `socialcoffee.in` hosts
   (cloud account, control plane, docs `metadataBase`, pairing links). Nothing is deployed there yet;
   stand up the services or clear the defaults before relying on hosted features.
 - **Icon pack:** a designed icon set (tray, dock, store, docs favicon) to replace the generated "SC"
   wordmark; delete the unused mascot geometry once Android stops generating from it.
 - **Mobile mascot:** the iOS and Android companions still draw the bot avatars with the old
-  silhouette in native code (`MausSilhouette` and friends) and offer a "Use mascot" avatar option.
-  Replacing that needs an Xcode and Android SDK build, which this branch could not run. Icons and
-  copy are already rebranded. Not compiled here: the iOS and Android string and icon changes.
+  silhouette in native code (`MascotSilhouette` and friends) and offer a "Use mascot" avatar option.
+  Replacing the artwork itself is a design follow-up; icons and copy are already rebranded.
 - **Store artwork:** capture new App Store and Play screenshots and a feature graphic.
 - **Enterprise signing key:** run `node enterprise/scripts/keygen.ts` offline, add the printed public
   key to `enterprise/server/trusted-keys.ts`, and keep the private key backed up offline.
 - **Enterprise legal review:** have counsel review `enterprise/LICENSE` and the customer agreement.
 - **Hosted workspaces:** write our own sign-in adapter if hosted team workspaces are needed.
 - **Alias:** remove `pnpm omb` next release.
+- **Repository:** ask GitHub Support to detach this repository from the upstream fork network, and
+  rename it (for example to `SocialCoffeeAgent`); then update the `SocialCoffee-OpenMausBot` links.

@@ -248,7 +248,7 @@ HTTPS route; the iPhone always uses the same QR trust flow.
 
 This is Password AutoFill, not a password-vault integration. A native
 `SecureField` marked as a password lets the user explicitly choose Apple
-Passwords or any enabled third-party AutoFill provider. OpenMausMobile does
+Passwords or any enabled third-party AutoFill provider. SocialCoffeeAgent does
 not enumerate a vault, receive a provider token, or save the entered value in
 its own Keychain.
 
@@ -268,7 +268,7 @@ Each submission uses RFC 9180 base-mode HPKE with P-256/HKDF-SHA256/AES-GCM-256
 and authenticates this exact newline-separated context:
 
 ```text
-openmausbot-phone-credential-v1
+sc-agent-phone-credential-v1
 <key id>
 <authenticated companion device id>
 <bot id>
@@ -411,8 +411,8 @@ pnpm check:electron
 cd ios
 swift test
 xcodegen generate
-xcodebuild -project OpenMausCompanion.xcodeproj \
-  -scheme OpenMausCompanion \
+xcodebuild -project SocialCoffeeAgentCompanion.xcodeproj \
+  -scheme SocialCoffeeAgentCompanion \
   -sdk iphonesimulator \
   -destination 'generic/platform=iOS Simulator' \
   CODE_SIGNING_ALLOWED=NO build
