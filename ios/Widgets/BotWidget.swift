@@ -192,7 +192,7 @@ struct BotTimelineProvider: AppIntentTimelineProvider {
         BotEntry(
             date: Date(),
             state: .quiet(WidgetSnapshot.empty()),
-            entity: ChatEntity(id: "demo", name: "Maus", color: "", face: MausState.idle.rawValue)
+            entity: ChatEntity(id: "demo", name: "Agent", color: "", face: MausState.idle.rawValue)
         )
     }
 
