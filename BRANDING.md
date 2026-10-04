@@ -60,6 +60,8 @@ clients, servers, store accounts, or third-party contracts:
   (checked by the CLI, Electron boot probe, companion, Docker/compose health checks).
 - `x-openmausbot-*` request headers, `/.well-known/openmausbot/*` paths, `_openmausbot._tcp` mDNS
   type, and the `application/x-openmausbot-sidebar-section` drag type.
+- File format ids inside saved files: `openmaus.package`, `openmaus.backup` and
+  `openmaus.workspace-backup`. Team packages and backups already shared keep importing.
 - `openmausbot://pair` pairing links and `openmausbot://thread/` thread links: the iOS and Android
   companions register `openmausbot://` natively, and their ids are unchanged. The desktop's own
   deep links (install, cloud, organization, settings) use `socialcoffee-agent://`.

@@ -5676,7 +5676,7 @@ describe("harness HTTP API", () => {
 
   it("installs a complete bot package with a Chief, room, playbook, connector intent, and paused routine", async () => {
     const packageFile = {
-      format: "socialcoffee-agent.package",
+      format: "openmaus.package",
       version: 1,
       package: {
         id: "signal-desk",
@@ -12348,7 +12348,7 @@ describe("bot memory API", () => {
       });
       expect(before.body.sections.map((s: { id: string }) => s.id)).not.toContain("soul");
       expect(before.body.sections.map((s: { id: string }) => s.id)).toContain("memory");
-      // Only an SocialCoffeeAgent Cloud home tells its bots they run in the cloud.
+      // Only a SocialCoffeeAgent Cloud home tells its bots they run in the cloud.
       expect(before.body.sections.map((s: { id: string }) => s.id)).not.toContain("cloud-home");
       expect((await api("GET", "/api/config")).body).not.toHaveProperty("cloudHome");
       expect(before.body.totalBytes).toBe(

@@ -105,7 +105,7 @@ If any step fails, everything the import created is removed again.
 
 ## The file format
 
-`socialcoffee-agent.package` version 2, defined in `shared/package-format.ts`, the one
+`openmaus.package` version 2, defined in `shared/package-format.ts`, the one
 module the app, the import preview and Admin all validate with. It still
 reads version 1 files (JSON and the BotMRR Markdown playbook). Older apps
 refuse version 2 files with their existing "not supported" message; Admin can

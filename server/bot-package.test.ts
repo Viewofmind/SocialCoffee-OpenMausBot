@@ -4,7 +4,7 @@ import { parseBotPackage, renderBotPackageMarkdown } from "./bot-package.ts";
 import { memberFromAgent } from "./package-import.ts";
 
 const validPackage: any = {
-  format: "socialcoffee-agent.package",
+  format: "openmaus.package",
   version: 1,
   package: {
     id: "research-desk",

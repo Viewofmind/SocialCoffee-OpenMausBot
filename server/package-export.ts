@@ -261,7 +261,7 @@ export function createBotPackageExport(input: {
     };
   }
   return parseBotPackage({
-    format: "socialcoffee-agent.package",
+    format: "openmaus.package",
     version: 1,
     package: definition,
   });

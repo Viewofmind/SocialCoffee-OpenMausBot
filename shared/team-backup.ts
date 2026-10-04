@@ -86,7 +86,7 @@ function knownRoomResponder(value: unknown): unknown {
 }
 
 const backupSchema = z.object({
-  format: z.literal("socialcoffee-agent.backup"),
+  format: z.literal("openmaus.backup"),
   version: z.literal(1),
   name,
   exportedAt: timestamp,

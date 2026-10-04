@@ -700,7 +700,7 @@ const CLOUD_HOME = cloudHomeConfiguration(CLOUD_ENV);
 if (CLOUD_HOME) sessions.requireAdmin(CLOUD_PERSONAL_REFUSAL);
 /** Lending a computer to this server (the shared-computer routes, the two
  * agent tools, the advertised capability): the maintainer flag anywhere, and
- * always on an SocialCoffeeAgent Cloud home, where it is the person's own Mac lent to their
+ * always on a SocialCoffeeAgent Cloud home, where it is the person's own Mac lent to their
  * own Cloud (docs/cloud-pro.md, "Let my Cloud use this Mac"). */
 const lendingEnabled = () => sharedComputersEnabled(cfg) || CLOUD_HOME !== null;
 /** On a Cloud home every lent computer and every turn belong to one person. */
@@ -6595,7 +6595,7 @@ function cloudEngine(instance: ReturnType<typeof registry.get>): CloudEngine {
  * whole turn on the Boat. Every other engine keeps its own model and sign-in
  * and gets the Boat as one more stdio computer server (harness-mcp-proxy
  * computer), in the same slot a Local VM or VPS uses: one mechanism on a
- * desktop, a headless server and an SocialCoffeeAgent Cloud. The agent process holds only a
+ * desktop, a headless server and a SocialCoffeeAgent Cloud. The agent process holds only a
  * turn-scoped capability naming this Boat, never a Boat credential. */
 function cloudComputerMount(botId: string, owner: TurnOwner, boxId: string, remoteAgent: boolean): Pick<NonNullable<SendTurnInput["integrations"]>, "computer" | "localComputer"> {
   if (remoteAgent) return { computer: { kind: "box", boxId } };
@@ -12530,7 +12530,7 @@ async function runGroupMemberTurn(
     `Reply as yourself, briefly and conversationally. To bring a teammate in, mention them like @Name — they'll see the conversation and respond.`,
     outsideRoom.length > 0 && roomPeerRosterSystemPrompt(outsideRoom),
     integrations.agents && (CREDENTIAL_PROMPT + (orchestration && !orchestration.roomHandoffId ? THREADS_PROMPT : "")).trim(),
-    integrations.agents && (!orchestration || orchestration.roomHandoffId) && "For actual SocialCoffeeAgent teamwork, discover IDs with list_room_targets and use coordinate_bots for advice or work in this or another room. Do not substitute native coding helpers for these named bots. Consult only when needed to make a decision; no discussion step is mandatory. Give concrete responsibilities, exact accessible paths and acceptance checks. End your turn after assigning; busy teammates queue and results automatically resume you. When they return, finish the requested verification and give the user one final answer. Native helper names are not evidence that an SocialCoffeeAgent teammate participated. Plain @mentions are only for conversational replies in this room.",
+    integrations.agents && (!orchestration || orchestration.roomHandoffId) && "For actual SocialCoffeeAgent teamwork, discover IDs with list_room_targets and use coordinate_bots for advice or work in this or another room. Do not substitute native coding helpers for these named bots. Consult only when needed to make a decision; no discussion step is mandatory. Give concrete responsibilities, exact accessible paths and acceptance checks. End your turn after assigning; busy teammates queue and results automatically resume you. When they return, finish the requested verification and give the user one final answer. Native helper names are not evidence that a SocialCoffeeAgent teammate participated. Plain @mentions are only for conversational replies in this room.",
     integrations.agents && ROUTINE_PROMPT.trim(),
     integrations.agents && PROFILE_PROMPT.trim(),
     skillAuthoring && LEARN_PROMPT.trim(),
@@ -14932,7 +14932,7 @@ function configStatus() {
     profile: { name: cfg.profile?.name ?? "", email: cfg.profile?.email ?? "", aboutMe: cfg.profile?.aboutMe ?? "" },
     // the enrolled organisation's read-only desktop policy; null when not enrolled
     managedPolicy: managedPolicy.summary(),
-    // an SocialCoffeeAgent Cloud home (cloud-home.ts): the app offers no this computer and
+    // a SocialCoffeeAgent Cloud home (cloud-home.ts): the app offers no this computer and
     // no Local VM here
     ...(CLOUD_HOME ? { cloudHome: true } : {}),
     // not a secret — the settings picker shows it; "" = follow the system
@@ -15772,7 +15772,7 @@ const handleRequest = async (req: IncomingMessage, res: ServerResponse) => {
               // a hosted team workspace: the web UI's first run skips the
               // desktop-only beats there. Absent everywhere else.
               ...(HOSTED_WORKSPACE ? { hosted: true } : {}),
-              // an SocialCoffeeAgent Cloud home: the web UI's first run is its engine
+              // a SocialCoffeeAgent Cloud home: the web UI's first run is its engine
               // sign-in (docs/cloud-pro.md). Absent everywhere else.
               ...(CLOUD_HOME ? { cloudHome: true } : {}),
               // a device that is not one of the owner's own on a Cloud home
@@ -19662,7 +19662,7 @@ const handleRequest = async (req: IncomingMessage, res: ServerResponse) => {
         importVisibility = parsed.visibility;
       }
       const body = await readBody(req, MAX_TEAM_BACKUP_BYTES);
-      if (body?.format === "socialcoffee-agent.backup") {
+      if (body?.format === "openmaus.backup") {
         if (importMode !== "add") return json(res, 400, { error: "Import backups alongside your existing bots; project mode is only for templates" });
         try {
           const imported = importTeamBackup(store, routines!, body, await defaultSelection(), { visibility: importVisibility });
@@ -23999,7 +23999,7 @@ const handleRequest = async (req: IncomingMessage, res: ServerResponse) => {
               // deterministic rename. The replacement credential already
               // proved the exact deletion target, so its in-flight resource
               // is governed by that stronger target-bound receipt rather
-              // than an SocialCoffeeAgent name check.
+              // than a SocialCoffeeAgent name check.
               if (replacementProvedByDeletion && deletingBoatIds.has(recovery.boxId)) continue;
               const inspected = await boat.inspectBoatIdentity({ box: { token: currentBoatToken } }, recovery.boxId);
               if (!inspected.available) {

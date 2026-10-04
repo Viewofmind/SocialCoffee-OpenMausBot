@@ -152,7 +152,7 @@ describe("package export", () => {
     expect(exported.package.routines?.[1]?.timeoutMinutes).toBe(20);
 
     expect(exported).toMatchObject({
-      format: "socialcoffee-agent.package",
+      format: "openmaus.package",
       package: {
         chiefOfStaff: "lead",
         requirements: { apps: [{ slug: "github" }] },
@@ -291,7 +291,7 @@ describe("whole-team export (package v2)", () => {
   it("exports only the chosen team, whole, without chat history or authority", () => {
     const result = createTeamPackageExport(fixture());
     const pkg = result.document.package;
-    expect(result.document).toMatchObject({ format: "socialcoffee-agent.package", version: 2 });
+    expect(result.document).toMatchObject({ format: "openmaus.package", version: 2 });
     expect(pkg.agents.map((agent) => agent.key)).toEqual(["morgan", "scout"]);
     expect(pkg.team).toEqual({ name: "Sales desk", brief: "Quote list prices only.", leader: "morgan" });
     expect(pkg.agents[0]).toMatchObject({

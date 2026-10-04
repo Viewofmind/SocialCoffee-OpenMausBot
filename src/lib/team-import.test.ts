@@ -21,7 +21,7 @@ describe("team import preview", () => {
   });
   it("previews portable backups and validates their references before confirmation", () => {
     const backup = {
-      format: "socialcoffee-agent.backup", version: 1, name: "Saved team", exportedAt: 0,
+      format: "openmaus.backup", version: 1, name: "Saved team", exportedAt: 0,
       bots: [{ key: "bot", name: "Scout", title: "Research", description: "", color: "cyan", chiefOfStaff: false,
         hidden: true, playbooks: [], activeTask: "thread", tasks: [{ key: "thread", title: "Chat", createdAt: 0,
           activeLeafId: "message", messages: [{ id: "message", parentId: null, role: "user", text: "Hello", at: 0 }] }] }],
@@ -63,7 +63,7 @@ describe("team import preview", () => {
 
   it("previews the complete package setup before installation", () => {
     const preview = teamImportPreview({
-      format: "socialcoffee-agent.package",
+      format: "openmaus.package",
       version: 1,
       package: {
         name: "Lead Desk",
