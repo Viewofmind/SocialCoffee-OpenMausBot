@@ -1054,7 +1054,7 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
     const argv = JSON.parse(readFileSync(dump, "utf8")).argv.join(" ");
     // the colliding server moves aside; a stdio command over the url entry
     // would have been "invalid configuration" for the whole app-server
-    expect(argv).toContain("mcp_servers.fibery_socialcoffee.inmand");
+    expect(argv).toContain("mcp_servers.fibery_socialcoffee_agent.command");
     expect(argv).not.toContain("mcp_servers.fibery.command");
     // an unrelated name is untouched
     expect(argv).toContain("mcp_servers.notes.command");

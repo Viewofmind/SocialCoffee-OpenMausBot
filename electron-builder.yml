@@ -188,7 +188,7 @@ linux:
       to: cloudflared/cloudflared
     - from: dist-native/browser/linux-x64
       to: browser-engine
-    - from: build/linux-openmausbot-browser.apparmor
+    - from: build/linux-socialcoffee-agent-browser.apparmor
       to: socialcoffee-agent-browser.apparmor
   desktop:
     entry:

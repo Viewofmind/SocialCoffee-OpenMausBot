@@ -65,7 +65,7 @@ clients, servers, store accounts, or third-party contracts:
 - `OMB_*` environment variables, `OPENMAUSBOT_KEYSTORE_*` CI secrets, and internal constants.
 - Native ids: iOS bundle ids, Android `applicationId` / `com.openmausbot.companion` package.
   Changing these needs new Apple and Play store records; only display names were changed.
-- `electron/vendor/electron-updater.cjs` (vendored third-party code).
+- `electron/vendor/electron-updater.cjs` (vendored third-party code; only our relaunch patch now uses `socialcoffee-agent://organization`).
 - Mascot body geometry (`shared/mascot-bodies.ts`, `src/components/cursor-face-data.ts`,
   `scripts/gen-mascot-bodies.ts`, `scripts/mascot-bodies/`): data and a generator kept so stored
   `mascotBody` values still validate and the Android generator still builds. The desktop app no
