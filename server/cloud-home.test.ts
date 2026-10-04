@@ -106,7 +106,7 @@ it("offers the built-in browser and cloud computers, never this computer or a Lo
 
 it("refuses the places it never offers with what is true there, not a setup step", () => {
   const local = cloudHomePlaceRefusal("local")!, vm = cloudHomePlaceRefusal("vm")!;
-  expect(local).toBe("This computer isn't a place on your SocialCoffeeAgent Cloud: its bots run in the cloud. Set Works on to Auto, Cloud or Browser, or lend your Mac under Settings → SocialCoffeeAgent Cloud.");
+  expect(local).toBe("This computer isn't a place on your SocialCoffeeAgent Cloud. Set Works on to Auto, Cloud or Browser, or lend your Mac in Settings → SocialCoffeeAgent Cloud.");
   expect(vm).toBe("Bots on your SocialCoffeeAgent Cloud can't use a Local VM: the cloud machine has no container runtime. Set Works on to Auto, Cloud or Browser.");
   for (const text of [local, vm]) {
     expect(text).not.toMatch(/configure|Computer panel|install|set (?:it|one) up/i);
