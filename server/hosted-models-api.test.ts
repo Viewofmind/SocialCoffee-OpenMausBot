@@ -3,7 +3,7 @@ import { spawn, type ChildProcess } from "node:child_process";
 import { closeSync, mkdirSync, mkdtempSync, openSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { launchVerificationServer, runControlOmb, verificationServerEnvironment, type VerificationServer } from "../scripts/control-omb.ts";
 import { removeTempDir, waitForExit } from "./testing/cleanup.ts";
@@ -115,11 +115,12 @@ async function expectCatalog(grants: Grants) {
 beforeAll(async () => {
   layer = mkdtempSync(join(tmpdir(), "omb-hosted-model-layer-"));
   mkdirSync(join(layer, "server"));
+  // A stand-in access hook: this fixture drives the hosted model policy over
+  // owner loopback, so the hook only has to exist and never reaches a portal.
   writeFileSync(join(layer, "server/index.ts"), `
-    import { createWorkspaceAccess as create } from ${JSON.stringify(pathToFileURL(join(ROOT, "enterprise/server/workspace-access.ts")).href)};
     export function register() { return { customer: "Hosted models fixture", features: ["admin"], expiresAt: null }; }
-    export function createWorkspaceAccess(options) {
-      return create({ ...options, fetchImpl: async () => { throw new Error("The model fixture must not contact a portal"); } });
+    export function createWorkspaceAccess() {
+      return { handlePublic: async () => false, authorize: async () => null, revalidate: async () => {} };
     }
   `);
   fixture = await launchVerificationServer({}, undefined, undefined, undefined,

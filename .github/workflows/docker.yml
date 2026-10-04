@@ -67,7 +67,7 @@ jobs:
           echo "$edition"
           if grep -q 'no enterprise layer exists' <<<"$edition"; then echo "the image cannot find its enterprise layer"; exit 1; fi
           grep -q '"edition":"oss"' <<<"$edition"
-          grep -q 'enterprise layer disabled: OMB_LICENSE_KEY signature does not match' <<<"$edition"
+          grep -q 'enterprise layer disabled: OMB_LICENSE_KEY is not a SocialCoffeeAgent license key' <<<"$edition"
           docker exec omb-ent test -f /app/dist-server/enterprise/LICENSE
           docker rm -f omb-ent >/dev/null
       - name: Prove the non-root user can browse with the baked-in Chrome

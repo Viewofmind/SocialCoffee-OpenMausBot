@@ -1,32 +1,35 @@
-OpenMausBot Enterprise License
+SocialCoffeeAgent Enterprise License
 
-Copyright (c) 2026 Milind Soni. All rights reserved.
+Copyright (c) 2026 SocialCoffee DigiTech Pvt Ltd. All rights reserved.
 
-This directory ("enterprise") and everything in it is NOT covered by the
-Apache License 2.0 that applies to the rest of this repository.
+This directory ("enterprise") is maintained by SocialCoffee DigiTech Pvt Ltd
+for SocialCoffeeAgent users. It was written by SocialCoffee DigiTech Pvt Ltd
+for this distribution. It is not the upstream project's enterprise product,
+does not contain it, and is not affiliated with it; upstream maintains its
+own enterprise build separately.
 
-1. Source-available. You may read, build, and evaluate this code, and you may
-   modify it for your own evaluation, so that you know exactly what runs.
-   Development, test, and evaluation use is free of charge.
+The Apache License 2.0 that covers the rest of this repository does not apply
+to this directory. The following terms do.
 
-2. Use requires a license key. Running this code with enterprise features
-   enabled in production requires a valid, unexpired license key issued by
-   the copyright holder for your organization, under a separate agreement
-   that sets the licensed features, seats, and term.
+1. Viewing. You may read this code to understand what a SocialCoffeeAgent
+   build runs.
 
-3. No redistribution. You may not redistribute, sublicense, sell, host for
-   third parties, or offer as a service this directory or any modified
-   version of it, and you may not remove, disable, or circumvent the license
-   check. Hosting for third parties, reselling, and white-labelling the
-   product for third parties are permitted only under a written partner
-   agreement with the copyright holder.
+2. Use. Enabling enterprise features requires a license key issued to your
+   organization by SocialCoffee DigiTech Pvt Ltd under a separate written
+   agreement. That agreement sets the features, term and any other conditions.
 
-4. Everything else is open source. Delete this directory and the remainder
-   of the repository builds and runs as the open-source edition under
-   Apache 2.0, with no obligation under this license.
+3. Restrictions. Unless a written agreement with SocialCoffee DigiTech Pvt Ltd
+   allows it, you may not copy, modify, distribute, sublicense, sell, rent, or
+   offer as a hosted service this directory or any work based on it, and you
+   may not remove, disable or work around the license-key check.
 
-5. No warranty. This code is provided "as is", without warranty of any kind.
-   To the extent permitted by law, the copyright holder is not liable for
-   any damages arising from its use.
+4. Open-source edition. Removing this directory leaves the open-source
+   edition of SocialCoffeeAgent, which is governed only by the Apache License
+   2.0 and has no obligations under this license.
 
-Questions and license keys: soni.mil2001@gmail.com
+5. No warranty. Unless a written agreement says otherwise, this code is
+   provided "as is", without warranty of any kind, and SocialCoffee DigiTech
+   Pvt Ltd is not liable for any damages arising from its use, to the extent
+   permitted by law.
+
+Licensing: gunjan@socialcoffee.in

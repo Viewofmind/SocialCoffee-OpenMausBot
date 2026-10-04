@@ -26,7 +26,7 @@ cpSync(join(root, "dist"), join(out, "dist"), { recursive: true });
 if (existsSync(join(root, "skills"))) cpSync(join(root, "skills"), join(out, "skills"), { recursive: true });
 // The enterprise layer, bundled by scripts/bundle-server.mjs, under the path
 // server/enterprise.ts loads from: <package>/enterprise/server/index.js.
-// Source-available under its own license; inert without OMB_LICENSE_KEY.
+// Proprietary, under enterprise/LICENSE; inert without OMB_LICENSE_KEY.
 const enterpriseBundle = join(root, "dist-server", "enterprise", "server", "index.js");
 if (existsSync(enterpriseBundle)) {
   mkdirSync(join(out, "enterprise", "server"), { recursive: true });

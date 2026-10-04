@@ -1,74 +1,98 @@
+// Copyright 2026 SocialCoffee DigiTech Pvt Ltd. All rights reserved.
+// SocialCoffeeAgent Enterprise License: see ../LICENSE.
+import { execFileSync } from "node:child_process";
 import { generateKeyPairSync } from "node:crypto";
-import { describe, expect, it } from "vitest";
-
+import { mkdtempSync, readdirSync, readFileSync, rmSync, statSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { afterAll, describe, expect, it } from "vitest";
 import { register } from "./index.ts";
-import { issueLicenseKey, verifyLicenseKey, type LicenseClaims } from "./license.ts";
+import { keyId, signLicense, verifyLicenseKey } from "./license.ts";
+import { TRUSTED_KEYS } from "./trusted-keys.ts";
 
-function keypair() {
+const HERE = dirname(fileURLToPath(import.meta.url));
+const DAY_MS = 24 * 60 * 60_000;
+const NOW = Date.parse("2027-01-10T12:00:00Z");
+
+function pair() {
   const { publicKey, privateKey } = generateKeyPairSync("ed25519");
-  const pub = publicKey.export({ format: "jwk" });
-  return { x: String(pub.x), privateJwk: privateKey.export({ format: "jwk" }) };
+  return {
+    pem: privateKey.export({ type: "pkcs8", format: "pem" }).toString(),
+    trusted: { [keyId(publicKey)]: publicKey.export({ type: "spki", format: "der" }).toString("base64") },
+  };
 }
 
-const claims: LicenseClaims = {
-  v: 1,
-  customer: "Reliable Back Office",
-  features: ["whitelabel", "sso"],
-  issued: "2026-09-02",
-  expires: "2027-09-02",
-};
+const issuer = pair();
+const issue = (expiresAt: string | null, features = ["budgets", "billing"]) =>
+  signLicense(issuer.pem, { customer: "Acme", features, expiresAt, issuedAt: "2027-01-01" });
+const check = (key: string, options: { graceDays?: number; now?: number; trustedKeys?: Record<string, string> } = {}) =>
+  verifyLicenseKey(key, { trustedKeys: issuer.trusted, now: NOW, ...options });
 
-describe("license keys", () => {
-  it("round-trips claims through a signed key", () => {
-    const { x, privateJwk } = keypair();
-    const key = issueLicenseKey(claims, privateJwk);
-    expect(key.startsWith("omb1.")).toBe(true);
-    expect(verifyLicenseKey(key, { publicKeys: [x], now: new Date("2026-12-01") })).toEqual(claims);
+describe("SocialCoffeeAgent license keys", () => {
+  it("accepts a genuine key and reports its claims", () => {
+    expect(check(issue("2027-06-30"))).toEqual({ customer: "Acme", features: ["billing", "budgets"], expiresAt: "2027-06-30" });
+    expect(check(issue(null, ["admin"]))).toEqual({ customer: "Acme", features: ["admin"], expiresAt: null });
   });
 
-  it("accepts a key signed by any listed public key, so rotation is append-only", () => {
-    const old = keypair();
-    const fresh = keypair();
-    const key = issueLicenseKey(claims, old.privateJwk);
-    expect(() => verifyLicenseKey(key, { publicKeys: [fresh.x], now: new Date("2026-12-01") })).toThrow(/does not match any OpenMausBot signing key/);
-    expect(verifyLicenseKey(key, { publicKeys: [fresh.x, old.x], now: new Date("2026-12-01") }).customer).toBe(claims.customer);
+  it("refuses keys that are not ours, altered, or signed by an untrusted key", () => {
+    expect(() => check("omb1.not.real")).toThrow("not a SocialCoffeeAgent license key");
+    expect(() => check("sca1.only-two")).toThrow("not a SocialCoffeeAgent license key");
+    const key = issue("2027-06-30");
+    const [prefix, claims, signature] = key.split(".");
+    const forged = Buffer.from(JSON.stringify({ ...JSON.parse(Buffer.from(claims!, "base64url").toString()), features: ["admin", "billing", "budgets", "whitelabel"] })).toString("base64url");
+    expect(() => check(`${prefix}.${forged}.${signature}`)).toThrow("signature is not valid");
+    expect(() => check(`${prefix}.${claims}.${signature!.slice(0, -4)}AAAA`)).toThrow("signature is not valid");
+    expect(() => check(`${prefix}.not-json.${signature}`)).toThrow(/claims are (not readable|malformed)/);
+    expect(() => check(key, { trustedKeys: pair().trusted })).toThrow("does not trust");
+    const other = pair();
+    expect(() => check(key, { trustedKeys: { [Object.keys(issuer.trusted)[0]!]: Object.values(other.trusted)[0]! } })).toThrow("does not match its id");
   });
 
-  it("refuses altered claims: the signature covers exactly what is granted", () => {
-    const { x, privateJwk } = keypair();
-    const key = issueLicenseKey(claims, privateJwk);
-    const [prefix, , signature] = key.split(".");
-    const upgraded = Buffer.from(JSON.stringify({ ...claims, features: ["whitelabel", "sso", "budgets"] })).toString("base64url");
-    expect(() => verifyLicenseKey(`${prefix}.${upgraded}.${signature}`, { publicKeys: [x] })).toThrow(/altered/);
+  it("accepts a lapsed key only inside the grace period", () => {
+    const lapsed = issue("2027-01-08");
+    expect(() => check(lapsed)).toThrow("expired on 2027-01-08");
+    expect(check(lapsed, { graceDays: 7 }).expiresAt).toBe("2027-01-08");
+    expect(() => check(lapsed, { graceDays: 7, now: Date.parse("2027-01-15T00:00:00Z") })).toThrow("expired on 2027-01-08");
+    expect(check(lapsed, { graceDays: 7, now: Date.parse("2027-01-15T00:00:00Z") - 1 }).customer).toBe("Acme");
+    expect(() => check(issue("2027-01-10"), { now: Date.parse("2027-01-10T00:00:00Z") + DAY_MS / 2 })).toThrow("expired");
   });
 
-  it("explains malformed keys and expiry in operator terms", () => {
-    const { x, privateJwk } = keypair();
-    expect(() => verifyLicenseKey("not-a-key", { publicKeys: [x] })).toThrow(/expected "omb1\.<claims>\.<signature>"/);
-    expect(() => verifyLicenseKey("omb1..", { publicKeys: [x] })).toThrow(/expected "omb1/);
-    const key = issueLicenseKey(claims, privateJwk);
-    expect(() => verifyLicenseKey(key, { publicKeys: [x], now: new Date("2027-09-02") })).toThrow(/expired on 2027-09-02; renew it/);
-    const perpetual = issueLicenseKey({ ...claims, expires: null }, privateJwk);
-    expect(verifyLicenseKey(perpetual, { publicKeys: [x], now: new Date("2099-01-01") }).expires).toBeNull();
+  it("signs only with an Ed25519 key and only valid claims", () => {
+    const rsa = generateKeyPairSync("rsa", { modulusLength: 2048 }).privateKey.export({ type: "pkcs8", format: "pem" }).toString();
+    expect(() => signLicense(rsa, { customer: "Acme", features: [], expiresAt: null })).toThrow("Ed25519");
+    expect(() => signLicense(issuer.pem, { customer: " ", features: [], expiresAt: null })).toThrow();
+    expect(() => signLicense(issuer.pem, { customer: "Acme", features: ["Bad Id"], expiresAt: null })).toThrow();
+    expect(() => signLicense(issuer.pem, { customer: "Acme", features: [], expiresAt: "2027-13-40" })).toThrow();
   });
 
-  it("refuses dates that are not YYYY-MM-DD on both sides", () => {
-    const { x, privateJwk } = keypair();
-    expect(() => issueLicenseKey({ ...claims, expires: "not-a-date" }, privateJwk)).toThrow(/expires must be a YYYY-MM-DD date/);
-    expect(() => issueLicenseKey({ ...claims, issued: "2026-9-2" }, privateJwk)).toThrow(/issued must be a YYYY-MM-DD date/);
-    const forged = Buffer.from(JSON.stringify({ ...claims, expires: "someday" })).toString("base64url");
-    const [prefix, , signature] = issueLicenseKey(claims, privateJwk).split(".");
-    expect(() => verifyLicenseKey(`${prefix}.${forged}.${signature}`, { publicKeys: [x] })).toThrow(/altered/);
+  it("register() uses the trusted keys this build ships", () => {
+    expect(register({ licenseKey: issue(null), graceDays: 7 }, issuer.trusted)).toMatchObject({ customer: "Acme" });
+    if (Object.keys(TRUSTED_KEYS).length === 0) {
+      expect(() => register({ licenseKey: issue(null) })).toThrow("no SocialCoffeeAgent license signing key");
+    } else {
+      expect(() => register({ licenseKey: issue(null) })).toThrow("does not trust");
+    }
   });
+});
 
-  it("refuses to issue claims that would not verify", () => {
-    const { privateJwk } = keypair();
-    // SAFETY: deliberately wrong shape to exercise the issuer's own validation
-    expect(() => issueLicenseKey({ ...claims, features: [] as string[], customer: "" }, privateJwk)).toThrow();
-  });
+describe("issuer scripts", () => {
+  const dir = mkdtempSync(join(tmpdir(), "sca-licensing-"));
+  afterAll(() => rmSync(dir, { recursive: true, force: true }));
+  const run = (script: string, args: string[]) =>
+    execFileSync(process.execPath, ["--experimental-strip-types", join(HERE, "..", "scripts", script), ...args], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
 
-  it("register() turns a key into the layer contract and passes verification errors through", () => {
-    expect(register({ licenseKey: undefined })).toBeNull();
-    expect(() => register({ licenseKey: "omb1.bad.key" })).toThrow(/OMB_LICENSE_KEY/);
+  it("generate a private key on disk only and issue keys the printed public key verifies", () => {
+    const out = run("keygen.ts", ["--dir", dir]);
+    const [pem] = readdirSync(dir);
+    const kid = pem!.replace(/\.pem$/, "");
+    if (process.platform !== "win32") expect(statSync(join(dir, pem!)).mode & 0o077).toBe(0);
+    expect(out).not.toContain("PRIVATE KEY");
+    expect(out).not.toContain(readFileSync(join(dir, pem!), "utf8").split("\n")[1]);
+    const spki = out.match(new RegExp(`"${kid}": "([A-Za-z0-9+/=]+)"`))?.[1];
+    expect(spki).toBeTruthy();
+    const key = run("issue-license.ts", ["--key", join(dir, pem!), "--customer", "Acme Pvt Ltd", "--features", "budgets, billing", "--expires", "2099-12-31"]).trim();
+    expect(verifyLicenseKey(key, { trustedKeys: { [kid]: spki! } })).toEqual({ customer: "Acme Pvt Ltd", features: ["billing", "budgets"], expiresAt: "2099-12-31" });
+    expect(() => run("issue-license.ts", ["--key", join(dir, pem!), "--customer", "Acme", "--features", "budgets"])).toThrow();
   });
 });
