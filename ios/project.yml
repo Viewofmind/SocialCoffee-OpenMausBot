@@ -96,7 +96,7 @@ targets:
         # guideline 2.3.8: a person who installs "MausBot" has to be able to
         # find it on the home screen. The desktop app is "OpenMausBot", which
         # is near enough to read as the same family and still tell them apart.
-        CFBundleDisplayName: MausBot
+        CFBundleDisplayName: SocialCoffeeAgent
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         LSApplicationCategoryType: public.app-category.productivity
@@ -211,7 +211,7 @@ targets:
     info:
       path: ShareExtension/Info.plist
       properties:
-        CFBundleDisplayName: MausBot
+        CFBundleDisplayName: SocialCoffeeAgent
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         OpenMausKeychainAccessGroup: $(AppIdentifierPrefix)group.com.openmausbot.shared
@@ -287,7 +287,7 @@ targets:
     info:
       path: Widgets/Info.plist
       properties:
-        CFBundleDisplayName: MausBot
+        CFBundleDisplayName: SocialCoffeeAgent
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         OpenMausKeychainAccessGroup: $(AppIdentifierPrefix)group.com.openmausbot.shared
