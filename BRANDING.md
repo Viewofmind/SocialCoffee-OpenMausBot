@@ -70,6 +70,11 @@ are the only places the old names remain, and each is either attribution or a fi
   upstream. Follow-up: publish the same bytes (or a rebuild from
   `scripts/build-windows-browser-vendor.mjs`) as a release on this repository and repoint the URL.
 - The repository name `SocialCoffee-OpenMausBot` in links, until the GitHub repository is renamed.
+- The phone-credential HPKE `info` string `OpenMausBot phone credential v1` and associated data
+  `openmausbot-phone-credential-v1` (`server/phone-secret.ts`, `ios/Sources/CompanionCore/PhoneSecret.swift`).
+  They are cryptographic domain-separation constants, and `server/phone-secret.test.ts` proves
+  interop with an envelope sealed by Apple's CryptoKit using these exact bytes. Renaming them needs
+  a new CryptoKit-generated vector from a Mac (a `v2` scheme); they are never shown to users.
 
 ### Internal names
 
@@ -84,7 +89,7 @@ fallback (no SocialCoffeeAgent build has shipped with the old values):
 | `_openmausbot._tcp` mDNS type | `_sc-agent._tcp` |
 | `application/x-openmausbot-*`, `application/x-openmaus-bot` drag types | `application/x-sc-agent-*` |
 | Phone `openmausbot://pair`, `openmausbot://thread/` | `sc-agent://pair`, `sc-agent://thread/` |
-| `openmausbot:phone-secret-*`, `openmausbot-phone-credential-v1` | `sc-agent:phone-secret-*`, `sc-agent-phone-credential-v1` |
+| `openmausbot:phone-secret-*` bridge messages | `sc-agent:phone-secret-*` |
 | `openmaus.package`, `openmaus.backup`, `openmaus.workspace-backup` | `socialcoffee-agent.package`, `.backup`, `.workspace-backup` |
 | Routine / agents-catalog `runOn` `"maus"` | `"local"` |
 | iOS bundle ids `com.openmausbot.app*`, App Group `group.com.openmausbot.shared` | `in.socialcoffee.agent.app*`, `group.in.socialcoffee.agent.shared` |

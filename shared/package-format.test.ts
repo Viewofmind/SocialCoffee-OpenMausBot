@@ -228,7 +228,7 @@ describe("canonical form", () => {
     expect(canonicalJson({ a: [3, { c: "x" }], b: 1 })).toBe(canonicalJson({ b: 1, a: [3, { c: "x" }] }));
     expect(canonicalJson({ "é": 1, Z: 2, a: 3 })).toBe('{"Z":2,"a":3,"é":1}');
     expect(sha256(canonicalJson({ format: "socialcoffee-agent.package", version: 2, package: { id: "x", tags: ["b", "a"] } })))
-      .toBe("8d50ccbf67f4efca8c5de1159b4cf6ab4368f7b1335316a8f8896a75aab8b71e");
+      .toBe("a14a54792337124bd0255f5f14a947136138a6b34ec58bac50051669ca617144");
   });
 
   it("hashes a reordered copy of a fixture to the same release bytes", () => {

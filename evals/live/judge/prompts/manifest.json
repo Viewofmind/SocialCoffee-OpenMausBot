@@ -1,9 +1,9 @@
 {
   "prompts": [
     {
-      "file": "open-ended-v1.md",
-      "version": "open-ended-v1",
-      "sha256": "31bfc837c8c7ffcc15c9d24d8d2041674340e3284384ca95e5475dc66d5f1120"
+      "file": "open-ended-v2.md",
+      "version": "open-ended-v2",
+      "sha256": "78eb2a1cc475f66e7b4fcc3b7b4f7b74a551a06a0160c4304d9528169e74a75e"
     }
   ]
 }
