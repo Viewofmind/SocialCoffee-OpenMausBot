@@ -24,7 +24,7 @@ describe("service units", () => {
     expect(unit).toContain("Description=SocialCoffeeAgent (agentada)");
     expect(unit).toContain("User=scagent");
     expect(unit).toContain("Environment=OMB_DATA_DIR=/home/scagent/.socialcoffee-agent");
-    expect(unit).toContain("ExecStart=/usr/bin/node /usr/lib/node_modules/socialcoffee-agent/cli.js serve --port 8799 --data-dir /home/scagent/.sc-agent --domain agent.example.com --no-pair");
+    expect(unit).toContain("ExecStart=/usr/bin/node /usr/lib/node_modules/socialcoffee-agent/cli.js serve --port 8799 --data-dir /home/scagent/.socialcoffee-agent --domain agent.example.com --no-pair");
     expect(unit).toContain("Restart=always");
     expect(unit).toContain("AmbientCapabilities=CAP_NET_BIND_SERVICE");
     expect(unit).toContain("WantedBy=multi-user.target");
