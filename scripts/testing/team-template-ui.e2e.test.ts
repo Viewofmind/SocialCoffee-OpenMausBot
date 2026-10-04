@@ -45,7 +45,7 @@ describe("additive template imports in the real renderer", () => {
     expect(await control("wait", "--bot", info!.botId, "--timeout", "30")).toMatchObject({ status: "settled" });
     const original = await api("/api/bots");
     const transcript = await control("messages", "--bot", info!.botId, "--limit", "10");
-    const manifest = { format: "openmaus.team", version: 2, team: { name: "Sales crew", members: [
+    const manifest = { format: "socialcoffee-agent.team", version: 2, team: { name: "Sales crew", members: [
       { key: "researcher", name: "Lead finder", appearance: { color: "cyan" } },
       { key: "writer", name: "Outreach writer", appearance: { color: "purple" } },
     ] } };
@@ -57,7 +57,7 @@ describe("additive template imports in the real renderer", () => {
       window.fetch = (input, init) => {
         const path = String(input);
         const reply = value => Promise.resolve(new Response(JSON.stringify(value), { headers: { 'content-type': 'application/json' } }));
-        if (path === '/api/team-library/catalog') return reply({ format: 'openmaus.catalog', version: 1, repositoryUrl: '', teams: [{ slug: 'sales', name: 'Sales crew', summary: 'Fixture template', category: 'Sales', members: 2, skills: [], requires: { apps: [] } }] });
+        if (path === '/api/team-library/catalog') return reply({ format: 'socialcoffee-agent.catalog', version: 1, repositoryUrl: '', teams: [{ slug: 'sales', name: 'Sales crew', summary: 'Fixture template', category: 'Sales', members: 2, skills: [], requires: { apps: [] } }] });
         if (path === '/api/team-library/teams/sales') return reply(window.templateFixture);
         return originalFetch(input, init);
       };
@@ -72,7 +72,7 @@ describe("additive template imports in the real renderer", () => {
       } else {
         await click("Import");
         // Exercise the file input's actual change handler, not the OS picker.
-        await evaluate(`(() => { const input = document.querySelector('[role=dialog] input[type=file]'); const transfer = new DataTransfer(); transfer.items.add(new File([JSON.stringify(window.templateFixture)], 'sales.mausteam.json', { type: 'application/json' })); input.files = transfer.files; input.dispatchEvent(new Event('change', { bubbles: true })); return true; })()`);
+        await evaluate(`(() => { const input = document.querySelector('[role=dialog] input[type=file]'); const transfer = new DataTransfer(); transfer.items.add(new File([JSON.stringify(window.templateFixture)], 'sales.sc-team.json', { type: 'application/json' })); input.files = transfer.files; input.dispatchEvent(new Event('change', { bubbles: true })); return true; })()`);
       }
       await expect.poll(snapshot, { timeout: 10_000 }).toContain("Adds a new team for Sales crew");
       await click("Add team");

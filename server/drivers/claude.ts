@@ -230,7 +230,7 @@ export function claudeInheritWarning(env: NodeJS.ProcessEnv): ProviderSnapshot["
   return {
     title: "Bots inherit this machine's Claude Code setup",
     message:
-      "OMB_CLAUDE_INHERIT_USER_CONFIG=1 is set on the OpenMausBot process, so every Claude bot also loads this " +
+      "OMB_CLAUDE_INHERIT_USER_CONFIG=1 is set on the SocialCoffeeAgent process, so every Claude bot also loads this " +
       "computer's own MCP servers, connectors, skills, hooks and personal CLAUDE.md on every turn — often thousands " +
       "of extra tokens per model call, and tools nobody gave the bot. Unless a bot genuinely needs a server from " +
       "your user-scope Claude config, remove the variable and restart; add the server under Settings → MCP servers " +
@@ -397,7 +397,7 @@ export function claudeCliUpdate(version: string | null, cli: string): ProviderSn
   const missing = (Object.keys(CLAUDE_FLAG_FLOORS) as (keyof typeof CLAUDE_FLAG_FLOORS)[])
     .filter((flag) => !claudeCliSupports(parsed, flag));
   const effects = [
-    ...(missing.includes("--autocompact") ? ["no compaction window picked by OpenMausBot"] : []),
+    ...(missing.includes("--autocompact") ? ["no compaction window picked by SocialCoffeeAgent"] : []),
     ...(missing.includes("--setting-sources") ? ["bots still see this machine's own Claude Code setup"] : []),
     ...(missing.includes("--system-prompt-snapshot") ? ["resumed turns cannot refresh stale system prompts"] : []),
   ];
@@ -555,17 +555,17 @@ type AskBehavior = "allow" | "deny" | "answer";
 type AskResolutionSource = "user" | "timeout" | "system";
 
 const DENY_TIMEOUT_NOTE =
-  "OpenMausBot: nobody answered this permission request in time. Skip this action and finish what you can without it.";
-const QUESTION_TIMEOUT_NOTE = "OpenMausBot: nobody answered in time. Use your best judgment and continue.";
-const DUPLICATE_ASK_ID_NOTE = "OpenMausBot: duplicate ask id — skipping this request.";
+  "SocialCoffeeAgent: nobody answered this permission request in time. Skip this action and finish what you can without it.";
+const QUESTION_TIMEOUT_NOTE = "SocialCoffeeAgent: nobody answered in time. Use your best judgment and continue.";
+const DUPLICATE_ASK_ID_NOTE = "SocialCoffeeAgent: duplicate ask id — skipping this request.";
 
 /** The system-source reply for an ask that outlives the turn — used both to
  * drain in-flight `pending` asks on close() and to answer one that arrives
  * on an already-closed broker (see the `closed` branch below). */
 function systemEndedReply(kind: Ask["kind"]): { behavior: AskBehavior; message: string } {
   return kind === "question"
-    ? { behavior: "answer", message: "OpenMausBot: the turn is ending — wrap up." }
-    : { behavior: "deny", message: "OpenMausBot: the turn ended" };
+    ? { behavior: "answer", message: "SocialCoffeeAgent: the turn is ending — wrap up." }
+    : { behavior: "deny", message: "SocialCoffeeAgent: the turn ended" };
 }
 
 /** The structured questions behind an ask, when it is one. Claude's own
@@ -1493,7 +1493,7 @@ export const ClaudeDriver: ProviderDriver<ClaudeConfig> = {
           env: local.env,
         };
         // The isolated Local VM preserves the established pre-allow behavior.
-        // Host tools always route through OpenMausBot's permission broker.
+        // Host tools always route through SocialCoffeeAgent's permission broker.
         if (!controlsHost) allowed.push("mcp__computer");
       }
       // peer-agent comms (list_bots/ask_bot) — the harness builds the whole

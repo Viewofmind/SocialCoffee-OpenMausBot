@@ -1,6 +1,6 @@
 // "Works on: Cloud" (Hosted desktop) end to end, the incident of Oct 3: a
 // Claude bot set to the cloud computer had its turn handed to the Computer
-// engine, which posted the prompt to Boat's own runner; on an OMB Cloud that
+// engine, which posted the prompt to Boat's own runner; on an SocialCoffeeAgent Cloud that
 // runner has no AI sign-in, so every turn failed with a bare
 // provider_not_configured and the bot looked broken until it was recreated.
 // Now the bot keeps its own engine and model, and the cloud computer arrives
@@ -157,7 +157,7 @@ it("keeps the bot's own engine on the cloud computer, and a failed place never b
     // 3. Its tools reach this bot's Boat through the harness.
     const client = mcpClient(computer);
     try {
-      expect((await client.request("initialize", { protocolVersion: "2024-11-05", capabilities: {}, clientInfo: { name: "fixture", version: "1" } })).result.serverInfo.name).toBe("openmausbot-computer");
+      expect((await client.request("initialize", { protocolVersion: "2024-11-05", capabilities: {}, clientInfo: { name: "fixture", version: "1" } })).result.serverInfo.name).toBe("socialcoffee-agent-computer");
       expect((await client.request("tools/list")).result.tools).toHaveLength(10);
       const shot = await client.request("tools/call", { name: "screenshot", arguments: {} });
       expect(shot.result.content[0]).toMatchObject({ type: "image", mimeType: "image/jpeg" });

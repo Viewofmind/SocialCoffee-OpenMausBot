@@ -617,7 +617,7 @@ describe("Group Local VM ownership on the real isolated server", () => {
       expect(available.options.map((option: any) => option.surface)).toEqual(["cloud", "vm", "local", "browser"]);
       expect(before.mcpConfig.mcpServers.agents.env.OMB_CLOUD_HOME).toBe("0");
       expect(before.systemPrompt).not.toContain(cloudHomePrompt(true));
-      expect(before.systemPrompt).not.toContain("You run on the user's OMB Cloud");
+      expect(before.systemPrompt).not.toContain("You run on the user's SocialCoffeeAgent Cloud");
       expect(available.options).toContainEqual(expect.objectContaining({ surface: "vm", available: true }));
       expect(available.options).toContainEqual(expect.objectContaining({ surface: "cloud", ready: false, canCreate: true }));
       expect(await (await call("POST", { surface: "auto" })).json()).toMatchObject({ status: "pending", surface: "vm" });
@@ -829,7 +829,7 @@ describe("Group Local VM ownership on the real isolated server", () => {
 
   it.skipIf(process.platform === "linux")("carries the recorded macOS permission failure into the failed turn", async () => {
     const { bots, group } = await room();
-    const reason = "embedded host failed: Screen Recording required; grant access in System Settings and restart OpenMausBot";
+    const reason = "embedded host failed: Screen Recording required; grant access in System Settings and restart SocialCoffeeAgent";
     mkdirSync(dirname(cuaDescriptor), { recursive: true });
     writeFileSync(cuaDescriptor, JSON.stringify({ mode: "unavailable", reason }), { mode: 0o600 });
     try {
@@ -837,7 +837,7 @@ describe("Group Local VM ownership on the real isolated server", () => {
       await send(group.id);
       const state = await until(() => api("GET", "/api/bots?messages=30"),
         value => JSON.stringify(value).includes(reason));
-      if (process.platform === "darwin") expect(JSON.stringify(state)).toContain("Relaunch OpenMausBot after granting the missing macOS permission");
+      if (process.platform === "darwin") expect(JSON.stringify(state)).toContain("Relaunch SocialCoffeeAgent after granting the missing macOS permission");
       await idle(bots[0].id);
       expect(existsSync(dumpFile)).toBe(false);
     } finally {

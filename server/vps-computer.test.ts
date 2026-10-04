@@ -285,7 +285,7 @@ describe("VPS computer", () => {
   it("uses a deterministic, bot-id-derived managed container name", () => {
     expect(vpsContainerName(BOT_ID)).toBe(vpsContainerName(BOT_ID));
     expect(vpsContainerName(BOT_ID)).not.toBe(vpsContainerName("another-bot"));
-    expect(vpsContainerName(BOT_ID)).toMatch(/^openmausbot-vps-[a-z0-9-]+$/);
+    expect(vpsContainerName(BOT_ID)).toMatch(/^socialcoffee-agent-vps-[a-z0-9-]+$/);
   });
 
   it("passes the SSH target as one validated Docker argv value", () => {
@@ -456,7 +456,7 @@ describe("VPS computer", () => {
     expect(run.at(-1)).toBe(IMAGE_ID);
     expect(run.join(" ")).toContain(`--label ${VPS_MANAGED_LABEL}=1`);
     expect(run.find((arg) => arg.startsWith(`${VPS_ENVIRONMENT_LABEL}=`)))
-      .toMatch(/^com\.openmausbot\.environment=[0-9a-f-]{36}$/i);
+      .toMatch(/^com\.socialcoffee-agent\.environment=[0-9a-f-]{36}$/i);
     expect(run.join(" ")).toContain(`--label ${IMAGE_LAYER_LABEL}=${IMAGE_LAYER_VERSION}`);
     expect(run.join(" ")).toContain(`--label ${VPS_VIEWER_LABEL}=1`);
     expect(run.join(" ")).toContain("--restart unless-stopped");
@@ -608,10 +608,10 @@ describe("VPS computer", () => {
       "-e",
       "CUA_DRIVER_RS_TELEMETRY_ENABLED=0",
       vpsContainerName(BOT_ID),
-      "/usr/local/libexec/openmausbot/cua-driver",
+      "/usr/local/libexec/socialcoffee-agent/cua-driver",
       "mcp",
       "--socket",
-      "/run/user/1000/openmausbot-cua.sock",
+      "/run/user/1000/socialcoffee-agent-cua.sock",
     ]);
   });
 
@@ -623,7 +623,7 @@ describe("VPS computer", () => {
     const transfer = fake.calls.find(({ args }) => args.includes("openmausbot-preview"))!.args;
     expect(transfer.slice(2)).toEqual([
       "exec", "-u", "cua", "-e", "HOME=/home/cua", CONTAINER_ID,
-      "sh", "-c", expect.stringContaining('quality=70'), "openmausbot-preview", "/tmp/openmausbot-vps-preview.png",
+      "sh", "-c", expect.stringContaining('quality=70'), "socialcoffee-agent-preview", "/tmp/socialcoffee-agent-vps-preview.png",
     ]);
     expect(transfer[transfer.indexOf("-c") + 1]).toContain("image.thumbnail((1280, 1280))");
     expect(fake.calls.some(({ args }) => args.includes("rm") && args.includes("-f"))).toBe(true);
@@ -648,7 +648,7 @@ describe("VPS computer", () => {
         const original = execFileSync("python3", ["-I", "-c", `from PIL import Image; import sys; Image.effect_noise((${width}, ${height}), 64).convert("RGBA").save(sys.stdout.buffer, format="PNG")`], { maxBuffer: 32 * 1024 * 1024 });
         const path = join(scratch, "preview.png");
         writeFileSync(path, original);
-        const encoded = execFileSync("sh", ["-c", script, "openmausbot-preview", path], { encoding: "utf8", maxBuffer: 16 * 1024 * 1024 });
+        const encoded = execFileSync("sh", ["-c", script, "socialcoffee-agent-preview", path], { encoding: "utf8", maxBuffer: 16 * 1024 * 1024 });
         const jpeg = Buffer.from(encoded, "base64");
         const decoded = execFileSync("python3", ["-I", "-c", [
           "from PIL import Image",
@@ -683,7 +683,7 @@ describe("VPS computer", () => {
       // the previous PNG behavior, never return a partial JPEG plus a PNG.
       for (const interpreter of [join(scratch, "missing-python"), "false"]) {
         const script = originalScript.replace("/opt/venv/bin/python", interpreter);
-        const encoded = execFileSync("sh", ["-c", script, "openmausbot-preview", path], { encoding: "utf8" });
+        const encoded = execFileSync("sh", ["-c", script, "socialcoffee-agent-preview", path], { encoding: "utf8" });
         expect(encoded).toBe(screenshot.toString("base64"));
       }
     } finally { rmSync(scratch, { recursive: true, force: true }); }
@@ -1027,7 +1027,7 @@ describe("VPS computer", () => {
     expect(rebuilt.ready).toBe(true);
   });
 
-  it("never removes a container OpenMausBot did not create", async () => {
+  it("never removes a container SocialCoffeeAgent did not create", async () => {
     const unowned = fixture({ managed: false });
     await expect(vpsComputerAction("remove", CONFIG, BOT_ID, unowned.runner)).rejects.toThrow(/did not create/);
     expect(unowned.calls.some(({ args }) => args[2] === "rm")).toBe(false);

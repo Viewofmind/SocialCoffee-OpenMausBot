@@ -1,8 +1,8 @@
 // Bot avatar — the Blob Studio "Cursor" mascot (CursorAvatar.tsx), wrapped
-// in the app's historical MausAvatar API so no call site changes: per-bot
+// in the app's historical MarkAvatar API so no call site changes: per-bot
 // color becomes a body gradient, the app's one-shot motion beats borrow the
 // face/state for a moment, and the eyes follow the pointer. The previous
-// hand-built Maus body + face engine (maus-engine/face/driver) is gone;
+// hand-built Agent body + face engine (mark-engine/face/driver) is gone;
 // CursorAvatar owns morphing, blinking, drift, body motion and effects.
 import {
   forwardRef,
@@ -13,7 +13,7 @@ import {
   useState,
   type PointerEvent as ReactPointerEvent,
 } from "react";
-import { MAUS_COLORS, type MausColor, type MausMotion, type MausState } from "@/lib/mascot";
+import { MARK_COLORS, type MarkColor, type MarkMotion, type MarkState } from "@/lib/mascot";
 import { CursorAvatar, type CursorAvatarHandle } from "./CursorAvatar";
 import { avatarCropRadius, botAvatarProfile, clampAvatarFocus, clampAvatarZoom, type BotAvatarCrop } from "../../shared/bot-avatar";
 import { MASCOT_BODIES, botMascotBody, type MascotBodyId } from "../../shared/mascot-bodies";
@@ -33,7 +33,7 @@ const POINTER_GAZE = { forward: 1, authored: 0.25 };
  */
 interface MotionFaces
   extends Partial<
-    Record<Exclude<MausMotion, "none">, { state?: MausState; blink?: boolean; spin?: number }>
+    Record<Exclude<MarkMotion, "none">, { state?: MarkState; blink?: boolean; spin?: number }>
   > {}
 
 const MOTION_FACE: MotionFaces = {
@@ -73,22 +73,22 @@ function mix(hex: string, toward: string, t: number): string {
  * shadow), with the same light/dark spread as the pack's default green
  * ["#9FE6B5", "#3FAE6E", "#1C7A4C"].
  */
-const gradientFor = (color: MausColor): [string, string, string] => {
-  const fill = MAUS_COLORS[color] ?? MAUS_COLORS.green;
+const gradientFor = (color: MarkColor): [string, string, string] => {
+  const fill = MARK_COLORS[color] ?? MARK_COLORS.green;
   return [mix(fill, "#ffffff", 0.55), fill, mix(fill, "#000000", 0.42)];
 };
 
-export type MausAvatarHandle = CursorAvatarHandle;
+export type MarkAvatarHandle = CursorAvatarHandle;
 
-export type MausAvatarProps = {
-  color: MausColor;
+export type MarkAvatarProps = {
+  color: MarkColor;
   /** Named behaviour — drives the expression pool, its cadence and blinking. */
-  state?: MausState;
+  state?: MarkState;
   /** Pin one of the 25 faces and stop the state's own drift. */
   expression?: number;
   size?: number;
   label?: string;
-  motion?: MausMotion;
+  motion?: MarkMotion;
   motionKey?: number;
   /** Head turn in degrees. */
   turn?: number;
@@ -112,7 +112,7 @@ export type MausAvatarProps = {
   bodyId?: MascotBodyId;
 };
 
-function MausAvatarComponent(
+function MarkAvatarComponent(
   {
     color,
     state = "idle",
@@ -132,8 +132,8 @@ function MausAvatarComponent(
     trackPointer = true,
     animated = true,
     bodyId,
-  }: MausAvatarProps,
-  ref: React.Ref<MausAvatarHandle>,
+  }: MarkAvatarProps,
+  ref: React.Ref<MarkAvatarHandle>,
 ) {
   const silhouette = MASCOT_BODIES[botMascotBody(bodyId)];
   const inner = useRef<CursorAvatarHandle>(null);
@@ -144,7 +144,7 @@ function MausAvatarComponent(
   }));
 
   // A one-shot motion borrows the state for a moment, then hands it back.
-  const [motionState, setMotionState] = useState<MausState | null>(null);
+  const [motionState, setMotionState] = useState<MarkState | null>(null);
   useEffect(() => {
     if (motion === "none" || !animated) return;
     const beat = MOTION_FACE[motion];
@@ -197,12 +197,12 @@ function MausAvatarComponent(
   );
 }
 
-export const MausAvatar = memo(forwardRef(MausAvatarComponent));
+export const MarkAvatar = memo(forwardRef(MarkAvatarComponent));
 
-export type BotAvatarProps = Omit<MausAvatarProps, "color"> & {
+export type BotAvatarProps = Omit<MarkAvatarProps, "color"> & {
   bot: {
     name?: string;
-    color: MausColor;
+    color: MarkColor;
     avatarUrl?: string | null;
     avatarCrop?: BotAvatarCrop;
     avatarZoom?: number;
@@ -257,7 +257,7 @@ export function BotAvatar({ bot, size = 44, label, ...mascotProps }: BotAvatarPr
 
   if (outcome !== "flatImage") {
     return (
-      <MausAvatar
+      <MarkAvatar
         bodyId={bot.mascotBody ?? undefined}
         {...mascotProps}
         color={bot.color}

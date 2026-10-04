@@ -71,7 +71,7 @@ function Shell({ viewer }: { viewer: WelcomeViewer | null }) {
       window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
       if (requestedSettings === "organization") dispatch({ type: "toggleAppSettings", open: true, section: "organization" });
       else if (requestedSettings === "cloud") dispatch(CLOUD_LINK_SETTINGS);
-      // The lending menu-bar item: Settings → OMB Cloud, with no automatic action.
+      // The lending menu-bar item: Settings → SocialCoffeeAgent Cloud, with no automatic action.
       else if (requestedSettings === "cloud-settings") dispatch({ type: "toggleAppSettings", open: true, section: "cloudAccount" });
       else open();
     }
@@ -130,7 +130,7 @@ function Shell({ viewer }: { viewer: WelcomeViewer | null }) {
     state.connected &&
     state.instances.length > 0 &&
     !state.instances.some((i) => i.snapshot.state === "available");
-  // An OMB Cloud home with none of the person's own engines signed in yet:
+  // An SocialCoffeeAgent Cloud home with none of the person's own engines signed in yet:
   // its first run, and every bot until then, is the engine sign-in.
   const cloudSignIn = cloudSignInDue(viewer, state, engineReady);
 
@@ -245,8 +245,8 @@ function Shell({ viewer }: { viewer: WelcomeViewer | null }) {
   // shell signals the request over the bridge (Cmd+, accelerates the item).
   // Local-shell only: remote server pages never receive the channel, and ogb
   // is absent in the browser.
-  // "cloud" is openmausbot://cloud (the Cloud page's "Open in the app"):
-  // OMB Cloud, marked as opened by the link so that view signs in or connects.
+  // "cloud" is socialcoffee-agent://cloud (the Cloud page's "Open in the app"):
+  // SocialCoffeeAgent Cloud, marked as opened by the link so that view signs in or connects.
   useEffect(() => {
     return window.ogb?.onOpenAppSettings?.(section => dispatch(section === "cloud" && window.ogb?.cloudAccount && !remoteClient
       ? CLOUD_LINK_SETTINGS

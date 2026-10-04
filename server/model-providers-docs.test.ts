@@ -1,5 +1,5 @@
 // The "Other model providers" docs page tells people how to use OpenRouter,
-// Fireworks AI, DeepSeek and Cline before OpenMausBot has a screen for them.
+// Fireworks AI, DeepSeek and Cline before SocialCoffeeAgent has a screen for them.
 // Each workaround it gives depends on a detail of today's code, so each one
 // is pinned here to that code. When one of these fails, the behaviour moved:
 // update apps/docs/content/docs/providers/model-providers.mdx with it.
@@ -106,7 +106,7 @@ describe("Claude Code section", () => {
     expect(label).toBe("Use a local model");
     const text = section("### Claude Code");
     expect(text).toContain(`If you also set \`ANTHROPIC_MODEL\` there, that model appears under **${label}** in the Claude model picker; pick it.`);
-    expect(text).toContain("FireConnect's model list doesn't show up in OpenMausBot, so add `ANTHROPIC_MODEL` yourself.");
+    expect(text).toContain("FireConnect's model list doesn't show up in SocialCoffeeAgent, so add `ANTHROPIC_MODEL` yourself.");
     expect(text).toContain("`ANTHROPIC_DEFAULT_*_MODEL` and `CLAUDE_CODE_SUBAGENT_MODEL` aren't carried over.");
     // The old, wrong advice: ANTHROPIC_MODEL is carried over as a pick.
     expect(text).not.toMatch(/such as `ANTHROPIC_MODEL`, aren't carried/u);
@@ -131,7 +131,7 @@ describe("OpenCode 2.x section", () => {
     expect(catalog.options.map((option) => option.id)).toEqual([
       "openrouter/deepseek/deepseek-chat", "opencode/longcat-2.5-preview-free",
     ]);
-    expect(section("### OpenCode")).toContain("OpenMausBot reads the model list from an ACP session on both OpenCode 1.x and 2.x.");
+    expect(section("### OpenCode")).toContain("SocialCoffeeAgent reads the model list from an ACP session on both OpenCode 1.x and 2.x.");
     expect(section("## OpenCode 2.x")).not.toContain("picker shows only OpenCode's free models");
   });
 });
@@ -172,7 +172,7 @@ describe("OpenCode config file", () => {
     expect(after.provider.myrouter).toBeUndefined();
 
     expect(section("### OpenCode")).toContain(
-      "Keep this file plain JSON, with no comments or trailing commas. OpenMausBot edits it when an OpenCode bot uses a model running on this computer.",
+      "Keep this file plain JSON, with no comments or trailing commas. SocialCoffeeAgent edits it when an OpenCode bot uses a model running on this computer.",
     );
   });
 });

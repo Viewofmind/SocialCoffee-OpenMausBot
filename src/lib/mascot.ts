@@ -4,8 +4,8 @@ import { lastNonReceipt } from "./receipts";
 
 /** The mascot's behaviour vocabulary — CursorAvatar's 39 states, under the
  * app's historical names. */
-export type MausState = CursorState;
-export const MAUS_STATES = CURSOR_STATES;
+export type MarkState = CursorState;
+export const MARK_STATES = CURSOR_STATES;
 
 /** CursorAvatar ships French group labels; the app shows these instead. The
  * memberships mirror its STATE_GROUPS exactly. */
@@ -45,9 +45,9 @@ export const STATE_GROUPS = {
     "bouncing",
     "powering-down",
   ],
-} satisfies Record<string, MausState[]>;
+} satisfies Record<string, MarkState[]>;
 
-export const MAUS_COLOR_NAMES = [
+export const MARK_COLOR_NAMES = [
   "green",
   "blue",
   "red",
@@ -60,9 +60,9 @@ export const MAUS_COLOR_NAMES = [
   "coral",
 ] as const;
 
-export type MausColor = (typeof MAUS_COLOR_NAMES)[number];
+export type MarkColor = (typeof MARK_COLOR_NAMES)[number];
 
-export const MAUS_COLORS = {
+export const MARK_COLORS = {
   green: "#009957",
   blue: "#377FE6",
   red: "#D94B52",
@@ -73,9 +73,9 @@ export const MAUS_COLORS = {
   yellow: "#D8A729",
   teal: "#01A492",
   coral: "#E5634E",
-} satisfies Record<MausColor, string>;
+} satisfies Record<MarkColor, string>;
 
-export const MAUS_MOTIONS = [
+export const MARK_MOTIONS = [
   "arrive",
   "switch",
   "customize",
@@ -90,7 +90,7 @@ export const MAUS_MOTIONS = [
   "failure",
 ] as const;
 
-export type MausMotion = "none" | (typeof MAUS_MOTIONS)[number];
+export type MarkMotion = "none" | (typeof MARK_MOTIONS)[number];
 
 /**
  * The face used to be ten hand-drawn SVGs; it is now the engine's 39 states.
@@ -99,7 +99,7 @@ export type MausMotion = "none" | (typeof MAUS_MOTIONS)[number];
  * face should survive a downgrade too.
  */
 interface LegacyStates {
-  [state: string]: MausState;
+  [state: string]: MarkState;
 }
 
 const LEGACY_STATES: LegacyStates = {
@@ -115,12 +115,12 @@ const LEGACY_STATES: LegacyStates = {
   mischievous: "playful",
 };
 
-const KNOWN_STATES = new Set<string>(MAUS_STATES);
+const KNOWN_STATES = new Set<string>(MARK_STATES);
 
 /** Resolves any stored value — current, legacy or junk — to a real state. */
-export function normalizeState(value: string | null | undefined): MausState | null {
+export function normalizeState(value: string | null | undefined): MarkState | null {
   if (!value) return null;
-  if (KNOWN_STATES.has(value)) return value as MausState;
+  if (KNOWN_STATES.has(value)) return value as MarkState;
   return LEGACY_STATES[value] ?? null;
 }
 
@@ -137,7 +137,7 @@ export function normalizeState(value: string | null | undefined): MausState | nu
  * Across all 39 states there are only 11 distinct resting faces, so this is one
  * state per face, chosen for the clearest name. Every swatch looks different.
  */
-export const PICKABLE_STATES: MausState[] = [
+export const PICKABLE_STATES: MarkState[] = [
   "idle", // expression 0
   "happy", // 2
   "curious", // 3
@@ -171,7 +171,7 @@ export type MascotBotProfile = {
  * The keyword groups deliberately overlap as little as possible so a bot's
  * visual identity stays stable while its title and description are edited.
  */
-export function stateForBot(bot: MascotBotProfile): MausState {
+export function stateForBot(bot: MascotBotProfile): MarkState {
   const pinned = normalizeState(bot.mascotExpression);
   if (pinned) return pinned;
 

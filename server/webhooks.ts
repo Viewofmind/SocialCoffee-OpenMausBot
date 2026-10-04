@@ -84,7 +84,7 @@ export interface WebhookManagerOptions {
    *  any future explicit-reset entry point. Absent (a host with no task
    *  creation support) makes every `post` delivery fail with 503 instead
    *  of silently falling back to a shared/ambient thread -- see
-   *  https://github.com/milind-soni/OpenMausBot/issues/2071. */
+   *  https://github.com/Viewofmind/SocialCoffee-OpenMausBot/issues/2071. */
   resolvePostThread?: (trigger: WebhookTrigger, forceNew: boolean) => string | undefined;
   /** The execution store commits this identity together with the queued run. */
   findRun?: (webhookId: string, deliveryId: string) => { id: string } | null;
@@ -266,7 +266,7 @@ function serializePayload(payload: JsonValue): string {
     }
   }
   if (text.length <= MAX_EVENT_CHARS) return text;
-  return `${text.slice(0, MAX_EVENT_CHARS)}\n\n[Payload truncated by OpenMausBot]`;
+  return `${text.slice(0, MAX_EVENT_CHARS)}\n\n[Payload truncated by SocialCoffeeAgent]`;
 }
 
 function previewPayload(payload: JsonValue): string {
@@ -448,15 +448,15 @@ export class WebhookManager {
     }
   }
 
-  test(id: string, payload: JsonValue = { event: "openmaus.test", message: "Test webhook delivery" }): WebhookReceiveResult | null {
+  test(id: string, payload: JsonValue = { event: "socialcoffee-agent.test", message: "Test webhook delivery" }): WebhookReceiveResult | null {
     const trigger = this.webhooks.find((candidate) => candidate.id === id);
     if (!trigger) return null;
-    const eventName = trigger.eventTypes?.[0] ?? "openmaus.test";
+    const eventName = trigger.eventTypes?.[0] ?? "socialcoffee-agent.test";
     return this.dispatch(trigger, {
       payload,
       contentType: "application/json",
       eventName,
-      userAgent: "OpenMausBot webhook tester",
+      userAgent: "SocialCoffeeAgent webhook tester",
       deliveryId: `test-${randomUUID()}`,
     });
   }

@@ -1,26 +1,26 @@
-// `openmausbot` on the command line: run the server anywhere and pair devices
-// to it. One implementation for three homes — `npx openmausbot` (the npm
+// `sc-agent` on the command line: run the server anywhere and pair devices
+// to it. One implementation for three homes — `npx socialcoffee-agent` (the npm
 // package), `node dist-server/cli.js` (the container image) and
-// `pnpm omb` (a checkout) — because scripts/bundle-server.mjs bundles this
+// `pnpm sc-agent` (a checkout) — because scripts/bundle-server.mjs bundles this
 // file next to the server.
 //
-//   openmausbot setup [--data-dir ~/.openmausbot]
-//   openmausbot start [serve options]
-//   openmausbot serve [--port 8799] [--data-dir ~/.openmausbot] [--label "cab mini"]
+//   sc-agent setup [--data-dir ~/.socialcoffee-agent]
+//   sc-agent start [serve options]
+//   sc-agent serve [--port 8799] [--data-dir ~/.socialcoffee-agent] [--label "cab mini"]
 //                     [--public-url https://host] [--tailscale | --tunnel | --domain HOST] [--no-pair]
-//   openmausbot pair  [--label "My MacBook"] [--client] [--public-url https://host]
-//   openmausbot sessions [revoke <id>]
-//   openmausbot status
-//   openmausbot login [--email you@example.com]
-//   openmausbot logout
+//   sc-agent pair  [--label "My MacBook"] [--client] [--public-url https://host]
+//   sc-agent sessions [revoke <id>]
+//   sc-agent status
+//   sc-agent login [--email you@example.com]
+//   sc-agent logout
 //
 // `serve` starts the server, waits for it, and prints a pairing link with a
 // QR code: scan it with the phone or open it on a laptop. `--tailscale` asks
 // Tailscale to terminate HTTPS for it and uses the MagicDNS name in the link.
-// `--tunnel` (after `login`) serves at a public https://….openmausbot.com
+// `--tunnel` (after `login`) serves at a public https://….socialcoffee.in
 // address through a Cloudflare tunnel: no domain, no proxy, no open port.
 //
-// This module only exports; openmausbot.ts is the entry that runs main(), so
+// This module only exports; sc-agent.ts is the entry that runs main(), so
 // bundling this file into other entries (pair-cli.ts) never runs it twice.
 import { spawn, type ChildProcess } from "node:child_process";
 import { randomBytes } from "node:crypto";
@@ -129,7 +129,7 @@ export function parseArgs(argv: string[], env: NodeJS.ProcessEnv = process.env):
   const options: CliOptions = {
     command: command === "--help" || command === "-h" ? "help" : (command as CliOptions["command"]),
     port: Number(env.OMB_PORT || 8799),
-    dataDir: env.OMB_DATA_DIR || join(homedir(), ".openmausbot"),
+    dataDir: env.OMB_DATA_DIR || join(homedir(), ".socialcoffee-agent"),
     tailscale: false,
     tunnel: false,
     client: false,
@@ -220,35 +220,35 @@ export function parseArgs(argv: string[], env: NodeJS.ProcessEnv = process.env):
   return options;
 }
 
-export const USAGE = `openmausbot — your team of AI bots, ready in a few steps
+export const USAGE = `socialcoffee-agent — your team of AI bots, ready in a few steps
 
-  openmausbot                         set up once, then open your workspace
-  openmausbot setup [--data-dir DIR]
-  openmausbot start [the same options as serve]
-  openmausbot serve [--port 8799] [--data-dir DIR] [--label NAME]
+  socialcoffee-agent                         set up once, then open your workspace
+  sc-agent setup [--data-dir DIR]
+  sc-agent start [the same options as serve]
+  sc-agent serve [--port 8799] [--data-dir DIR] [--label NAME]
                     [--public-url https://host] [--tailscale | --tunnel | --domain HOST] [--no-pair]
-  openmausbot pair  [--label NAME] [--client] [--phone ios|android]
+  sc-agent pair  [--label NAME] [--client] [--phone ios|android]
                     [--public-url https://host]
-  openmausbot sessions [revoke ID]
-  openmausbot status
-  openmausbot login [--email you@example.com]
-  openmausbot logout
-  openmausbot access list | add EMAIL [--chat-only] | remove EMAIL
-  openmausbot service install [--domain HOST | --tunnel | --tailscale] [--port N] [--data-dir DIR] | uninstall
-  openmausbot browser install [--with-deps] | status
-  openmausbot fleet init --domain HOST [--operator USER] | create NAME --admin EMAIL [--member EMAIL] [--brand FILE]
+  sc-agent sessions [revoke ID]
+  sc-agent status
+  sc-agent login [--email you@example.com]
+  sc-agent logout
+  sc-agent access list | add EMAIL [--chat-only] | remove EMAIL
+  sc-agent service install [--domain HOST | --tunnel | --tailscale] [--port N] [--data-dir DIR] | uninstall
+  sc-agent browser install [--with-deps] | status
+  sc-agent fleet init --domain HOST [--operator USER] | create NAME --admin EMAIL [--member EMAIL] [--brand FILE]
                     [--anthropic-key-file FILE] [--cap USD] [--license-key KEY] [--memory 1G]
                   | list | users NAME add|remove EMAIL [--chat-only] | suspend NAME | resume NAME
                   | delete NAME --yes [--keep-data] | upgrade   (all take --dry-run)
                   | agent [--socket PATH] [--group USER]   (root; installed by init --operator)
 
 setup   choose AI access and optional phone access; keep existing bots and chats
-start   same as openmausbot: use your saved settings and open the workspace
+start   same as socialcoffee-agent: use your saved settings and open the workspace
 serve   starts the server without prompts and prints a pairing link + QR code
 pair    mints a pairing code against a running server (--client: chat only)
 sessions lists paired devices; "sessions revoke ID" signs one out
 status  what the server says about itself
-login   signs this machine in to an OpenMausBot account (an emailed code)
+login   signs this machine in to an SocialCoffeeAgent account (an emailed code)
         and reserves its public address for --tunnel
 logout  releases that address and signs out
 access  who may sign in with an emailed code at /pair: an address or
@@ -257,7 +257,7 @@ access  who may sign in with an emailed code at /pair: an address or
 service keep the server running across reboots: writes a systemd unit
         (Linux) or a launchd agent (macOS) for the same serve options and
         prints the commands that install it. Install the package
-        permanently first (npm install -g openmausbot).
+        permanently first (npm install -g socialcoffee-agent).
 browser install: the bots' browser engine (agent-browser, pinned) into the
         data dir, and Chrome for Testing into the user's browser cache.
         --with-deps also installs
@@ -275,9 +275,9 @@ fleet   many client workspaces on one Linux server, each its own account,
 --tailscale  serve over your tailnet: Tailscale terminates HTTPS and the
              link uses this machine's MagicDNS name (needs Tailscale signed in
              and HTTPS certificates enabled for the tailnet)
---tunnel     serve at a public https://….openmausbot.com address through a
+--tunnel     serve at a public https://….socialcoffee.in address through a
              Cloudflare tunnel: no domain, no proxy, no open port. Run
-             \`openmausbot login\` once on this machine first.
+             \`sc-agent login\` once on this machine first.
 --domain     serve at https://HOST on your own domain: a pinned Caddy is
              downloaded once and run alongside the server, and gets the
              certificate itself. Point the domain's DNS at this machine and
@@ -287,8 +287,8 @@ fleet   many client workspaces on one Linux server, each its own account,
 --no-pair   skip phone setup and do not print a pairing code
 --local     start locally this time, ignoring saved remote-access settings
 
-Install once with \`npm install -g openmausbot\`, then type \`openmausbot\`.
-Or run without a global install: \`npx openmausbot\`. Node 24+ is required.
+Install once with \`npm install -g socialcoffee-agent\`, then type \`socialcoffee-agent\`.
+Or run without a global install: \`npx socialcoffee-agent\`. Node 24+ is required.
 `;
 
 /** Terminal in, terminal out; tests substitute all three. */
@@ -328,7 +328,7 @@ export function serverVersion(here = HERE): string {
 const message = (error: unknown) => (error instanceof Error ? error.message : String(error));
 
 // ── talking to a running server (loopback = owner) ────────────────────
-/** Set only inside `openmausbot serve` on a service-trust server: the secret
+/** Set only inside `sc-agent serve` on a service-trust server: the secret
  * it handed the server it started, which opens that server's pairing route. */
 let serveOwnerToken: string | undefined;
 
@@ -343,7 +343,7 @@ async function api(port: number, path: string, init: { method?: string; body?: s
 
 /** What to do when a server treats this command as a local service rather
  * than its owner (OMB_LOOPBACK_TRUST=service, or a hosted workspace). */
-export const SERVICE_TRUST_HELP = "This server does not treat commands on this computer as its owner (OMB_LOOPBACK_TRUST=service, or a hosted workspace), so it will not pair devices or list sessions for them. Sign in as an admin and use Settings → Remote access, let people sign in with their email (openmausbot access add you@example.com), or restart the server with OMB_LOOPBACK_TRUST=owner.";
+export const SERVICE_TRUST_HELP = "This server does not treat commands on this computer as its owner (OMB_LOOPBACK_TRUST=service, or a hosted workspace), so it will not pair devices or list sessions for them. Sign in as an admin and use Settings → Remote access, let people sign in with their email (sc-agent access add you@example.com), or restart the server with OMB_LOOPBACK_TRUST=owner.";
 
 function refusedAsService(status: number, body: any): boolean {
   return status === 403 && typeof body?.error === "string" && /shared server|Sign in through the workspace portal/.test(body.error);
@@ -402,7 +402,7 @@ export function applyStartupPreferences(options: CliOptions, saved: AppConfig["c
   if (options.local) return { ...options, tunnel: false, tailscale: false, publicUrl: undefined, phone: undefined };
   if (!saved || options.tunnel || options.tailscale || options.publicUrl) return options;
   if (saved.access === "public-url" && (!saved.publicUrl || !normalizePhoneOrigin(saved.publicUrl))) {
-    throw new Error("The saved phone address is not a valid HTTPS origin. Run openmausbot setup to correct it, or openmausbot --local to start only on this computer.");
+    throw new Error("The saved phone address is not a valid HTTPS origin. Run sc-agent setup to correct it, or sc-agent --local to start only on this computer.");
   }
   return {
     ...options,
@@ -426,8 +426,8 @@ function startupPreferences(options: CliOptions): NonNullable<AppConfig["cliStar
 async function showPhonePairing(options: CliOptions, origin: string | undefined, log: (line: string) => void): Promise<boolean> {
   const ready = !!origin && await verifyPhoneEndpoint(options.port, origin);
   if (!ready) {
-    log("Phone access is not reachable yet. OpenMausBot is ready on this computer; no phone pairing code was created.");
-    log("Check the HTTPS connection, then run openmausbot pair again with the same --data-dir and --port.");
+    log("Phone access is not reachable yet. SocialCoffeeAgent is ready on this computer; no phone pairing code was created.");
+    log("Check the HTTPS connection, then run sc-agent pair again with the same --data-dir and --port.");
     return false;
   }
   for (const line of phonePairingInstructions(options.phone ?? "ios", { origin: origin!, ready })) log(line);
@@ -439,7 +439,7 @@ async function showPhonePairing(options: CliOptions, origin: string | undefined,
 /** The pairing link a device opens, rendered as text and a QR code.
  *
  * One window has two links. `url` opens the web app and is what a browser and
- * the iOS app read. `inviteUrl` is the openmausbot:// scheme the native
+ * the iOS app read. `inviteUrl` is the socialcoffee-agent:// scheme the native
  * companion scanners accept, and it is the ONLY thing an Android app can
  * scan — its parser rejects any https QR outright. Which one becomes the QR
  * therefore depends on which app is about to scan it; the other is still
@@ -476,7 +476,7 @@ export function pairingBlock(input: {
     lines.push(qrToString(target));
     lines.push("");
     if (scanInvite) {
-      lines.push(`Scan that in the OpenMausBot app. For a browser instead, open the web`);
+      lines.push(`Scan that in the SocialCoffeeAgent app. For a browser instead, open the web`);
       lines.push(`address above and type the code.`);
     } else if (input.phone === "android") {
       // Android asked for an app invite this server cannot build. Say so,
@@ -487,7 +487,7 @@ export function pairingBlock(input: {
       lines.push(`OMB_PUBLIC_URL, or open the web address above and type the code.`);
     } else if (input.inviteUrl) {
       lines.push(`Scan that with Camera for the browser, or paste the phone-app link`);
-      lines.push(`above into the OpenMausBot app.`);
+      lines.push(`above into the SocialCoffeeAgent app.`);
     }
   }
   return lines.join("\n");
@@ -527,7 +527,7 @@ async function mintPairing(port: number, options: { label?: string; client?: boo
 // ── commands ───────────────────────────────────────────────────────────
 export async function runPair(options: CliOptions): Promise<number> {
   if (!(await serverUp(options.port))) {
-    console.error(`no OpenMausBot server on http://127.0.0.1:${options.port}; start one with \`openmausbot serve\` or set OMB_PORT`);
+    console.error(`no SocialCoffeeAgent server on http://127.0.0.1:${options.port}; start one with \`sc-agent serve\` or set OMB_PORT`);
     return 1;
   }
   if (process.stdin.isTTY && process.stdout.isTTY && !options.label && !options.client) {
@@ -548,7 +548,7 @@ export async function runPair(options: CliOptions): Promise<number> {
     }
     if (!origin || !normalizePhoneOrigin(origin)) {
       console.log("Your workspace is running only on this computer. A phone cannot use its localhost address.");
-      console.log("Stop the server, run openmausbot setup and choose phone access, then start openmausbot again.");
+      console.log("Stop the server, run sc-agent setup and choose phone access, then start socialcoffee-agent again.");
       return 1;
     }
     const ui = defaultSetupIo();
@@ -570,7 +570,7 @@ export async function runPair(options: CliOptions): Promise<number> {
 
 export async function runSessions(options: CliOptions): Promise<number> {
   if (!(await serverUp(options.port))) {
-    console.error(`no OpenMausBot server on http://127.0.0.1:${options.port}`);
+    console.error(`no SocialCoffeeAgent server on http://127.0.0.1:${options.port}`);
     return 1;
   }
   if (options.revoke) {
@@ -601,7 +601,7 @@ export async function runSessions(options: CliOptions): Promise<number> {
     return 0;
   }
   if (!sessions.length) {
-    console.log("no paired devices yet: run `openmausbot pair`");
+    console.log("no paired devices yet: run `sc-agent pair`");
     return 0;
   }
   console.log(formatSessions(sessions));
@@ -617,7 +617,7 @@ export function formatSessions(sessions: Array<{ id: string; label: string; scop
   const head = ["id", "device", "scope", "last seen", "expires"];
   const widths = head.map((h, i) => Math.max(h.length, ...rows.map((r) => r[i].length)));
   const line = (r: string[]) => r.map((c, i) => c.padEnd(widths[i])).join("  ");
-  return [line(head), ...rows.map(line), "", "revoke one with: openmausbot sessions revoke <id>"].join("\n");
+  return [line(head), ...rows.map(line), "", "revoke one with: sc-agent sessions revoke <id>"].join("\n");
 }
 
 export async function runStatus(options: CliOptions, io: CliIo = defaultIo()): Promise<number> {
@@ -625,9 +625,9 @@ export async function runStatus(options: CliOptions, io: CliIo = defaultIo()): P
   try {
     const res = await fetch(`http://127.0.0.1:${options.port}/.well-known/openmausbot/environment`);
     const body: any = await res.json();
-    io.log(options.json ? JSON.stringify(body, null, 2) : `${body.label} · OpenMausBot ${body.version} on ${body.platform} · id ${body.environmentId}`);
+    io.log(options.json ? JSON.stringify(body, null, 2) : `${body.label} · SocialCoffeeAgent ${body.version} on ${body.platform} · id ${body.environmentId}`);
   } catch {
-    io.error(`no OpenMausBot server on http://127.0.0.1:${options.port}`);
+    io.error(`no SocialCoffeeAgent server on http://127.0.0.1:${options.port}`);
     code = 1;
   }
   if (!options.json) {
@@ -681,7 +681,7 @@ export async function runAccess(options: CliOptions, io: CliIo = defaultIo()): P
   };
   if (options.accessAction === "list") {
     if (!admins.length && !members.length) {
-      io.log("nobody can sign in with an email yet; pairing codes only. Add someone with: openmausbot access add you@example.com");
+      io.log("nobody can sign in with an email yet; pairing codes only. Add someone with: sc-agent access add you@example.com");
       return 0;
     }
     for (const entry of admins) io.log(`${entry.padEnd(40)} full access`);
@@ -701,7 +701,7 @@ export async function runAccess(options: CliOptions, io: CliIo = defaultIo()): P
       return 1;
     }
     await write({ admins: without(admins), members: without(members) });
-    io.log(`${entry} can no longer sign in (existing sessions stay until they expire or are revoked with \`openmausbot sessions revoke\`)`);
+    io.log(`${entry} can no longer sign in (existing sessions stay until they expire or are revoked with \`sc-agent sessions revoke\`)`);
     return 0;
   }
   await write(options.chatOnly ? { admins: without(admins), members: [...without(members), entry] } : { admins: [...without(admins), entry], members: without(members) });
@@ -723,9 +723,9 @@ export async function runLogin(options: CliOptions, io: CliIo = defaultIo()): Pr
   }
   const existing = describeTunnelAccount(account.credentials.read());
   if (existing.address) io.log(`already signed in as ${existing.email ?? "?"} (${existing.address}); signing in again refreshes it`);
-  const email = (options.email ?? (await io.ask("Email for your OpenMausBot account: "))).trim();
+  const email = (options.email ?? (await io.ask("Email for your SocialCoffeeAgent account: "))).trim();
   if (!email) {
-    io.error("an email address is needed: openmausbot login --email you@example.com");
+    io.error("an email address is needed: sc-agent login --email you@example.com");
     return 1;
   }
   try {
@@ -749,7 +749,7 @@ export async function runLogin(options: CliOptions, io: CliIo = defaultIo()): Pr
   }
   io.log(`Signed in as ${signedIn.email ?? email}.`);
   io.log(`This machine's public address: ${signedIn.address}`);
-  io.log("Serve there with:  openmausbot serve --tunnel");
+  io.log("Serve there with:  sc-agent serve --tunnel");
   return 0;
 }
 
@@ -781,7 +781,7 @@ export async function runBrowser(options: CliOptions, io: CliIo = defaultIo()): 
   const status = browserEngineStatus({ dataDir: options.dataDir });
   if (options.browserAction === "status") {
     io.log(describeBrowserEngine(status));
-    if (status.kind !== "ready" && status.installable) io.log("install it with:  openmausbot browser install");
+    if (status.kind !== "ready" && status.installable) io.log("install it with:  sc-agent browser install");
     return status.kind === "ready" ? 0 : 1;
   }
   let binary = resolveAgentBrowserBinary({ dataDir: options.dataDir });
@@ -804,11 +804,11 @@ export async function runBrowser(options: CliOptions, io: CliIo = defaultIo()): 
     await ensureChrome(binary, { withDeps: options.withDeps === true, log: io.log });
   } catch (error) {
     io.error(`Chrome is not ready: ${message(error)}`);
-    if (process.platform === "linux" && !options.withDeps) io.error("on Linux, install Chrome's system libraries with `sudo openmausbot browser install --with-deps`, then retry `openmausbot browser install` as the user running serve");
+    if (process.platform === "linux" && !options.withDeps) io.error("on Linux, install Chrome's system libraries with `sudo sc-agent browser install --with-deps`, then retry `sc-agent browser install` as the user running serve");
     return 1;
   }
   io.log("browser installed for this user and data directory; run serve as the same user, then enable it under Settings → Computers and per bot");
-  if (process.platform === "linux" && options.withDeps) io.log("if serve runs as another user, run `openmausbot browser install` from that user's login shell too");
+  if (process.platform === "linux" && options.withDeps) io.log("if serve runs as another user, run `sc-agent browser install` from that user's login shell too");
   return 0;
 }
 
@@ -860,7 +860,7 @@ async function planTunnel(options: CliOptions, log: (line: string) => void, reco
     account = createTunnelAccount({ dataDir: options.dataDir, version: serverVersion(), recovery, log: (line) => log(`tunnel: ${line}`) });
     if (account.credentials.status === "unavailable") return fail(`${account.credentials.file} exists but could not be read; fix or remove it`);
     if (!describeTunnelAccount(account.credentials.read()).email) {
-      return fail("no account on this machine yet: run `openmausbot login` first, then `openmausbot serve --tunnel`");
+      return fail("no account on this machine yet: run `sc-agent login` first, then `sc-agent serve --tunnel`");
     }
     // A fresh connector token when the control plane answers; the saved one otherwise.
     try {
@@ -868,13 +868,13 @@ async function planTunnel(options: CliOptions, log: (line: string) => void, reco
       const saved = tunnelAccess(account.credentials.read()) !== null;
       // Said even when a saved address exists: an expired sign-in means this
       // machine can no longer repair that address on its own.
-      if (state.status === "signed-out") log(`tunnel: the sign-in on this machine expired; run \`openmausbot login\` to renew it${saved ? " (serving the saved address until then)" : ""}`);
+      if (state.status === "signed-out") log(`tunnel: the sign-in on this machine expired; run \`sc-agent login\` to renew it${saved ? " (serving the saved address until then)" : ""}`);
       else if (state.message) log(`tunnel: ${state.message}${saved ? " Serving the saved address for now." : ""}`);
     } catch (error) {
       log(`tunnel: control plane not reachable right now (${message(error)}); using the saved address`);
     }
     access = tunnelAccess(account.credentials.read());
-    if (!access) return fail("this machine has no public address; run `openmausbot login` again");
+    if (!access) return fail("this machine has no public address; run `sc-agent login` again");
   }
   let binary: string;
   try {
@@ -890,7 +890,7 @@ async function planTunnel(options: CliOptions, log: (line: string) => void, reco
 export async function runServe(options: CliOptions, log: (line: string) => void = console.log): Promise<number> {
   const { browserEngineStatus, describeBrowserEngine } = await import("./browser-engine.ts");
   if (await serverUp(options.port)) {
-    console.error(`something already answers on http://127.0.0.1:${options.port}; use \`openmausbot pair\` against it, or --port for a second server`);
+    console.error(`something already answers on http://127.0.0.1:${options.port}; use \`sc-agent pair\` against it, or --port for a second server`);
     return 1;
   }
   let publicUrl = options.publicUrl;
@@ -1036,12 +1036,12 @@ export async function runServe(options: CliOptions, log: (line: string) => void 
       await new Promise((r) => setTimeout(r, 250));
     }
     if (exited !== null) {
-      if (exited !== 0) log(`OpenMausBot could not start.${logPath ? ` Details: ${logPath}` : " See the output above."}`);
+      if (exited !== 0) log(`SocialCoffeeAgent could not start.${logPath ? ` Details: ${logPath}` : " See the output above."}`);
       return exited;
     }
     if (stopping) return await childExit;
     if (!(await serverUp(options.port, child.pid))) {
-      console.error(`OpenMausBot did not become ready within a minute.${logPath ? ` Details: ${logPath}` : " See its output above."}`);
+      console.error(`SocialCoffeeAgent did not become ready within a minute.${logPath ? ` Details: ${logPath}` : " See its output above."}`);
       await stop();
       return 1;
     }
@@ -1075,7 +1075,7 @@ export async function runServe(options: CliOptions, log: (line: string) => void 
       void plan.account?.service.restore().catch(() => undefined);
     }
     log("");
-    log(`OpenMausBot is running on http://127.0.0.1:${options.port}${publicUrl ? `, reachable at ${publicUrl}` : ""}`);
+    log(`SocialCoffeeAgent is running on http://127.0.0.1:${options.port}${publicUrl ? `, reachable at ${publicUrl}` : ""}`);
     if (options.guided) {
       log("Your bots and conversations are saved automatically.");
       log(`Details if you need help: ${logPath}`);
@@ -1102,14 +1102,14 @@ export async function runServe(options: CliOptions, log: (line: string) => void 
       try {
         log(await mintPairing(options.port, { label: options.label ? `${options.label} owner` : undefined, client: options.client, publicUrl: publicUrl ?? undefined }));
         log("");
-        log("another device later:  openmausbot pair --label \"Kitchen iPad\"");
+        log("another device later:  sc-agent pair --label \"Kitchen iPad\"");
       } catch (error) {
         log(`no pairing code: ${message(error)}`);
-        log("start without one next time:  openmausbot serve --no-pair");
+        log("start without one next time:  sc-agent serve --no-pair");
       }
     }
     log(options.guided ? "\nKeep this terminal open while using your bots. Ctrl+C stops the server, not your saved work." : "stop with Ctrl+C");
-    if (options.guided) log("Next time: openmausbot · Change AI or phone setup: openmausbot setup · Pair another phone: openmausbot pair");
+    if (options.guided) log("Next time: socialcoffee-agent · Change AI or phone setup: sc-agent setup · Pair another phone: sc-agent pair");
     return await childExit;
   } finally {
     serveOwnerToken = undefined;
@@ -1130,7 +1130,7 @@ export async function serveUntilStopped(options: CliOptions, run: (options: CliO
   for (;;) {
     const code = await run(launch);
     if (!policy.again(code)) return code;
-    console.log("\nOpenMausBot is starting again to finish installing a copy from the desktop app…");
+    console.log("\nSocialCoffeeAgent is starting again to finish installing a copy from the desktop app…");
     launch = { ...options, pair: false, open: false };
   }
 }
@@ -1145,7 +1145,7 @@ export async function runOnboardingCommand(
 ): Promise<number> {
   const interactive = process.stdin.isTTY === true && process.stdout.isTTY === true;
   if (options.command === "setup" && !interactive) {
-    io.error("Setup needs an interactive terminal. Run `npx openmausbot setup` in a terminal, then use `npx openmausbot serve` for unattended starts.");
+    io.error("Setup needs an interactive terminal. Run `npx socialcoffee-agent setup` in a terminal, then use `npx socialcoffee-agent serve` for unattended starts.");
     return 1;
   }
   process.env.OMB_DATA_DIR = options.dataDir;
@@ -1164,11 +1164,11 @@ export async function runOnboardingCommand(
   try {
     if (options.command === "setup" || !(await isSetupComplete(options.dataDir))) {
       if (!interactive) {
-        io.error("No completed setup was found. Run `npx openmausbot setup` in an interactive terminal first, or use `npx openmausbot serve` with an existing configuration.");
+        io.error("No completed setup was found. Run `npx socialcoffee-agent setup` in an interactive terminal first, or use `npx socialcoffee-agent serve` with an existing configuration.");
         return 1;
       }
       if (!(await runSetup({ dataDir: options.dataDir, port: options.port }))) {
-        io.log("Setup cancelled. Run openmausbot when you're ready.");
+        io.log("Setup cancelled. Run socialcoffee-agent when you're ready.");
         return 130;
       }
     }
@@ -1189,8 +1189,8 @@ export async function runOnboardingCommand(
       saveCliStartup(options.dataDir, startupPreferences(launch));
     }
     if (options.command === "setup") {
-      io.log("\nAll set. Start with: openmausbot (or npx openmausbot without a global install).");
-      if (options.dataDir !== join(homedir(), ".openmausbot") || options.port !== 8799) {
+      io.log("\nAll set. Start with: socialcoffee-agent (or npx socialcoffee-agent without a global install).");
+      if (options.dataDir !== join(homedir(), ".socialcoffee-agent") || options.port !== 8799) {
         io.log(`Use the same --data-dir (${options.dataDir}) and --port (${options.port}) options when starting.`);
       }
       return 0;
@@ -1199,7 +1199,7 @@ export async function runOnboardingCommand(
     return startServer({ ...launch, guided: interactive });
   } catch (error) {
     if (!(error instanceof SetupCancelled)) throw error;
-    io.log("\nSetup stopped. Any AI setup already saved is kept; no server was started. Run openmausbot setup to continue.");
+    io.log("\nSetup stopped. Any AI setup already saved is kept; no server was started. Run sc-agent setup to continue.");
     return 130;
   }
 }

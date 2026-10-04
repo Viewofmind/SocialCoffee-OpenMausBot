@@ -4,7 +4,7 @@ import { parseBotPackage, renderBotPackageMarkdown } from "./bot-package.ts";
 import { memberFromAgent } from "./package-import.ts";
 
 const validPackage: any = {
-  format: "openmaus.package",
+  format: "socialcoffee-agent.package",
   version: 1,
   package: {
     id: "research-desk",
@@ -13,7 +13,7 @@ const validPackage: any = {
     tagline: "Turn a question into a sourced brief.",
     summary: "A small research team.",
     category: "Research",
-    author: { name: "OpenMausBot" },
+    author: { name: "SocialCoffeeAgent" },
     license: "MIT",
     outcomes: ["Produce a sourced brief."],
     setupMinutes: 3,

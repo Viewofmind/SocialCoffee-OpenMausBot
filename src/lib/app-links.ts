@@ -1,9 +1,11 @@
 // The handful of outward links the app offers from the profile menu and the
 // About dialog. They are collected here so "where does Help go?" has one
 // answer rather than one per call site.
-export const APP_NAME = "OpenMausBot";
-export const APP_REPOSITORY = "https://github.com/milind-soni/OpenMausBot";
-/** The docs tree is the help centre, and it is where openmausbot.com sends
+export const APP_NAME = "SocialCoffeeAgent";
+export const APP_COMPANY = "SocialCoffee DigiTech Pvt Ltd";
+export const APP_ABOUT = `${APP_NAME} by ${APP_COMPANY}`;
+export const APP_REPOSITORY = "https://github.com/Viewofmind/SocialCoffee-OpenMausBot";
+/** The docs tree is the help centre, and it is where socialcoffee.in sends
  * people too — one destination, not two competing ones. */
 export const DOCS_URL = `${APP_REPOSITORY}/tree/main/docs`;
 export const HELP_CENTER_URL = DOCS_URL;
@@ -13,16 +15,16 @@ export const APPROVAL_LEVELS_URL = `${APP_REPOSITORY}/blob/main/docs/approval-le
  * Discord in minutes instead of sitting open as an issue. */
 export const FEEDBACK_URL = "https://discord.gg/9Wb8MEpXRs";
 export const RELEASES_URL = `${APP_REPOSITORY}/releases`;
-export const PRO_URL = "https://www.openmausbot.com/pro";
-/** Every OMB Cloud plan side by side (Personal, Pro, Max). */
-export const PRICING_URL = "https://www.openmausbot.com/pricing";
+export const PRO_URL = APP_REPOSITORY;
+/** Every SocialCoffeeAgent Cloud plan side by side (Personal, Pro, Max). */
+export const PRICING_URL = APP_REPOSITORY;
 export const LICENSE_URL = `${APP_REPOSITORY}/blob/main/LICENSE`;
-/** The phone apps, the same two links openmausbot.com (lib/config.ts) and the
- * Cloud page offer. iOS is on the App Store, listed as "MausBot". Android is
- * an APK attached to a GitHub release: the link names a version, so a new
- * Android release updates it here too. */
-export const IOS_APP_STORE_URL = "https://apps.apple.com/in/app/mausbot/id6803387923";
-export const ANDROID_APK_URL = `${APP_REPOSITORY}/releases/download/android-v1.5.0/OpenMausBot.apk`;
+/** The phone apps. SocialCoffeeAgent has no App Store listing yet, so iOS
+ * points at this fork's releases. Android is an APK attached to a GitHub
+ * release: the link names a version, so a new Android release updates it
+ * here too. */
+export const IOS_APP_STORE_URL = RELEASES_URL;
+export const ANDROID_APK_URL = `${APP_REPOSITORY}/releases/download/android-v1.5.0/SocialCoffeeAgent.apk`;
 
 /** The version Vite inlined from package.json; "dev" when the define is
  * missing (a bare `tsc`/test run outside the bundler). */

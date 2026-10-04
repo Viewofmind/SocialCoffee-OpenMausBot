@@ -443,7 +443,7 @@ describe("resolveRequestAuth", () => {
   });
 });
 
-describe("an IPC listener (openmausbot serve --tunnel) is remote by construction", () => {
+describe("an IPC listener (sc-agent serve --tunnel) is remote by construction", () => {
   // SAFETY: only headers, method and the socket peer are read; a unix-socket peer has no address
   const overSocket = (headers: Record<string, string>) => ({ headers, method: "GET", socket: {} }) as unknown as IncomingMessage;
 
@@ -471,7 +471,7 @@ describe("an IPC listener (openmausbot serve --tunnel) is remote by construction
       const { code } = sessions.openPairing({ scopes: ["admin", "client"] });
       const paired = sessions.exchange({ code, label: "phone", source: "203.0.113.9" });
       if (!paired.ok) throw new Error(paired.error);
-      const admitted = resolveRequestAuth(overSocket({ host: "c-1.openmausbot.com", authorization: `Bearer ${paired.token}` }), gate);
+      const admitted = resolveRequestAuth(overSocket({ host: "c-1.socialcoffee.in", authorization: `Bearer ${paired.token}` }), gate);
       expect(admitted.auth?.kind).toBe("session");
     } finally {
       rmSync(dir, { recursive: true, force: true });
@@ -498,7 +498,7 @@ describe("loopback trust: owner on one person's machine, service on a shared wor
   afterEach(() => rmSync(dir, { recursive: true, force: true }));
 
   // Every call the deployed cloud Slack worker makes to the runtime
-  // (openmaus-cloud server/slack-worker.ts, every released version), plus
+  // (socialcoffee-agent-cloud server/slack-worker.ts, every released version), plus
   // the bot capability routes and liveness. None of these may break.
   const SERVICE_CALLS: Array<[string, string]> = [
     ["GET", "/api/health"],
@@ -585,13 +585,13 @@ describe("loopback trust: owner on one person's machine, service on a shared wor
     expect(desktop.warning).toMatch(/ignored in the desktop app/);
   });
 
-  it("is always service on an OMB Cloud home, where a local request is only ever a process on the machine", () => {
+  it("is always service on an SocialCoffeeAgent Cloud home, where a local request is only ever a process on the machine", () => {
     const pick = (env: NodeJS.ProcessEnv) => resolveLoopbackTrust({ env, desktopManaged: false, hostedWorkspace: false, cloudHome: true });
-    expect(pick({})).toEqual({ trust: "service", reason: "OMB Cloud home" });
-    expect(pick({ OMB_LOOPBACK_TRUST: "service" })).toEqual({ trust: "service", reason: "OMB Cloud home" });
+    expect(pick({})).toEqual({ trust: "service", reason: "SocialCoffeeAgent Cloud home" });
+    expect(pick({ OMB_LOOPBACK_TRUST: "service" })).toEqual({ trust: "service", reason: "SocialCoffeeAgent Cloud home" });
     const forced = pick({ OMB_LOOPBACK_TRUST: "owner" });
     expect(forced.trust).toBe("service");
-    expect(forced.warning).toMatch(/ignored on an OMB Cloud home/);
+    expect(forced.warning).toMatch(/ignored on an SocialCoffeeAgent Cloud home/);
   });
 
   it("lets only the CLI that started the server, holding its secret, mint a pairing code under service trust", () => {

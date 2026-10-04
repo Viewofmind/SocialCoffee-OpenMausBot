@@ -160,11 +160,11 @@ describe("guided phone pairing address discovery", () => {
   });
 });
 
-// `openmausbot pair` talks to 127.0.0.1, so the server answers as its owner and
+// `sc-agent pair` talks to 127.0.0.1, so the server answers as its owner and
 // builds the phone-app invite from its own public address (server/index.ts
 // POST /api/auth/pairing, through shared/pairing-link.ts). The CLI prints that
 // invite as it is, and builds its own only for --public-url.
-describe("the phone-app link `openmausbot pair` prints", () => {
+describe("the phone-app link `sc-agent pair` prints", () => {
   const credential = `omb_pair_${"b".repeat(43)}`;
   const serverName = "Miguel's computer";
   const pairingResponse = (fields: Record<string, unknown>) => {
@@ -179,7 +179,7 @@ describe("the phone-app link `openmausbot pair` prints", () => {
   const printed = () => vi.mocked(console.log).mock.calls.map(([line]) => String(line)).join("\n");
 
   it("prints the server's own invite unchanged", async () => {
-    const serverInvite = `openmausbot://pair?address=${encodeURIComponent(advertisedOrigin)}&token=${credential}&name=Miguel's%20computer`;
+    const serverInvite = `socialcoffee-agent://pair?address=${encodeURIComponent(advertisedOrigin)}&token=${credential}&name=Miguel's%20computer`;
     pairingResponse({ url: `${advertisedOrigin}/pair#code=${code}`, inviteUrl: serverInvite });
     expect(await runPair({ ...options, label: "Pixel" })).toBe(0);
     expect(printed()).toContain(`phone app:     ${serverInvite}\n`);
@@ -188,11 +188,11 @@ describe("the phone-app link `openmausbot pair` prints", () => {
   it("builds the invite for --public-url from the server's credential and name", async () => {
     pairingResponse({
       url: `${advertisedOrigin}/pair#code=${code}`,
-      inviteUrl: `openmausbot://pair?address=${encodeURIComponent(advertisedOrigin)}&token=${credential}&name=Miguel's%20computer`,
+      inviteUrl: `socialcoffee-agent://pair?address=${encodeURIComponent(advertisedOrigin)}&token=${credential}&name=Miguel's%20computer`,
     });
     expect(await runPair({ ...options, label: "Pixel", publicUrl: explicitOrigin })).toBe(0);
     expect(printed()).toContain(
-      `phone app:     openmausbot://pair?address=${encodeURIComponent(explicitOrigin)}&token=${credential}&name=Miguel's%20computer\n`,
+      `phone app:     socialcoffee-agent://pair?address=${encodeURIComponent(explicitOrigin)}&token=${credential}&name=Miguel's%20computer\n`,
     );
     expect(printed()).not.toContain(encodeURIComponent(advertisedOrigin));
   });

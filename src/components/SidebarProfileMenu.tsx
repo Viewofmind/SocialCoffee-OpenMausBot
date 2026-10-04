@@ -244,8 +244,8 @@ export function useCloudPhoneDestination(enabled: boolean): { cloud: CloudPhoneD
 
 /** What choosing a destination does. Here: Settings → Remote access on this
  * window's pairing. Cloud: open the Cloud in this window on its phone
- * pairing, as Settings → OMB Cloud's Use your Cloud on your phone does; if
- * that fails, Settings → OMB Cloud, which says what to do. */
+ * pairing, as Settings → SocialCoffeeAgent Cloud's Use your Cloud on your phone does; if
+ * that fails, Settings → SocialCoffeeAgent Cloud, which says what to do. */
 export function selectPhoneDestination(destination: PhoneDestination, { bridge, dispatch }: { bridge?: Pick<CloudAccountBridge, "connectHomeForPhone">; dispatch: (action: Action) => void }): void {
   if (destination.id !== "cloud" || !bridge) {
     dispatch(phonePairingSettingsAction());

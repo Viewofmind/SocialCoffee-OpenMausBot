@@ -107,7 +107,7 @@ describe("live startup context", () => {
 
   it("writes one-line instructions from the bot's own profile", () => {
     const text = liveInstructions({ name: "  Rigel\n", title: "QA", description: "Line one\nline two" });
-    expect(text.split("\n")[0]).toBe("You are Rigel, QA, an AI agent that runs in OpenMausBot on the user's own computer. Line one line two");
+    expect(text.split("\n")[0]).toBe("You are Rigel, QA, an AI agent that runs in SocialCoffeeAgent on the user's own computer. Line one line two");
     expect(text).toContain("Never answer it yourself.");
   });
 
@@ -121,7 +121,7 @@ describe("live startup context", () => {
   // when asked which AI model it is. It is the bot, and it checks without asking.
   it("makes the voice the bot itself: first person, no backend talk, no asking to check", () => {
     const text = liveInstructions({ name: "CFO", title: "Chief Financial Officer" });
-    expect(text.split("\n")[0]).toBe("You are CFO, Chief Financial Officer, an AI agent that runs in OpenMausBot on the user's own computer.");
+    expect(text.split("\n")[0]).toBe("You are CFO, Chief Financial Officer, an AI agent that runs in SocialCoffeeAgent on the user's own computer.");
     expect(text).not.toContain("only the voice");
     expect(text).not.toContain("voice of");
     expect(text).toContain("Never mention a backend, delegation, a voice layer, or another system or model doing the work");

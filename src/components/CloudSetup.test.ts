@@ -56,7 +56,7 @@ beforeEach(() => {
   f.dispatch = action => { dispatched.push(action); };
   f.state = {
     connected: true, instances: [signedOut], activeView: "chat", selectedId: "b1",
-    bots: [{ id: "b1", threadId: "t1", name: "Maus" }],
+    bots: [{ id: "b1", threadId: "t1", name: "Agent" }],
     config: { cloudHome: true, onboarding: { ...EMPTY_ONBOARDING } },
   };
   bridge = {

@@ -8,7 +8,7 @@ import { readConfig } from "../src/config";
 import { cleanupEndpointRow } from "../src/endpoints";
 import { createWorker } from "../src/index";
 
-const BASE_URL = "https://auth.openmausbot.test";
+const BASE_URL = "https://auth.socialcoffee-agent.test";
 const CONNECTOR_TOKEN = "eyJhbGciOiJIUzI1NiJ9.test-only-connector-token.signature";
 
 interface CallOptions {
@@ -560,7 +560,7 @@ describe("managed companion endpoints", () => {
     const owner = await signIn(worker, "managed-adopt@example.com");
     const installation = await createInstallation(worker, owner.token, "managed-adopt");
     const tunnelName = "omb-c-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-    const hostname = "c-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.openmausbot.test";
+    const hostname = "c-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.socialcoffee-agent.test";
     const tunnel: FakeTunnel = {
       id: "20000000-0000-4000-8000-000000000001",
       name: tunnelName,
@@ -723,7 +723,7 @@ describe("managed companion endpoints", () => {
     const worker = createWorker(cloudflare.fetch);
     const owner = await signIn(worker, "managed-ambiguous-update@example.com");
     const installation = await createInstallation(worker, owner.token, "managed-ambiguous-update");
-    const hostname = "c-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.openmausbot.test";
+    const hostname = "c-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.socialcoffee-agent.test";
     const tunnel: FakeTunnel = {
       id: "30000000-0000-4000-8000-000000000001",
       name: "omb-c-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
@@ -876,7 +876,7 @@ describe("managed companion endpoints", () => {
     cloudflare.dns.set(hostname, {
       ...record,
       content: "203.0.113.50",
-      name: "repurposed.openmausbot.test",
+      name: "repurposed.socialcoffee-agent.test",
       proxied: false,
       type: "A",
     });
@@ -890,7 +890,7 @@ describe("managed companion endpoints", () => {
     expect(cloudflare.calls.some((entry) => entry.method === "DELETE")).toBe(false);
     expect(cloudflare.dns.get(hostname)).toMatchObject({
       content: "203.0.113.50",
-      name: "repurposed.openmausbot.test",
+      name: "repurposed.socialcoffee-agent.test",
       type: "A",
     });
     const retained = await env.DB.prepare(
@@ -1002,7 +1002,7 @@ describe("managed companion endpoints", () => {
     const now = Date.now();
     await env.DB.batch(Array.from({ length: 25 }, (_, index) => {
       const opaque = index.toString(16).padStart(32, "0");
-      const hostname = `c-${opaque}.openmausbot.test`;
+      const hostname = `c-${opaque}.socialcoffee-agent.test`;
       const tunnelName = `omb-c-${opaque}`;
       const tunnelId = `10000000-0000-4000-8000-${(index + 1).toString(16).padStart(12, "0")}`;
       cloudflare.tunnels.set(tunnelName, { id: tunnelId, name: tunnelName });
@@ -1064,7 +1064,7 @@ describe("managed companion endpoints", () => {
        VALUES (?, ?, ?, 'deleting', 2, ?, ?, 'dns_record_identity_conflict', ?, ?)`,
     ).bind(
       "orphan-backoff",
-      `c-${"a".repeat(32)}.openmausbot.test`,
+      `c-${"a".repeat(32)}.socialcoffee-agent.test`,
       `omb-c-${"a".repeat(32)}`,
       now - 14 * 60 * 1_000,
       now - 25 * 60 * 60 * 1_000,
@@ -1596,7 +1596,7 @@ describe("idle tunnel reclaim", () => {
         `INSERT INTO installation_endpoints
           (installation_id, hostname, tunnel_name, status, delete_requested_at, created_at, updated_at)
          VALUES (?, ?, ?, 'deleting', ?, ?, ?)`,
-      ).bind(`orphan-limited-${index}`, `c-${opaque}.openmausbot.test`, `omb-c-${opaque}`, now, now, now);
+      ).bind(`orphan-limited-${index}`, `c-${opaque}.socialcoffee-agent.test`, `omb-c-${opaque}`, now, now, now);
     }));
     cloudflare.rateLimited.add("list_tunnels");
     const logged = vi.spyOn(console, "log").mockImplementation(() => undefined);
@@ -1680,7 +1680,7 @@ describe("managed endpoint provider capacity", () => {
       `INSERT INTO installation_endpoints
         (installation_id, hostname, tunnel_name, status, delete_requested_at, created_at, updated_at)
        VALUES ('orphan-capacity', ?, ?, 'deleting', ?, ?, ?)`,
-    ).bind(`c-${"e".repeat(32)}.openmausbot.test`, `omb-c-${"e".repeat(32)}`, now, now, now).run();
+    ).bind(`c-${"e".repeat(32)}.socialcoffee-agent.test`, `omb-c-${"e".repeat(32)}`, now, now, now).run();
     vi.spyOn(console, "log").mockImplementation(() => undefined);
     await runScheduledCleanup(worker);
     const gate = await env.DB.prepare(
@@ -1755,7 +1755,7 @@ describe("managed endpoint provider capacity", () => {
     const text = await response.text();
     expect(JSON.parse(text)).toMatchObject({
       ok: true,
-      service: "openmausbot-control-plane",
+      service: "socialcoffee-agent-control-plane",
       capacity: {
         checkedAt: expect.any(Number),
         dnsRecords: { limit: 1000, used: 400 },

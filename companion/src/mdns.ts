@@ -316,7 +316,7 @@ export interface ServiceInfo {
   /** e.g. "_openmausbot._tcp" */
   type: string;
   port: number;
-  /** the name our A records claim, e.g. "openmausbot-1a2b3c4d.local" */
+  /** the name our A records claim, e.g. "socialcoffee-agent-1a2b3c4d.local" */
   host: string;
   addresses: string[];
   /** DNS-SD key=value pairs */
@@ -410,7 +410,7 @@ export function answersFor(
 
 /** One DNS label: no dots (they would split it into two labels), no control
  * characters, and inside the 63-byte limit even in UTF-8. */
-export function dnsLabel(text: string, fallback = "OpenMausBot"): string {
+export function dnsLabel(text: string, fallback = "SocialCoffeeAgent"): string {
   let label = text
     // oxlint-disable-next-line no-control-regex -- control characters are not valid in a DNS label
     .replace(/[\u0000-\u001f\u007f]/g, "")
@@ -450,7 +450,7 @@ export function clampBytes(text: string, limit: number): string {
  * user's own machine name is a bad trade for a companion feature. */
 export function defaultHostName(machine = hostname()): string {
   const digest = createHash("sha256").update(machine).digest("hex").slice(0, 8);
-  return `openmausbot-${digest}.local`;
+  return `socialcoffee-agent-${digest}.local`;
 }
 
 /**

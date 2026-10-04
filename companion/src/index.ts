@@ -49,7 +49,7 @@ let mutationToken: string | null = null;
 parentPort?.on("message", ({ data }) => {
   if (!data || typeof data !== "object") return;
   const message = data as Record<string, unknown>;
-  if (message.type !== "openmausbot:companion-mutation-token") return;
+  if (message.type !== "socialcoffee-agent:companion-mutation-token") return;
   if (typeof message.token === "string" && /^[A-Za-z0-9_-]{43}$/.test(message.token)) {
     mutationToken = message.token;
   }
@@ -104,7 +104,7 @@ const conflict = (name: string, port: number): string | null => {
 let cachedName = process.env.OMB_COMPANION_NAME?.trim() || "";
 
 /** What this computer is called on the phone. Never empty. */
-const machineName = (): string => cachedName || "OpenMausBot";
+const machineName = (): string => cachedName || "SocialCoffeeAgent";
 
 /** Ask the harness whose computer this is, once, at startup. Every failure
  * is survivable: the name is a label, and no part of pairing depends on it. */
@@ -119,7 +119,7 @@ async function refreshMachineName(): Promise<void> {
     const owner = config.profile?.name?.trim();
     if (owner) cachedName = `${owner}'s computer`;
   } catch {
-    /* not up, or no profile — "OpenMausBot" is a fine thing to be called */
+    /* not up, or no profile — "SocialCoffeeAgent" is a fine thing to be called */
   }
 }
 

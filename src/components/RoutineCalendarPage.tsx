@@ -62,7 +62,7 @@ import {
   intakeFiles,
   type Attachment,
 } from "@/lib/composer-attachments";
-import { MAUS_COLORS, type MausState } from "@/lib/mascot";
+import { MARK_COLORS, type MarkState } from "@/lib/mascot";
 import {
   addDays,
   atLocalTime,
@@ -246,7 +246,7 @@ function projectCalls(calls: CalendarCall[], from: number, to: number): CallOccu
   return items.sort((left, right) => left.at - right.at);
 }
 
-function statusState(status: RoutineRunStatus): MausState {
+function statusState(status: RoutineRunStatus): MarkState {
   if (status === "running") return "working";
   if (status === "waiting") return "curious";
   if (status === "completed") return "proud";
@@ -667,7 +667,7 @@ export function EventEditor({
   );
   const scheduleNote = kind === "routine" && (
                 <p className="text-[11px] leading-relaxed text-ink-secondary">
-                  Runs while OpenMausBot is open on this computer — it cannot wake a sleeping Mac. A run missed by less than 12 hours still happens when the app is back; for 24/7, run OpenMausBot on a VPS.
+                  Runs while SocialCoffeeAgent is open on this computer — it cannot wake a sleeping Mac. A run missed by less than 12 hours still happens when the app is back; for 24/7, run SocialCoffeeAgent on a VPS.
                 </p>
               );
   const repeatDetails = (
@@ -878,11 +878,11 @@ export function EventEditor({
                 {isRoomGoal ? (
                   <div className="rounded-xl border border-accent/35 bg-accent/[0.07] p-3">
                     <div className="text-[12.5px] font-medium text-ink">Runs on this computer</div>
-                    <div className="mt-1 text-[11px] leading-relaxed text-ink-secondary">OpenMausBot keeps the group and its member hand-offs together for the full goal.</div>
+                    <div className="mt-1 text-[11px] leading-relaxed text-ink-secondary">SocialCoffeeAgent keeps the group and its member hand-offs together for the full goal.</div>
                   </div>
                 ) : <div className="grid grid-cols-2 gap-2">
                   <button type="button" onClick={() => setRunOn("maus")} className={cn("rounded-xl border p-3 text-left", runOn === "maus" ? "border-accent/60 bg-accent/10" : "border-hairline/50 bg-inset hover:bg-raised")}><div className="text-[12.5px] font-medium text-ink">Bot’s current setup</div><div className="mt-1 text-[11px] text-ink-secondary">Keeps its model and configured computer, including a self-hosted VPS.</div></button>
-                  <button type="button" disabled={!cloudReady || attachments.length > 0} onClick={() => setRunOn("cloud")} className={cn("rounded-xl border p-3 text-left disabled:cursor-not-allowed disabled:opacity-45", runOn === "cloud" ? "border-accent/60 bg-accent/10" : "border-hairline/50 bg-inset hover:bg-raised")}><div className="text-[12.5px] font-medium text-ink">Boat cloud computer</div><div className="mt-1 text-[11px] text-ink-secondary">The bot's own model works on its Boat, not your VPS. OpenMausBot must stay running to launch it.</div></button>
+                  <button type="button" disabled={!cloudReady || attachments.length > 0} onClick={() => setRunOn("cloud")} className={cn("rounded-xl border p-3 text-left disabled:cursor-not-allowed disabled:opacity-45", runOn === "cloud" ? "border-accent/60 bg-accent/10" : "border-hairline/50 bg-inset hover:bg-raised")}><div className="text-[12.5px] font-medium text-ink">Boat cloud computer</div><div className="mt-1 text-[11px] text-ink-secondary">The bot's own model works on its Boat, not your VPS. SocialCoffeeAgent must stay running to launch it.</div></button>
                 </div>}
               </div>
             </div>
@@ -1231,7 +1231,7 @@ function CalendarEventCard({
   const primary = ownerBots[0];
   const name = isCall ? item.call.name : run?.routineName ?? routine?.name ?? "Routine";
   // The bot's own colour tints the chip; calls and unknown bots use theme tokens.
-  const color = isCall ? "var(--color-accent)" : primary ? MAUS_COLORS[primary.color] : "var(--color-ink-tertiary)";
+  const color = isCall ? "var(--color-accent)" : primary ? MARK_COLORS[primary.color] : "var(--color-ink-tertiary)";
   // A paused routine's projected occurrence: shown, but it will not run.
   const paused = Boolean(routine && !run && !routine.enabled);
   const [previewDuration, setPreviewDuration] = useState(item.durationMinutes);

@@ -802,7 +802,7 @@ export function SettingsModal() {
     // the operator's screen for other workspaces exists only where a fleet agent does
     .filter((entry) => entry.id !== "workspaces" || workspacesAvailable(state.config))
     // sign-in by email is a hosted server's; the desktop app pairs devices under Remote access,
-    // and an OMB Cloud home is personal: nobody is invited to it
+    // and an SocialCoffeeAgent Cloud home is personal: nobody is invited to it
     .filter((entry) => entry.id !== "people" || (!window.ogb && state.config?.cloudHome !== true))
     // the activity log belongs to a workspace served to a browser, and to its admins
     .filter((entry) => entry.id !== "activity" || (!window.ogb && ownerOrAdmin === true));
@@ -1014,7 +1014,7 @@ export function SettingsModal() {
             <RemoteComputerSection />
             {!remoteActive && <CustomDomainSettings />}
             {/* mints an admin/client session token for anything that isn't the phone companion
-                flow (MCP clients, `openmausbot pair`, a second desktop app), and pairs phones to a
+                flow (MCP clients, `sc-agent pair`, a second desktop app), and pairs phones to a
                 hosted server. Shown for the desktop app's own server (#950) AND when this desktop is
                 a remote client of a hosted workspace: its requests carry that server's session, and
                 Settings there is the only place that server's phones can be paired from (MOCA-84).

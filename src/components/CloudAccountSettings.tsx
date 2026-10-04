@@ -83,7 +83,7 @@ function cloudPhoneCard({ ready, busy, failed, onUse }: { ready: boolean; busy: 
 }
 
 /** What this view does by itself when the Cloud page's "Open in the app"
- * (openmausbot://cloud) opened it. `arrived`: the first snapshot since that
+ * (socialcoffee-agent://cloud) opened it. `arrived`: the first snapshot since that
  * link. Only then does signed out mean "sign me in"; a later sign-out is the
  * person's own choice. A Ready Cloud is connected to once per link. A saved
  * sign-in still being read is not "signed out". */
@@ -134,7 +134,7 @@ export function CloudPlanOnCloud({ bridge, onConnectPhone }: { bridge: CloudPlan
     </Card>;
   }
   const label = cloudPlanLabel(plan?.tier);
-  const line = plan?.status === "paid" ? t("cloudAccount.pro", { plan: label }) : plan?.status === "attention" ? t("cloudAccount.inactive", { plan: plan.tier ? label : "OMB Cloud" })
+  const line = plan?.status === "paid" ? t("cloudAccount.pro", { plan: label }) : plan?.status === "attention" ? t("cloudAccount.inactive", { plan: plan.tier ? label : "SocialCoffeeAgent Cloud" })
     : plan?.status === "checking" ? t("cloudAccount.lastPlan", { plan: label }) : plan?.status === "signin" ? (plan.tier ? t("cloudAccount.planName", { plan: label }) : null)
       : plan ? t("cloudAccount.onCloudNone") : null;
   const act = (action: () => Promise<void>) => { setFailed(false); void action().catch(() => setFailed(true)); };
@@ -153,7 +153,7 @@ export function CloudPlanOnCloud({ bridge, onConnectPhone }: { bridge: CloudPlan
 }
 
 /** The public native snapshot carries no credential and cannot activate a plan.
- * `linkRequest` is non-zero only while openmausbot://cloud has this open.
+ * `linkRequest` is non-zero only while socialcoffee-agent://cloud has this open.
  * `onConnectPhone` opens Settings on this window's phone pairing (on the
  * Cloud itself). */
 export function CloudAccountSettings({ linkRequest = 0, cloudHome = false, onConnectPhone }: { linkRequest?: number; cloudHome?: boolean; onConnectPhone?: () => void } = {}) {
@@ -212,7 +212,7 @@ export function CloudAccountSettings({ linkRequest = 0, cloudHome = false, onCon
     if (action === "connect") { link.current.connected = true; connectHome(); }
   }, [bridge, linkRequest, account, busy]);
   if (!bridge) {
-    // Only on an OMB Cloud home: any other server open in this window (a VPS,
+    // Only on an SocialCoffeeAgent Cloud home: any other server open in this window (a VPS,
     // a hosted workspace, someone else's) has no plan of this person's to show.
     const plan = window.ogb?.remoteClient?.active || !cloudHome ? undefined : window.ogb?.cloudPlan;
     return plan ? <CloudPlanOnCloud bridge={plan} onConnectPhone={onConnectPhone} /> : <p className="text-[13px] text-ink-secondary">{t("cloudAccount.desktopOnly")}</p>;

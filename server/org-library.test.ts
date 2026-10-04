@@ -52,7 +52,7 @@ function entry(packageId: string, rel: { document: any; bytes: string; sha256: s
 }
 
 function catalog(packages: unknown[], extra: Record<string, unknown> = {}) {
-  return { format: "openmaus.org-library", version: 1, libraryVersion: 3, organization: { id: ORG, name: "Customer Co" }, packages, ...extra };
+  return { format: "socialcoffee-agent.org-library", version: 1, libraryVersion: 3, organization: { id: ORG, name: "Customer Co" }, packages, ...extra };
 }
 
 /** The relay Electron sends: the raw catalog body and its digest. */
@@ -83,7 +83,7 @@ async function installation(from?: string) {
   vi.resetModules();
   vi.stubEnv("HOME", home);
   vi.stubEnv("USERPROFILE", home);
-  vi.stubEnv("OMB_DATA_DIR", join(home, ".openmausbot"));
+  vi.stubEnv("OMB_DATA_DIR", join(home, ".socialcoffee-agent"));
   const { Store } = await import("./store.ts");
   const { RoutineManager } = await import("./routines.ts");
   const skills = await import("./skills.ts");
@@ -189,7 +189,7 @@ describe("the catalog", () => {
     await library.settled();
     const readBlob = vi.spyOn(library, "readBlob");
     expect(library.list().packages[0]).toMatchObject({ blob: "unsupported", installed: null });
-    expect(library.add(TEAM_ID, app.importDeps)).toMatchObject({ ok: false, status: 409, code: "newer_app_required", error: "Update OpenMausBot to add this package." });
+    expect(library.add(TEAM_ID, app.importDeps)).toMatchObject({ ok: false, status: 409, code: "newer_app_required", error: "Update SocialCoffeeAgent to add this package." });
     expect(readBlob).not.toHaveBeenCalled();
     expect(app.store.bots).toHaveLength(0);
   });
@@ -251,7 +251,7 @@ describe("the relay", () => {
     expect(existsSync(app.statePath)).toBe(false);
     await library.settled();
     expect(Date.now() - started).toBeLessThan(15_000);
-    expect(app.posted).toEqual([{ type: "openmausbot:managed-library-state", digest: sha(JSON.stringify(body)), packages: [] }]);
+    expect(app.posted).toEqual([{ type: "socialcoffee-agent:managed-library-state", digest: sha(JSON.stringify(body)), packages: [] }]);
     expect(app.readState()).toMatchObject({ version: 1, source: { adminOrigin: ADMIN, organizationId: ORG }, appliedDigest: sha(JSON.stringify(body)), installs: {} });
   });
 });

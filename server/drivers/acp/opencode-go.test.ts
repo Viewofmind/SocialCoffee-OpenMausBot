@@ -17,7 +17,7 @@ import {
   discoverOpenCodeModels,
   openCodeOwnedDirectories,
   openCodeProviderKeysAllowed,
-  openMausOwnsWorkingFolder,
+  socialCoffeeAgentOwnsWorkingFolder,
   OPENCODE_PROVIDER_ENV,
   parseOpenCodeModelsOutput,
   preferredOpenCodeModel,
@@ -344,7 +344,7 @@ describe("OpenCode catalog", () => {
     },
   );
 
-  it("points a rejected Zen key at the key OpenMaus saves", () => {
+  it("points a rejected Zen key at the key SocialCoffeeAgent saves", () => {
     expect(describeOpenCodeAccountError("invalid_credentials", "opencode/big-pickle")).toContain("Settings → API keys");
     expect(describeOpenCodeAccountError("insufficient_funds", "opencode/big-pickle")).toContain("Zen");
     expect(describeOpenCodeAccountError("inactive_subscription", "opencode-go/minimax-m3")).toContain("OpenCode Go subscription");
@@ -363,7 +363,7 @@ describe("OpenCode catalog", () => {
           OPENAI_API_KEY: "openai-shell-key",
           ANTHROPIC_API_KEY: "anthropic-shell-key",
           GEMINI_API_KEY: "gemini-shell-key",
-          // OpenMaus's own saved keys for other engines never ride along.
+          // SocialCoffeeAgent's own saved keys for other engines never ride along.
           XAI_API_KEY: "saved-for-grok",
           MISTRAL_API_KEY: "saved-for-mistral",
           OMB_ANTHROPIC_API_KEY: "workspace-anthropic",
@@ -723,7 +723,7 @@ describe("OpenCode catalog probes", () => {
   });
 });
 
-describe("OpenCode access to folders OpenMaus owns", () => {
+describe("OpenCode access to folders SocialCoffeeAgent owns", () => {
   it("names the attachments folder and only this bot's shared folder", () => {
     expect(openCodeOwnedDirectories("bot-7")).toEqual([ATTACHMENTS_DIR, workspaceDir("bot-7")]);
     expect(openCodeOwnedDirectories("..")).toEqual([ATTACHMENTS_DIR]);
@@ -740,7 +740,7 @@ describe("OpenCode access to folders OpenMaus owns", () => {
     ["the bot's shared folder (a room's)", workspaceDir("bot-7")],
     ["a folder inside the shared one", join(workspaceDir("bot-7"), "memory")],
     ["the attachments folder", ATTACHMENTS_DIR],
-    ["OpenMaus's data folder", dirname(ATTACHMENTS_DIR)],
+    ["SocialCoffeeAgent's data folder", dirname(ATTACHMENTS_DIR)],
     ["a project folder", join(tmpdir(), "project")],
   ])("never allows the working folder or a folder above it: %s", (_label, cwd) => {
     const inside = (path: string, folder: string) => {
@@ -754,18 +754,18 @@ describe("OpenCode access to folders OpenMaus owns", () => {
     expect(allowed).not.toContain(join(TASK_WORKSPACES_DIR, "bot-7"));
   });
 
-  it("switches off project config only in OpenMaus's own working folders", () => {
-    expect(openMausOwnsWorkingFolder(join(TASK_WORKSPACES_DIR, "bot-7", "thread-1"))).toBe(true);
-    expect(openMausOwnsWorkingFolder(workspaceDir("bot-7"))).toBe(true);
-    expect(openMausOwnsWorkingFolder(TASK_WORKSPACES_DIR)).toBe(false);
-    expect(openMausOwnsWorkingFolder(join(tmpdir(), "project"))).toBe(false);
-    expect(openMausOwnsWorkingFolder(`${TASK_WORKSPACES_DIR}-elsewhere`)).toBe(false);
+  it("switches off project config only in SocialCoffeeAgent's own working folders", () => {
+    expect(socialCoffeeAgentOwnsWorkingFolder(join(TASK_WORKSPACES_DIR, "bot-7", "thread-1"))).toBe(true);
+    expect(socialCoffeeAgentOwnsWorkingFolder(workspaceDir("bot-7"))).toBe(true);
+    expect(socialCoffeeAgentOwnsWorkingFolder(TASK_WORKSPACES_DIR)).toBe(false);
+    expect(socialCoffeeAgentOwnsWorkingFolder(join(tmpdir(), "project"))).toBe(false);
+    expect(socialCoffeeAgentOwnsWorkingFolder(`${TASK_WORKSPACES_DIR}-elsewhere`)).toBe(false);
   });
 
   // OpenCode merges OPENCODE_PERMISSION over the person's config and an
   // object replaces a string (checked with `opencode debug config` on
-  // 1.18.27), so OpenMaus's folder map turned their "deny" into "ask".
-  it("keeps the person's single folder rule ahead of OpenMaus's folders", () => {
+  // 1.18.27), so SocialCoffeeAgent's folder map turned their "deny" into "ask".
+  it("keeps the person's single folder rule ahead of SocialCoffeeAgent's folders", () => {
     const scratch = mkdtempSync(join(tmpdir(), "omb-opencode-folder-rule-"));
     try {
       const configDir = join(scratch, "config", "opencode");
@@ -844,7 +844,7 @@ describe("OpenCode access to folders OpenMaus owns", () => {
         expect(policy).toMatchObject({ "*": "allow", external_directory: "allow" });
         return;
       }
-      // the person's own rules stay, first; OpenMaus's folders are allowed
+      // the person's own rules stay, first; SocialCoffeeAgent's folders are allowed
       // after them; nothing else is widened. A project folder of the
       // person's keeps its own OpenCode config.
       expect(JSON.parse(readFileSync(dump, "utf8")).env.OPENCODE_DISABLE_PROJECT_CONFIG).toBeUndefined();

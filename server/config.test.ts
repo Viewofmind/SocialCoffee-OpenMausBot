@@ -544,7 +544,7 @@ describe("configuration boundaries", () => {
     expect(parseConfigPatch({ features: { browser: false } })).toEqual({ features: { browser: false } });
     expect(builtInBrowserEnabled({ features: { browser: false } })).toBe(false);
     expect(builtInBrowserEnabled({ features: { browser: true } })).toBe(true);
-    // same everywhere: an OMB Cloud home and a self-hosted server alike
+    // same everywhere: an SocialCoffeeAgent Cloud home and a self-hosted server alike
     const cloudHome = { OMB_CLOUD_ROLE: "home", OMB_CLOUD_MACHINE_ID: "3f9c2a4e-8b1d-4c6e-9a7f-2d5e8c1b0a93" };
     expect(builtInBrowserEnabled({}, { OMB_PUBLIC_URL: "https://selfhosted.example.test" })).toBe(true);
     expect(builtInBrowserEnabled({}, cloudHome)).toBe(true);
@@ -1588,7 +1588,7 @@ describe("workspace credential env strip", () => {
     // hosted model token as the provider key), plus look-alike names.
     const engine = {
       PATH: "/usr/bin", ANTHROPIC_API_KEY: "hosted-token", ANTHROPIC_AUTH_TOKEN: "hosted-token",
-      ANTHROPIC_BASE_URL: "https://admin.example.test/api/gateway/w/anthropic", OPENMAUSBOT_COMPANY_API_KEY: "hosted-token",
+      ANTHROPIC_BASE_URL: "https://admin.example.test/api/gateway/w/anthropic", SC_AGENT_COMPANY_API_KEY: "hosted-token",
       OMB_MANAGED_CODEX_TOKEN: "hosted-token", CODEX_HOME: "/data/codex", OMB_HOOK_TOKEN_FILE: "/data/hook-tokens/a.token",
       OMB_CLOUDFLARED_PATH: "/usr/local/bin/cloudflared", OMB_CLOUD: "not-prefixed", MY_OMB_CLOUD_NOTE: "user",
     };

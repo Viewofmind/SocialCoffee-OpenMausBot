@@ -258,7 +258,7 @@ export function ComputerPanel({
   const localAvailable = capabilities.localComputer.available;
   const isLinux = capabilities.host.platform === "linux";
   const providerSupportsLocal = instanceSupportsLocalComputer(state.instances, bot);
-  // An OMB Cloud home never offers this computer (shared/cloud-home.ts).
+  // An SocialCoffeeAgent Cloud home never offers this computer (shared/cloud-home.ts).
   const localSelectable = placeOffered("local", state.config) && localComputerSelectable({ capabilities, providerSupportsLocal });
   const [localAutoWarningTarget, setLocalAutoWarningTarget] = useState<string | null>(null);
   const localDisabledReason = localComputerDisabledReason({ capabilities, providerSupportsLocal });
@@ -1219,7 +1219,7 @@ export function ComputerPanel({
   };
 
   const openVmSettings = () => {
-    window.sessionStorage.setItem("openmausbot.settings.section", "computer");
+    window.sessionStorage.setItem("socialcoffee-agent.settings.section", "computer");
     dispatch({ type: "toggleAppSettings", open: true });
   };
 

@@ -62,7 +62,7 @@ function makeDerived(overrides: Partial<ReturnType<typeof useBotSettingsDerived>
     browserAllowed: true,
     browserEnabled: false,
     browserSelectable: false,
-    browserDisabledReason: "The built-in browser needs the OpenMausBot desktop app",
+    browserDisabledReason: "The built-in browser needs the SocialCoffeeAgent desktop app",
     sectionName: "General",
     currentChief: undefined,
     botRoutines: [],
@@ -178,7 +178,7 @@ describe("AccessSection Works on", () => {
     expect(places(render(makeBot()))).toEqual(["Auto", "Cloud", "Local VM", "This computer", "Browser", "Off"]);
   });
 
-  it("never offers them on an OMB Cloud home", () => {
+  it("never offers them on an SocialCoffeeAgent Cloud home", () => {
     fixture.config = { cloudHome: true } as Partial<ConfigStatus>;
     expect(places(render(makeBot()))).toEqual(["Auto", "Cloud", "Browser", "Off"]);
   });

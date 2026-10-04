@@ -13,7 +13,7 @@ describe("localVm world installSkill", () => {
     const scenario = scenarioSchema.parse({
       id: "local-vm-skill-install",
       title: "installSkill reaches the localVm server prompt",
-      behavior: "A skill installed before the send rides the system prompt as an openmaus-skill block.",
+      behavior: "A skill installed before the send rides the system prompt as an sc-agent-skill block.",
       world: "localVm",
       gates: [],
       bots: [{ key: "worker", name: "Skill holder", turns: [{ reply: "Skill instructions followed." }] }],
@@ -35,7 +35,7 @@ describe("localVm world installSkill", () => {
         { kind: "waitForTurns", bot: "worker", count: 1, timeoutMs: 20_000 },
       ],
       assertions: [
-        { kind: "systemPromptIncludes", bot: "worker", turn: 0, includes: '<openmaus-skill id="local-vm-pin"' },
+        { kind: "systemPromptIncludes", bot: "worker", turn: 0, includes: '<sc-agent-skill id="local-vm-pin"' },
       ],
     });
     const result = await runScenario(scenario);

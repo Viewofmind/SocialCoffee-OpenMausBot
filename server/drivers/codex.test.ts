@@ -110,7 +110,7 @@ describe("CodexDriver turns (fake app-server)", () => {
       instanceId: "codex-test",
       displayName: "Codex Test",
       environment: {
-        ...(opts.managed ? { HOME: scratch, USERPROFILE: scratch, CODEX_HOME: join(scratch, ".codex"), OPENMAUSBOT_COMPANY_API_KEY: "synthetic-company-fixture" } : {}),
+        ...(opts.managed ? { HOME: scratch, USERPROFILE: scratch, CODEX_HOME: join(scratch, ".codex"), SC_AGENT_COMPANY_API_KEY: "synthetic-company-fixture" } : {}),
         ...opts.environment,
       },
       enabled: true,
@@ -148,14 +148,14 @@ describe("CodexDriver turns (fake app-server)", () => {
     expect(JSON.stringify(seen.argv)).not.toContain("https://example.test/notes");
     const before = seen.calls.filter((call: { method: string }) => call.method === "turn/start").length;
     expect(before).toBe(1);
-    expect(Object.keys(seen.calls.find((call: { method: string }) => call.method === "thread/start").params.config.mcp_servers)).toEqual(["notes_openmausbot"]);
-    expect(seen.calls.find((call: { method: string }) => call.method === "thread/start").params.config.mcp_servers.notes_openmausbot.default_tools_approval_mode).toBe("prompt");
+    expect(Object.keys(seen.calls.find((call: { method: string }) => call.method === "thread/start").params.config.mcp_servers)).toEqual(["notes_socialcoffee_agent"]);
+    expect(seen.calls.find((call: { method: string }) => call.method === "thread/start").params.config.mcp_servers.notes_socialcoffee_agent.default_tools_approval_mode).toBe("prompt");
     recorder.events.length = 0;
     await instance.adapter.sendTurn({ threadId: "scope-mcp", text: "Continue", resumeCursor: "old-session", toolScope: { allow: ["native:*", "mcp:notes:read"] }, integrations: { custom: { notes: { type: "sse", url: "https://example.test/notes", headers: {} } } } });
     await recorder.until((event) => event.type === "turn.completed");
     const restored = JSON.parse(readFileSync(dump, "utf8"));
-    expect(Object.keys(restored.calls.find((call: { method: string }) => call.method === "thread/resume").params.config.mcp_servers)).toEqual(["notes_openmausbot"]);
-    expect(restored.calls.find((call: { method: string }) => call.method === "thread/resume").params.config.mcp_servers.notes_openmausbot.default_tools_approval_mode).toBe("prompt");
+    expect(Object.keys(restored.calls.find((call: { method: string }) => call.method === "thread/resume").params.config.mcp_servers)).toEqual(["notes_socialcoffee_agent"]);
+    expect(restored.calls.find((call: { method: string }) => call.method === "thread/resume").params.config.mcp_servers.notes_socialcoffee_agent.default_tools_approval_mode).toBe("prompt");
   });
 
   it("refuses a scoped prompt when effective Codex configuration still has an ambient MCP server", async () => {
@@ -495,7 +495,7 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
       "turn.started",
       "session.started",
       "item.started", // commandExecution ls -la
-      "item.started", // webSearch OpenMausBot
+      "item.started", // webSearch SocialCoffeeAgent
       "item.completed", // commandExecution done
       "item.completed", // webSearch done
       "content.delta",
@@ -582,7 +582,7 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
       const input = calls.find((c) => c.method === "turn/start")?.params?.input as Array<{ text?: string }> | undefined;
       return input?.[0]?.text;
     };
-    expect(turnText(first)).toBe("Context from OpenMausBot updated since this conversation started; it replaces any earlier copy:\n\nMemory: likes quiet hours.\n\nfirst");
+    expect(turnText(first)).toBe("Context from SocialCoffeeAgent updated since this conversation started; it replaces any earlier copy:\n\nMemory: likes quiet hours.\n\nfirst");
     expect(turnText(second)).toBe("second");
     expect(turnText(third)).toContain("Memory: moved to Toronto.");
     expect(turnText(third)).toContain("third");
@@ -991,7 +991,7 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
     });
     await recorder.until((event) => event.type === "turn.completed");
     const seen = JSON.parse(readFileSync(dump, "utf8"));
-    expect(seen.argv.join(" ")).toContain("mcp_servers.openmausbot_connectors.command");
+    expect(seen.argv.join(" ")).toContain("mcp_servers.socialcoffee_agent_connectors.command");
     expect(seen.argv.join(" ")).toContain("OMB_CONNECTOR_TOKEN");
     expect(seen.argv.join(" ")).not.toContain("per-turn-connector-token");
     expect(seen.env.OMB_CONNECTOR_TOKEN).toBe("per-turn-connector-token");
@@ -1028,7 +1028,7 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
     expect(seen.env.NOTES_TOKEN).toBe("tok-notes");
     // the built-in keeps codex's pre-quieted approval mode; the custom
     // server does NOT — its tool calls arrive as approval cards
-    expect(argv).toContain('mcp_servers.openmausbot_connectors.default_tools_approval_mode');
+    expect(argv).toContain('mcp_servers.socialcoffee_agent_connectors.default_tools_approval_mode');
     expect(argv).not.toContain('mcp_servers.notes.default_tools_approval_mode');
   });
 
@@ -1054,7 +1054,7 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
     const argv = JSON.parse(readFileSync(dump, "utf8")).argv.join(" ");
     // the colliding server moves aside; a stdio command over the url entry
     // would have been "invalid configuration" for the whole app-server
-    expect(argv).toContain("mcp_servers.fibery_openmausbot.command");
+    expect(argv).toContain("mcp_servers.fibery_socialcoffee.inmand");
     expect(argv).not.toContain("mcp_servers.fibery.command");
     // an unrelated name is untouched
     expect(argv).toContain("mcp_servers.notes.command");
@@ -1204,7 +1204,7 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
       integrations: {
         localComputer: {
           command: process.execPath,
-          args: ["/tmp/container-mcp.js", "podman", "openmausbot-computer", "/run/cua.sock"],
+          args: ["/tmp/container-mcp.js", "podman", "socialcoffee-agent-computer", "/run/cua.sock"],
           env: { ELECTRON_RUN_AS_NODE: "1", OMB_VM_TOKEN: "vm-secret" },
         },
       },
@@ -1238,7 +1238,7 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
     const seen = JSON.parse(readFileSync(dump, "utf8"));
     expect(seen.argv).toContain("model_providers.unsloth.base_url=\"http://127.0.0.1:8888/v1\"");
     expect(JSON.stringify(seen.argv)).not.toContain("unsloth-secret");
-    expect(seen.env.OPENMAUSBOT_LOCAL_UNSLOTH_API_KEY).toBe("unsloth-secret");
+    expect(seen.env.SC_AGENT_LOCAL_UNSLOTH_API_KEY).toBe("unsloth-secret");
   });
 
   it("streams agentMessage deltas without re-emitting the settled text", async () => {
@@ -1304,15 +1304,15 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
       ["gpt-6.1-sol", "gpt-6.1-sol", "openai_chatgpt_plan"],
     ] },
     { name: "Company", opts: { managed: true }, selections: [
-      ["company-codex-model", "company-codex-model", "openmaus_company"],
-      ["company-codex-model", "company-codex-model", "openmaus_company"],
+      ["company-codex-model", "company-codex-model", "socialcoffee_agent_company"],
+      ["company-codex-model", "company-codex-model", "socialcoffee_agent_company"],
     ] },
   ])("reasserts the selected model and provider after $name app-server restarts", async ({ opts, selections }) => {
     const token = vi.spyOn(ChatGptPlanAuthController.prototype, "accessToken").mockResolvedValue("synthetic-chatgpt-token");
     const catalog = vi.spyOn(ChatGptPlanAuthController.prototype, "models").mockResolvedValue({
       default: "gpt-6.1-sol", options: ["gpt-5.6-sol", "gpt-6.1-sol"].map(id => ({ id, label: id })),
     });
-    vi.stubEnv("OPENMAUSBOT_CHATGPT_TOKEN", "inherited-token-must-not-leak");
+    vi.stubEnv("SC_AGENT_CHATGPT_TOKEN", "inherited-token-must-not-leak");
     vi.stubEnv("OPENAI_API_KEY", "inherited-api-key-must-not-leak");
     await create({ ...opts, mode: "resume", environment: { HOME: scratch, USERPROFILE: scratch, CODEX_HOME: join(scratch, ".codex") } });
     const dump = join(scratch, "model-provider-resume.json");
@@ -1331,12 +1331,12 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
       pids.add(seen.pid);
       const plan = "authMode" in opts;
       expect(seen.env.OPENAI_API_KEY).toBeUndefined();
-      expect(seen.env.OPENMAUSBOT_CHATGPT_TOKEN).toBe(plan ? "synthetic-chatgpt-token" : undefined);
+      expect(seen.env.SC_AGENT_CHATGPT_TOKEN).toBe(plan ? "synthetic-chatgpt-token" : undefined);
       expect(JSON.stringify({ argv: seen.argv, calls: seen.calls })).not.toContain("synthetic-chatgpt-token");
       if (plan) {
         expect(seen.env.CODEX_HOME.startsWith(join(DATA_DIR, "providers", "chatgpt-plan") + sep)).toBe(true);
         expect(seen.env.CODEX_HOME).not.toBe(join(scratch, ".codex"));
-        expect(seen.argv).toContain('shell_environment_policy.exclude=["OPENMAUSBOT_CHATGPT_TOKEN"]');
+        expect(seen.argv).toContain('shell_environment_policy.exclude=["SC_AGENT_CHATGPT_TOKEN"]');
       } else expect(seen.env.CODEX_HOME).toBe(join(scratch, ".codex"));
       const threadCalls = seen.calls.filter((call: { method: string }) => ["thread/start", "thread/resume"].includes(call.method));
       expect(threadCalls).toHaveLength(1);
@@ -1468,7 +1468,7 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
   it("reports local ChatGPT sign-out with a warning when remote revocation is unconfirmed", async () => {
     vi.spyOn(ChatGptPlanAuthController.prototype, "models").mockResolvedValue({ default: "gpt-6.1-sol", options: [{ id: "gpt-6.1-sol", label: "GPT-6.1 Sol" }] });
     vi.spyOn(ChatGptPlanAuthController.prototype, "snapshot").mockResolvedValue({ authenticated: false });
-    const message = "Signed out locally, but remote revocation was not confirmed. Disconnect OpenMausBot in ChatGPT Settings → Usage to end access there.";
+    const message = "Signed out locally, but remote revocation was not confirmed. Disconnect SocialCoffeeAgent in ChatGPT Settings → Usage to end access there.";
     vi.spyOn(ChatGptPlanAuthController.prototype, "signOut").mockRejectedValue(Object.assign(new Error(message), { code: "chatgpt_revocation_unconfirmed" }));
     await create({ authMode: "chatgpt-plan" });
     await expect(instance.signOut!()).resolves.toBeUndefined();
@@ -1495,9 +1495,9 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
   });
 
   it("names a missing Company API key or CODEX_HOME instead of one blanket refusal", async () => {
-    await create({ managed: true, environment: { OPENMAUSBOT_COMPANY_API_KEY: "" } });
+    await create({ managed: true, environment: { SC_AGENT_COMPANY_API_KEY: "" } });
     await expect(instance.adapter.sendTurn({ threadId: "company-no-key", text: "hi", model: "company-codex-model" }))
-      .rejects.toThrow("OPENMAUSBOT_COMPANY_API_KEY is missing");
+      .rejects.toThrow("SC_AGENT_COMPANY_API_KEY is missing");
     await create({ managed: true, environment: { CODEX_HOME: "" } });
     await expect(instance.adapter.sendTurn({ threadId: "company-no-home", text: "hi", model: "company-codex-model" }))
       .rejects.toThrow("CODEX_HOME is missing");
@@ -1520,7 +1520,7 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
       "initialize", "initialized", "config/read", "thread/resume", "thread/start", "turn/start",
     ]);
     expect(seen.calls.find((call: { method: string }) => call.method === "thread/start").params).toMatchObject({
-      model: "company-codex-model", modelProvider: "openmaus_company", cwd: scratch,
+      model: "company-codex-model", modelProvider: "socialcoffee_agent_company", cwd: scratch,
       developerInstructions: expect.stringContaining("Keep current bot rules."),
       approvalPolicy: "never", sandbox: "danger-full-access", ephemeral: false,
     });
@@ -1528,7 +1528,7 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
       threadId: "codex-thread-1",
       input: [{ type: "text", text: recoveryText }, { type: "localImage", path: imagePath }],
     });
-    expect(seen.argv).toContain('model_provider="openmaus_company"');
+    expect(seen.argv).toContain('model_provider="socialcoffee_agent_company"');
     expect(JSON.stringify(seen.argv)).not.toContain("synthetic-company-fixture");
     expect(recorder.events.filter((event) => event.type === "session.started")).toMatchObject([{ sessionId: "codex-thread-1", rebuilt: true }]);
   });
@@ -1691,7 +1691,7 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
       if (index > 0) expect(threadCalls[0].method).toBe("thread/resume");
       const updates = calls.filter((call) => call.method === "thread/inject_items");
       expect(updates).toHaveLength(index === 2 || index === 3 ? 1 : 0);
-      if (updates.length) expect(JSON.stringify(updates[0].params)).toContain(system || "No OpenMausBot bot-specific instructions remain.");
+      if (updates.length) expect(JSON.stringify(updates[0].params)).toContain(system || "No SocialCoffeeAgent bot-specific instructions remain.");
       for (const call of calls.filter((call) => call.method === "turn/start")) {
         expect(call.params.input).toEqual([{ type: "text", text: `message-${index}` }]);
       }
@@ -1713,7 +1713,7 @@ process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`)
       await expect(recorder.until((event) => event.type === "turn.completed" && event.turnId === turnId)).resolves.toMatchObject({ ok: true });
       const calls = JSON.parse(readFileSync(dump, "utf8")).calls;
       const threadCall = calls.find((call: { method: string }) => call.method === (index ? "thread/resume" : "thread/start"));
-      expect(threadCall.params.developerInstructions).toBe(`${system || "No OpenMausBot bot-specific instructions remain."}\n\nPrivate native rules.`);
+      expect(threadCall.params.developerInstructions).toBe(`${system || "No SocialCoffeeAgent bot-specific instructions remain."}\n\nPrivate native rules.`);
       expect(calls.filter((call: { method: string }) => call.method === "thread/inject_items")).toHaveLength(index === 1 ? 1 : 0);
       expect(calls.find((call: { method: string }) => call.method === "turn/start").params.input).toEqual([{ type: "text", text: `message-${index}` }]);
     }

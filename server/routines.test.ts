@@ -117,7 +117,7 @@ afterEach(() => {
 
 describe("bounded scheduled overlap and run health", () => {
   const start = Date.parse("2026-09-13T08:00:00Z");
-  const input = () => ({ name: "Health check", prompt: "Check the fixture", botId: "maus-1",
+  const input = () => ({ name: "Health check", prompt: "Check the fixture", botId: "scagent-1",
     schedule: { type: "interval" as const, everyMinutes: 5, anchorAt: start } });
   const finish = (h: ReturnType<typeof harness>, threadId: string, ok: boolean) => h.manager.handleRuntimeEvent({
     eventId: "done", provider: "fake", threadId, createdAt: new Date().toISOString(), type: "turn.completed", ok,
@@ -257,7 +257,7 @@ it("names a new routine thread with the local dispatch date and time", async () 
   vi.stubEnv("TZ", "UTC");
   const at = Date.parse("2026-10-01T21:26:00Z");
   const h = harness(at);
-  const routine = h.manager.create({ name: "Morning brief", prompt: "Summarize", botId: "maus-1",
+  const routine = h.manager.create({ name: "Morning brief", prompt: "Summarize", botId: "scagent-1",
     schedule: { type: "once", at } });
   h.manager.runNow(routine.id);
   const createTask = h.options.createTask;
@@ -267,7 +267,7 @@ it("names a new routine thread with the local dispatch date and time", async () 
   expect(h.manager.listRuns()[0]).toMatchObject({ routineName: "Morning brief", startedAt: at });
 
   const long = harness(at);
-  const named = long.manager.create({ name: "x".repeat(100), prompt: "Summarize", botId: "maus-1",
+  const named = long.manager.create({ name: "x".repeat(100), prompt: "Summarize", botId: "scagent-1",
     schedule: { type: "once", at } });
   long.manager.runNow(named.id);
   await long.manager.tick();
@@ -278,7 +278,7 @@ it("names a new routine thread with the local dispatch date and time", async () 
 describe("cron routines use the existing persistent scheduler", () => {
   const start = Date.parse("2026-09-13T08:00:00Z");
   const monthly = { type: "cron" as const, expression: "0 9 1 * *", timeZone: "UTC" };
-  const input = (schedule = monthly) => ({ name: "Monthly report", prompt: "Write the report", botId: "maus-1", schedule });
+  const input = (schedule = monthly) => ({ name: "Monthly report", prompt: "Write the report", botId: "scagent-1", schedule });
 
   it("normalizes, clones and reloads cron definitions without shifting the cursor", () => {
     const h = harness(start);
@@ -308,7 +308,7 @@ describe("cron routines use the existing persistent scheduler", () => {
     await h.manager.tick(); expect(h.started).toHaveLength(0);
     h.setNow(routine.nextRunAt!);
     await h.manager.tick(); await h.manager.tick();
-    expect(h.started).toEqual([{ botId: "maus-1", threadId: "thread-1", prompt: "Write the report" }]);
+    expect(h.started).toEqual([{ botId: "scagent-1", threadId: "thread-1", prompt: "Write the report" }]);
     expect(h.manager.listRuns()[0]).toMatchObject({ scheduledFor: routine.nextRunAt, status: "running", triggerSource: "schedule" });
     expect(h.manager.listRoutines()[0].nextRunAt).toBe(Date.parse("2026-11-01T09:00:00Z"));
   });
@@ -439,12 +439,12 @@ describe("cron routines use the existing persistent scheduler", () => {
 
 describe("persistent routine results destinations", () => {
   const input = () => ({
-    name: "Daily report", prompt: "Write a fresh report", botId: "maus-1", enabled: false,
+    name: "Daily report", prompt: "Write a fresh report", botId: "scagent-1", enabled: false,
     schedule: { type: "interval" as const, everyMinutes: 60, anchorAt: Date.now() + 3_600_000 },
   });
   function resultsHarness() {
     const h = harness();
-    const visible = new Map([["chosen", "maus-1"], ["foreign", "maus-2"]]);
+    const visible = new Map([["chosen", "scagent-1"], ["foreign", "scagent-2"]]);
     let created = 0;
     h.options.isResultsThread = (botId, threadId) => visible.get(threadId) === botId;
     h.options.resolveResultsThread = (routine, forceNew) => {
@@ -457,7 +457,7 @@ describe("persistent routine results destinations", () => {
     return { ...h, visible, created: () => created };
   }
   const request = <Action extends "create" | "run_now">(action: Action, threadId: string) => ({
-    action, threadId, requestId: `request-${action}`, messageId: `message-${action}`, botId: "maus-1",
+    action, threadId, requestId: `request-${action}`, messageId: `message-${action}`, botId: "scagent-1",
     fingerprintVersion: 1 as const, fingerprint: "a".repeat(64),
   });
   const complete = (h: ReturnType<typeof resultsHarness>, threadId: string) => h.manager.handleRuntimeEvent({
@@ -477,8 +477,8 @@ describe("persistent routine results destinations", () => {
     expect(second.resultsThreadId).toBe(first.resultsThreadId);
     expect(h.created()).toBe(1);
     expect(h.started).toEqual([
-      { botId: "maus-1", threadId: "thread-1", prompt: "Write a fresh report" },
-      { botId: "maus-1", threadId: "thread-2", prompt: "Write a fresh report" },
+      { botId: "scagent-1", threadId: "thread-1", prompt: "Write a fresh report" },
+      { botId: "scagent-1", threadId: "thread-2", prompt: "Write a fresh report" },
     ]);
     complete(h, "thread-2");
     const loaded = new RoutineManager(h.options);
@@ -498,7 +498,7 @@ describe("persistent routine results destinations", () => {
     const updated = h.manager.update(routine.id, { resultsThreadId: null })!;
     expect(updated.resultsThreadId).toBe("results-1");
     expect(h.manager.listRuns().find((run) => run.id === first.id)?.resultsThreadId).toBe("chosen");
-    expect(h.manager.update(routine.id, { botId: "maus-2" })?.resultsThreadId).toBeUndefined();
+    expect(h.manager.update(routine.id, { botId: "scagent-2" })?.resultsThreadId).toBeUndefined();
   });
 
   it.each(["create", "update"])("discards only a newly allocated empty destination when %s cannot commit", (action) => {
@@ -517,7 +517,7 @@ describe("persistent routine results destinations", () => {
       expect(() => h.manager.create({ ...input(), resultsThreadId: null })).toThrow();
       expect(h.manager.listRoutines()).toEqual([]);
     }
-    expect(discard).toHaveBeenCalledExactlyOnceWith("maus-1", "results-1");
+    expect(discard).toHaveBeenCalledExactlyOnceWith("scagent-1", "results-1");
     expect(h.visible.has("results-1")).toBe(false);
     expect(h.visible.has("chosen")).toBe(true);
   });
@@ -560,7 +560,7 @@ describe("persistent routine results destinations", () => {
       expect(observations).toEqual([]);
       expect(h.started).toEqual([]);
       const allocated = destination === "new" || destination === "deleted";
-      if (allocated) expect(discard).toHaveBeenCalledExactlyOnceWith("maus-1", "results-1");
+      if (allocated) expect(discard).toHaveBeenCalledExactlyOnceWith("scagent-1", "results-1");
       else expect(discard).not.toHaveBeenCalled();
       expect(h.visible.has("results-1")).toBe(false);
       expect(h.visible.has("chosen")).toBe(destination !== "deleted");
@@ -615,7 +615,7 @@ describe("persistent routine results destinations", () => {
     expect(h.manager.listRuns()).toEqual([]);
     expect(h.emitted).toEqual([]);
     expect(h.changed).toEqual([]);
-    expect(discard.mock.calls).toEqual([["maus-1", "results-1"], ["maus-1", "results-2"]]);
+    expect(discard.mock.calls).toEqual([["scagent-1", "results-1"], ["scagent-1", "results-2"]]);
     expect(h.visible.has("results-1")).toBe(true);
     expect(h.visible.has("results-2")).toBe(false);
     expect(logged).toHaveBeenCalledExactlyOnceWith(
@@ -664,13 +664,13 @@ describe("persistent routine results destinations", () => {
     h.manager.runNow(routine.id);
     await h.manager.tick();
     expect(h.taskActivations).toEqual([]);
-    expect(h.started).toEqual([expect.objectContaining({ botId: "maus-1", threadId: "chosen" })]);
+    expect(h.started).toEqual([expect.objectContaining({ botId: "scagent-1", threadId: "chosen" })]);
     expect(h.manager.listRuns()[0]).toMatchObject({ status: "running", threadId: "chosen" });
   });
 
   it("does not route webhook or room-goal executions through bot results tasks", async () => {
     const h = resultsHarness();
-    h.manager.enqueueWebhook({ webhookId: "hook", webhookName: "Hook", prompt: "Incoming", botId: "maus-1", runOn: "maus", deliveryId: "delivery", receivedAt: Date.now() });
+    h.manager.enqueueWebhook({ webhookId: "hook", webhookName: "Hook", prompt: "Incoming", botId: "scagent-1", runOn: "maus", deliveryId: "delivery", receivedAt: Date.now() });
     const goal = h.manager.create({ ...input(), target: "room-goal", groupId: "room" });
     h.manager.runNow(goal.id);
     await h.manager.tick();
@@ -763,7 +763,7 @@ describe("RoutineManager", () => {
     const create = (name: string, durationMinutes?: number) => h.manager.create({
       name,
       prompt: "Check the queue",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: { type: "daily", time: "09:00", weekdays: [1] },
       durationMinutes,
     });
@@ -779,7 +779,7 @@ describe("RoutineManager", () => {
     const input = {
       name: "Bounded routine",
       prompt: "Check the queue",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: { type: "daily" as const, time: "09:00", weekdays: [1] },
     };
     const routine = h.manager.create({ ...input, timeoutMinutes: 5 });
@@ -796,7 +796,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Frequent check",
       prompt: "Check the queue",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: { type: "interval", everyMinutes: 5, anchorAt },
     });
 
@@ -805,14 +805,14 @@ describe("RoutineManager", () => {
     expect(() => h.manager.create({
       name: "Too frequent",
       prompt: "Check too often",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: { type: "interval", everyMinutes: 4, anchorAt },
     })).toThrow(/5 to 1440/);
     for (const invalidAnchor of [1.5, Number.MAX_SAFE_INTEGER, Number.NaN]) {
       expect(() => h.manager.create({
         name: "Bad anchor",
         prompt: "Check later",
-        botId: "maus-1",
+        botId: "scagent-1",
         schedule: { type: "interval", everyMinutes: 5, anchorAt: invalidAnchor },
       })).toThrow(/valid interval start time/);
     }
@@ -825,7 +825,7 @@ describe("RoutineManager", () => {
     const input = {
       name: "Restricted check",
       prompt: "Check during support hours",
-      botId: "maus-1",
+      botId: "scagent-1",
     };
     const routine = h.manager.create({
       ...input,
@@ -879,7 +879,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Restricted check",
       prompt: "Check during support hours",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: {
         type: "interval",
         everyMinutes: 30,
@@ -928,7 +928,7 @@ describe("RoutineManager", () => {
     const input = {
       name: "Expired check",
       prompt: "Check only before the cutoff",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: expiredSchedule,
     };
 
@@ -962,7 +962,7 @@ describe("RoutineManager", () => {
     h.manager.create({
       name: "Private routine",
       prompt: "Keep this private",
-      botId: "maus-private",
+      botId: "mark-private",
       schedule: { type: "daily", time: "09:00", weekdays: [1] },
     });
 
@@ -976,7 +976,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Morning brief",
       prompt: "Summarize what changed",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: { type: "once", at: new Date(2026, 7, 17, 8, 5).getTime() },
       timeoutMinutes: 15,
     });
@@ -1010,7 +1010,7 @@ describe("RoutineManager", () => {
         routineName: "Morning brief",
         status: "failed",
         threadId: "thread-1",
-        error: "OpenMausBot restarted while this routine was running",
+        error: "SocialCoffeeAgent restarted while this routine was running",
       },
     ]);
   });
@@ -1021,7 +1021,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Review attachment",
       prompt: "Review the supplied context",
-      botId: "maus-attachments",
+      botId: "mark-attachments",
       schedule: { type: "daily", time: "09:00", weekdays: [1] },
       attachments: [{
         id: "file-1",
@@ -1067,7 +1067,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Legacy bot routine",
       prompt: "Keep running as a bot",
-      botId: "maus-legacy",
+      botId: "mark-legacy",
       schedule: { type: "daily", time: "09:00", weekdays: [1] },
     });
     h.manager.runNow(routine.id);
@@ -1083,9 +1083,9 @@ describe("RoutineManager", () => {
     writeFileSync(h.options.file!, JSON.stringify(stored));
 
     const migrated = new RoutineManager(h.options);
-    expect(migrated.listRoutines()[0]).toMatchObject({ target: "bot", botId: "maus-legacy" });
+    expect(migrated.listRoutines()[0]).toMatchObject({ target: "bot", botId: "mark-legacy" });
     expect(migrated.listRoutines()[0]?.groupId).toBeUndefined();
-    expect(migrated.listRuns()[0]).toMatchObject({ target: "bot", botId: "maus-legacy" });
+    expect(migrated.listRuns()[0]).toMatchObject({ target: "bot", botId: "mark-legacy" });
     expect(migrated.listRuns()[0]?.groupId).toBeUndefined();
   });
 
@@ -1095,13 +1095,13 @@ describe("RoutineManager", () => {
     const malformed = h.manager.create({
       name: "Malformed interval",
       prompt: "Never load this cadence",
-      botId: "maus-legacy",
+      botId: "mark-legacy",
       schedule: { type: "interval", everyMinutes: 5, anchorAt },
     });
     const valid = h.manager.create({
       name: "Valid interval",
       prompt: "Keep this cadence",
-      botId: "maus-valid",
+      botId: "mark-valid",
       schedule: { type: "interval", everyMinutes: 15, anchorAt },
     });
     const stored = JSON.parse(readFileSync(h.options.file!, "utf8")) as {
@@ -1119,13 +1119,13 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Before",
       prompt: "Review the queue",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: { type: "daily", time: "09:00", weekdays: [1] },
     });
     const request = {
       requestId: "request-update-1",
       messageId: "message-1",
-      botId: "maus-1",
+      botId: "scagent-1",
       threadId: "thread-1",
       action: "update" as const,
       fingerprintVersion: 1 as const,
@@ -1160,7 +1160,7 @@ describe("RoutineManager", () => {
     const request = {
       requestId: "request-source-thread",
       messageId: "message-source-thread",
-      botId: "maus-1",
+      botId: "scagent-1",
       threadId: "conversation-that-created-it",
       action: "create" as const,
       fingerprintVersion: 1 as const,
@@ -1169,7 +1169,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Source report",
       prompt: "Summarize the queue",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: { type: "once", at: new Date(2026, 7, 17, 8, 5).getTime() },
     }, request);
 
@@ -1199,7 +1199,7 @@ describe("RoutineManager", () => {
     const calendarPayload = {
       name: "Calendar-owned",
       prompt: "Run without a chat source",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule,
       sourceThreadId: "forged-thread",
     };
@@ -1212,7 +1212,7 @@ describe("RoutineManager", () => {
     const request = {
       requestId: "request-malformed-source",
       messageId: "message-malformed-source",
-      botId: "maus-1",
+      botId: "scagent-1",
       threadId: "trusted-source",
       action: "create" as const,
       fingerprintVersion: 1 as const,
@@ -1221,7 +1221,7 @@ describe("RoutineManager", () => {
     h.manager.create({
       name: "Survives malformed provenance",
       prompt: "Keep this routine",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: { type: "daily", time: "09:00", weekdays: [1] },
     }, request);
     const file = h.options.file;
@@ -1243,7 +1243,7 @@ describe("RoutineManager", () => {
     const createRequest = {
       requestId: "request-create-origin",
       messageId: "message-create-origin",
-      botId: "maus-1",
+      botId: "scagent-1",
       threadId: "original-thread",
       action: "create" as const,
       fingerprintVersion: 1 as const,
@@ -1252,7 +1252,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Daily source",
       prompt: "Review it",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: { type: "daily", time: "09:00", weekdays: [1] },
     }, createRequest);
     const runRequest = {
@@ -1274,13 +1274,13 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Cleanup",
       prompt: "Clean unreachable confirmations",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: { type: "daily", time: "09:00", weekdays: [1] },
     });
     const request = {
       requestId: "request-orphaned-thread",
       messageId: "message-orphaned-thread",
-      botId: "maus-1",
+      botId: "scagent-1",
       threadId: "thread-deleted",
       action: "pause" as const,
       fingerprintVersion: 1 as const,
@@ -1302,7 +1302,7 @@ describe("RoutineManager", () => {
     const request = {
       requestId: "request-create-write-failure",
       messageId: "message-write-failure",
-      botId: "maus-1",
+      botId: "scagent-1",
       threadId: "thread-1",
       action: "create" as const,
       fingerprintVersion: 1 as const,
@@ -1311,7 +1311,7 @@ describe("RoutineManager", () => {
     const input = {
       name: "Retry safely",
       prompt: "Check the queue",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: { type: "daily" as const, time: "09:00", weekdays: [1] },
     };
 
@@ -1336,7 +1336,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Review queue",
       prompt: "Review the queue",
-      botId: "maus-2",
+      botId: "scagent-2",
       schedule: { type: "once", at: new Date(2026, 7, 17, 8, 1).getTime() },
       durationMinutes: 45,
     });
@@ -1347,9 +1347,9 @@ describe("RoutineManager", () => {
 
     h.setBot("ready");
     await h.manager.tick();
-    expect(h.started).toEqual([{ botId: "maus-2", threadId: "thread-1", prompt: "Review the queue" }]);
+    expect(h.started).toEqual([{ botId: "scagent-2", threadId: "thread-1", prompt: "Review the queue" }]);
     expect(h.manager.listRuns()[0]).toMatchObject({ status: "running", threadId: "thread-1" });
-    expect(h.manager.activeRunForBot("maus-2")?.threadId).toBe("thread-1");
+    expect(h.manager.activeRunForBot("scagent-2")?.threadId).toBe("thread-1");
     expect(h.manager.isActiveThread("thread-1")).toBe(true);
     expect(h.taskActivations).toEqual([false]);
   });
@@ -1360,7 +1360,7 @@ describe("RoutineManager", () => {
     h.manager.create({
       name: "Frequent check",
       prompt: "Check the queue",
-      botId: "maus-interval",
+      botId: "mark-interval",
       schedule: { type: "interval", everyMinutes: 5, anchorAt },
       durationMinutes: 30,
     });
@@ -1386,7 +1386,7 @@ describe("RoutineManager", () => {
     const h = harness();
     h.setBot("busy");
     const routine = h.manager.create({
-      name: "Ordered work", prompt: "Run in order", botId: "maus-1",
+      name: "Ordered work", prompt: "Run in order", botId: "scagent-1",
       schedule: { type: "daily", time: "09:00", weekdays: [1] },
     });
     const first = h.manager.runNow(routine.id)!;
@@ -1406,7 +1406,7 @@ describe("RoutineManager", () => {
   it("keeps an overdue occurrence when only instructions or the name change", async () => {
     const h = harness();
     const routine = h.manager.create({
-      name: "Daily work", prompt: "Original", botId: "maus-1",
+      name: "Daily work", prompt: "Original", botId: "scagent-1",
       schedule: { type: "daily", time: "09:00", weekdays: [1] },
     });
     h.setNow(routine.nextRunAt! + 60_000);
@@ -1421,7 +1421,7 @@ describe("RoutineManager", () => {
     let pending = true;
     h.options.hasPendingDelegations = () => pending;
     const routine = h.manager.create({
-      name: "Team report", prompt: "Ask a teammate", botId: "maus-1",
+      name: "Team report", prompt: "Ask a teammate", botId: "scagent-1",
       schedule: { type: "daily", time: "09:00", weekdays: [1] },
     });
     const queued = h.manager.runNow(routine.id)!;
@@ -1445,7 +1445,7 @@ describe("RoutineManager", () => {
     h.manager.create({
       name: "Frequent check",
       prompt: "Check the queue",
-      botId: "maus-interval",
+      botId: "mark-interval",
       schedule: { type: "interval", everyMinutes: 5, anchorAt },
     });
 
@@ -1465,7 +1465,7 @@ describe("RoutineManager", () => {
     h.manager.create({
       name: "Support-hours check",
       prompt: "Check the support queue",
-      botId: "maus-interval",
+      botId: "mark-interval",
       schedule: {
         type: "interval",
         everyMinutes: 30,
@@ -1492,7 +1492,7 @@ describe("RoutineManager", () => {
     h.manager.create({
       name: "Frequent check",
       prompt: "Check the latest queue",
-      botId: "maus-interval",
+      botId: "mark-interval",
       schedule: { type: "interval", everyMinutes: 5, anchorAt },
     });
 
@@ -1512,7 +1512,7 @@ describe("RoutineManager", () => {
       threadId: "thread-1",
     }]);
     expect(h.started).toEqual([{
-      botId: "maus-interval",
+      botId: "mark-interval",
       threadId: "thread-1",
       prompt: "Check the latest queue",
     }]);
@@ -1525,7 +1525,7 @@ describe("RoutineManager", () => {
     h.manager.create({
       name: "Business-hours check",
       prompt: "Check at an allowed time",
-      botId: "maus-interval",
+      botId: "mark-interval",
       schedule: {
         type: "interval",
         everyMinutes: 30,
@@ -1549,7 +1549,7 @@ describe("RoutineManager", () => {
     h.setNow(nextMondayAtNine);
     await h.manager.tick();
     expect(h.started).toEqual([{
-      botId: "maus-interval",
+      botId: "mark-interval",
       threadId: "thread-1",
       prompt: "Check at an allowed time",
     }]);
@@ -1566,7 +1566,7 @@ describe("RoutineManager", () => {
     h.manager.create({
       name: "Phase-aligned check",
       prompt: "Keep the original cadence",
-      botId: "maus-interval",
+      botId: "mark-interval",
       schedule: {
         type: "interval",
         everyMinutes: 30,
@@ -1597,7 +1597,7 @@ describe("RoutineManager", () => {
     h.setNow(nextMondayAtNineOhFive);
     await h.manager.tick();
     expect(h.started).toEqual([{
-      botId: "maus-interval",
+      botId: "mark-interval",
       threadId: "thread-1",
       prompt: "Keep the original cadence",
     }]);
@@ -1615,7 +1615,7 @@ describe("RoutineManager", () => {
     h.manager.create({
       name: "Short-lived check",
       prompt: "Run before the cutoff",
-      botId: "maus-interval",
+      botId: "mark-interval",
       schedule: {
         type: "interval",
         everyMinutes: 5,
@@ -1646,7 +1646,7 @@ describe("RoutineManager", () => {
     const manualRoutine = manualHarness.manager.create({
       name: "Manual interval check",
       prompt: "Run exactly when requested",
-      botId: "maus-manual",
+      botId: "mark-manual",
       schedule: { type: "interval", everyMinutes: 5, anchorAt: start },
     });
     const manual = manualHarness.manager.runNow(manualRoutine.id)!;
@@ -1664,14 +1664,14 @@ describe("RoutineManager", () => {
     const webhookRoutine = webhookHarness.manager.create({
       name: "Webhook id collision",
       prompt: "Keep the delivery timestamp",
-      botId: "maus-webhook",
+      botId: "mark-webhook",
       schedule: { type: "interval", everyMinutes: 5, anchorAt: start },
     });
     const webhook = webhookHarness.manager.enqueueWebhook({
       webhookId: webhookRoutine.id,
       webhookName: "Incoming delivery",
       prompt: "Handle the delivery",
-      botId: "maus-webhook",
+      botId: "mark-webhook",
       runOn: "maus",
       deliveryId: "delivery-exact",
       receivedAt: start,
@@ -1691,7 +1691,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Waiting approval",
       prompt: "Wait for approval",
-      botId: "maus-waiting",
+      botId: "mark-waiting",
       schedule: { type: "daily", time: "23:59", weekdays: [1] },
     });
     const waiting = h.manager.runNow(routine.id)!;
@@ -1726,7 +1726,7 @@ describe("RoutineManager", () => {
       webhookId: "hook-capacity",
       webhookName: "Capacity check",
       prompt: "Keep active receipts",
-      botId: "maus-capacity",
+      botId: "mark-capacity",
       runOn: "maus",
       deliveryId: "delivery-capacity",
       receivedAt: 2_001,
@@ -1744,7 +1744,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Bounded check",
       prompt: "Check the queue",
-      botId: "maus-timeout",
+      botId: "mark-timeout",
       schedule: { type: "daily", time: "23:59", weekdays: [1] },
       durationMinutes: 90,
       timeoutMinutes: 5,
@@ -1763,7 +1763,7 @@ describe("RoutineManager", () => {
       finishedAt: startedAt! + 5 * 60_000,
     });
     expect(h.interruptedTurns).toEqual([
-      { botId: "maus-timeout", threadId: "thread-1" },
+      { botId: "mark-timeout", threadId: "thread-1" },
     ]);
   });
 
@@ -1772,7 +1772,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Unbounded check",
       prompt: "Keep checking",
-      botId: "maus-unbounded",
+      botId: "mark-unbounded",
       schedule: { type: "daily", time: "23:59", weekdays: [1] },
       durationMinutes: 5,
     });
@@ -1921,7 +1921,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Pauseable check",
       prompt: "Check later",
-      botId: "maus-2",
+      botId: "scagent-2",
       schedule: { type: "once", at: new Date(2026, 7, 17, 8, 1).getTime() },
     });
     h.setNow(routine.nextRunAt!);
@@ -2034,7 +2034,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Original brief",
       prompt: "Use the original instructions",
-      botId: "maus-2",
+      botId: "scagent-2",
       schedule: { type: "once", at: new Date(2026, 7, 17, 8, 1).getTime() },
     });
     h.setNow(routine.nextRunAt!);
@@ -2057,7 +2057,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Original context",
       prompt: "Use the original attachment",
-      botId: "maus-context",
+      botId: "mark-context",
       schedule: { type: "once", at: new Date(2026, 7, 17, 8, 1).getTime() },
       attachments: [{
         id: "original",
@@ -2101,7 +2101,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Inspect image",
       prompt: "Inspect it",
-      botId: "maus-image",
+      botId: "mark-image",
       schedule: { type: "once", at: new Date(2026, 7, 17, 8, 1).getTime() },
       attachments: [{
         id: "image-1",
@@ -2134,7 +2134,7 @@ describe("RoutineManager", () => {
     expect(() => h.manager.create({
       name: "Cloud review",
       prompt: "Review this",
-      botId: "maus-cloud",
+      botId: "mark-cloud",
       runOn: "cloud",
       schedule: { type: "daily", time: "09:00", weekdays: [1] },
       attachments: [attachment],
@@ -2143,7 +2143,7 @@ describe("RoutineManager", () => {
     const local = h.manager.create({
       name: "Local review",
       prompt: "Review this",
-      botId: "maus-local",
+      botId: "mark-local",
       runOn: "maus",
       schedule: { type: "daily", time: "09:00", weekdays: [1] },
       attachments: [attachment],
@@ -2180,7 +2180,7 @@ describe("RoutineManager", () => {
     const base = {
       name: "Validate context",
       prompt: "Review this",
-      botId: "maus-local",
+      botId: "mark-local",
       schedule: { type: "daily" as const, time: "09:00", weekdays: [1] },
     };
     expect(() => h.manager.create({
@@ -2205,7 +2205,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "VM review",
       prompt: "Review the project on the virtual machine",
-      botId: "maus-cloud",
+      botId: "mark-cloud",
       runOn: "cloud",
       schedule: { type: "once", at: new Date(2026, 7, 17, 8, 1).getTime() },
     });
@@ -2228,7 +2228,7 @@ describe("RoutineManager", () => {
       webhookId: "hook-1",
       webhookName: "New ticket",
       prompt: "Handle ticket 42",
-      botId: "maus-webhook",
+      botId: "mark-webhook",
       runOn: "cloud",
       deliveryId: "delivery-42",
       receivedAt,
@@ -2243,7 +2243,7 @@ describe("RoutineManager", () => {
       scheduledFor: receivedAt,
     });
     expect(queued).not.toHaveProperty("durationMinutes");
-    expect(h.started).toEqual([{ botId: "maus-webhook", threadId: "thread-1", prompt: "Handle ticket 42" }]);
+    expect(h.started).toEqual([{ botId: "mark-webhook", threadId: "thread-1", prompt: "Handle ticket 42" }]);
     expect(h.runOns).toEqual(["cloud"]);
     expect(h.triggerSources).toEqual(["webhook"]);
     expect(h.taskActivations).toEqual([true]);
@@ -2256,7 +2256,7 @@ describe("RoutineManager", () => {
       webhookId: "hook-busy",
       webhookName: "Busy gate",
       prompt: "Handle after the turn",
-      botId: "maus-1",
+      botId: "scagent-1",
       runOn: "maus",
       deliveryId: "delivery-busy",
       receivedAt: new Date(2026, 7, 17, 8, 2).getTime(),
@@ -2268,7 +2268,7 @@ describe("RoutineManager", () => {
     h.setBot("ready");
     await h.manager.tick();
     expect(h.manager.listRuns().find((run) => run.id === queued.id)).toMatchObject({ status: "running" });
-    expect(h.started).toEqual([{ botId: "maus-1", threadId: "thread-1", prompt: "Handle after the turn" }]);
+    expect(h.started).toEqual([{ botId: "scagent-1", threadId: "thread-1", prompt: "Handle after the turn" }]);
   });
 
   it("folds provider lifecycle events into the calendar receipt", async () => {
@@ -2276,7 +2276,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Ship report",
       prompt: "Write the report",
-      botId: "maus-3",
+      botId: "scagent-3",
       schedule: { type: "once", at: new Date(2026, 7, 17, 8, 1).getTime() },
     });
     h.setNow(routine.nextRunAt!);
@@ -2517,7 +2517,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Broken report",
       prompt: "Write the report",
-      botId: "maus-failed",
+      botId: "mark-failed",
       schedule: { type: "once", at: new Date(2026, 7, 17, 8, 1).getTime() },
     });
     h.setNow(routine.nextRunAt!);
@@ -2536,7 +2536,7 @@ describe("RoutineManager", () => {
     expect(h.failed).toMatchObject([
       {
         routineName: "Broken report",
-        botId: "maus-failed",
+        botId: "mark-failed",
         threadId: "thread-1",
         status: "failed",
         error: "provider crashed",
@@ -2555,7 +2555,7 @@ describe("RoutineManager", () => {
       const routine = h.manager.create({
         name: "Broken report",
         prompt: "Write the report",
-        botId: "maus-failed",
+        botId: "mark-failed",
         schedule: { type: "once", at: new Date(2026, 7, 17, 8, 1).getTime() },
       });
       h.setNow(routine.nextRunAt!);
@@ -2592,25 +2592,25 @@ describe("RoutineManager", () => {
     const broken = h.manager.create({
       name: "Broken report",
       prompt: "Write the report",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: { type: "once", at: new Date(2026, 7, 17, 8, 1).getTime() },
     });
     h.manager.create({
       name: "Stale check",
       prompt: "Do the stale thing",
-      botId: "maus-2",
+      botId: "scagent-2",
       schedule: { type: "once", at: new Date(2026, 7, 16, 6, 0).getTime() },
     });
     const fine = h.manager.create({
       name: "Fine brief",
       prompt: "Write the brief",
-      botId: "maus-3",
+      botId: "scagent-3",
       schedule: { type: "once", at: new Date(2026, 7, 17, 8, 3).getTime() },
     });
     const acknowledged = h.manager.create({
       name: "Old failure",
       prompt: "Try the work",
-      botId: "maus-4",
+      botId: "scagent-4",
       schedule: { type: "once", at: new Date(2026, 7, 17, 8, 4).getTime() },
     });
 
@@ -2663,7 +2663,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Broken report",
       prompt: "Write the report",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: { type: "once", at: new Date(2026, 7, 17, 8, 1).getTime() },
     });
     h.setNow(routine.nextRunAt!);
@@ -2693,7 +2693,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Daily check",
       prompt: "Check it",
-      botId: "maus-4",
+      botId: "scagent-4",
       schedule: { type: "daily", time: "08:05", weekdays: [1, 2, 3, 4, 5] },
     });
     h.setNow(routine.nextRunAt!);
@@ -2716,7 +2716,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Old check",
       prompt: "Do the old thing",
-      botId: "maus-5",
+      botId: "scagent-5",
       schedule: { type: "once", at: new Date(2026, 7, 17, 8, 1).getTime() },
     });
     h.setNow(routine.nextRunAt! + 13 * 60 * 60_000);
@@ -2732,7 +2732,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Stale check",
       prompt: "Do the stale thing",
-      botId: "maus-6",
+      botId: "scagent-6",
       schedule: { type: "once", at: staleAt },
     });
     expect(routine.nextRunAt).toBe(staleAt);
@@ -2747,7 +2747,7 @@ describe("RoutineManager", () => {
     const routine = h.manager.create({
       name: "Late check",
       prompt: "Do the late thing",
-      botId: "maus-7",
+      botId: "scagent-7",
       schedule: { type: "once", at: lateAt },
     });
     expect(routine.nextRunAt).toBe(lateAt);
@@ -2789,7 +2789,7 @@ describe("routine continuity", () => {
     const routine = h.manager.create({
       name: "Morning brief",
       prompt: "Write the brief",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: everyHour(anchorAt),
     });
 
@@ -2807,7 +2807,7 @@ describe("routine continuity", () => {
     const routine = h.manager.create({
       name: "Morning brief",
       prompt: "Write the brief",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: everyHour(anchorAt),
       continuity: true,
     });
@@ -2829,7 +2829,7 @@ describe("routine continuity", () => {
     const routine = h.manager.create({
       name: "Watcher",
       prompt: "Check the feed",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: everyHour(anchorAt),
       continuity: true,
     });
@@ -2848,7 +2848,7 @@ describe("routine continuity", () => {
     const routine = h.manager.create({
       name: "Deploy watch",
       prompt: "Check the deploy",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: everyHour(anchorAt),
       continuity: true,
     });
@@ -2867,7 +2867,7 @@ describe("routine continuity", () => {
     const routine = h.manager.create({
       name: "Long report",
       prompt: "Audit everything",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: everyHour(anchorAt),
       continuity: true,
     });
@@ -2898,7 +2898,7 @@ describe("routine continuity", () => {
     const routine = h.manager.create({
       name: "Injection",
       prompt: "Summarise",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: everyHour(anchorAt),
       continuity: true,
     });
@@ -2910,10 +2910,10 @@ describe("routine continuity", () => {
     expect(second.split("</previous-run>")).toHaveLength(2);
   });
 
-  it.each([{ botId: "maus-2" }, { runOn: "cloud" as const }])("does not carry reports across reassignment %j", async (patch) => {
+  it.each([{ botId: "scagent-2" }, { runOn: "cloud" as const }])("does not carry reports across reassignment %j", async (patch) => {
     const h = harness();
     const anchorAt = new Date(2026, 7, 17, 9, 0, 0).getTime();
-    const routine = h.manager.create({ name: "Private brief", prompt: "Write the brief", botId: "maus-1", schedule: everyHour(anchorAt), continuity: true });
+    const routine = h.manager.create({ name: "Private brief", prompt: "Write the brief", botId: "scagent-1", schedule: everyHour(anchorAt), continuity: true });
     await runOnce(h, routine.id, anchorAt, "Private result from the old assignment.");
     h.manager.update(routine.id, patch);
     expect(await runOnce(h, routine.id, anchorAt + 60 * 60_000)).toBe("Write the brief");
@@ -2925,7 +2925,7 @@ describe("routine continuity", () => {
     const routine = h.manager.create({
       name: "Morning brief",
       prompt: "Write the brief",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: everyHour(anchorAt),
       continuity: true,
     });
@@ -2941,7 +2941,7 @@ describe("routine continuity", () => {
     const routine = h.manager.create({
       name: "Morning brief",
       prompt: "Write the brief",
-      botId: "maus-1",
+      botId: "scagent-1",
       schedule: everyHour(anchorAt),
       continuity: true,
     });
@@ -2958,7 +2958,7 @@ describe("routine continuity", () => {
     expect(() => h.manager.create({
       name: "Team goal",
       prompt: "Ship it",
-      botId: "maus-1",
+      botId: "scagent-1",
       target: "room-goal",
       groupId: "group-1",
       schedule: { type: "once", at: new Date(2026, 7, 17, 9, 0, 0).getTime() },
@@ -3032,7 +3032,7 @@ describe("routine runs × turn-held BoatAgent asks", () => {
       const routine = h.manager.create({
         name: "Boat sweep",
         prompt: "Sweep the box",
-        botId: "maus-1",
+        botId: "scagent-1",
         schedule: { type: "interval", everyMinutes: 5, anchorAt: start },
       });
       h.setNow(routine.nextRunAt!);

@@ -1,13 +1,13 @@
-name: ${COMPOSE_PROJECT_NAME:-openmausbot}
+name: ${COMPOSE_PROJECT_NAME:-socialcoffee-agent}
 services:
   omb:
     init: true
     build:
       context: ./deploy/local
       args:
-        BASE_IMAGE: ${OMB_BASE_IMAGE:-ghcr.io/milind-soni/openmausbot:latest}
+        BASE_IMAGE: ${OMB_BASE_IMAGE:-ghcr.io/viewofmind/socialcoffee-agent:latest}
         ENGINES: ${ENGINES-@anthropic-ai/claude-code @openai/codex}
-    image: ${OMB_LOCAL_IMAGE:-openmausbot-local:latest}
+    image: ${OMB_LOCAL_IMAGE:-socialcoffee-agent-local:latest}
     restart: unless-stopped
     volumes:
       - data:/data
@@ -58,6 +58,6 @@ services:
 volumes:
   data:
     external: ${OMB_DATA_EXTERNAL:-false}
-    name: ${OMB_DATA_VOLUME:-${COMPOSE_PROJECT_NAME:-openmausbot}_data}
+    name: ${OMB_DATA_VOLUME:-${COMPOSE_PROJECT_NAME:-socialcoffee-agent}_data}
   caddy_data:
   caddy_config:

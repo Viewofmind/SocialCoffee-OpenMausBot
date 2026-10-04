@@ -51,7 +51,7 @@ describe("codexConfigMcpServerNames", () => {
 describe("mountedMcpServerName", () => {
   it("keeps a free name and moves a taken one aside deterministically", () => {
     expect(mountedMcpServerName("notes", new Set())).toBe("notes");
-    expect(mountedMcpServerName("fibery", new Set(["fibery"]))).toBe("fibery_openmausbot");
-    expect(mountedMcpServerName("fibery", new Set(["fibery", "fibery_openmausbot"]))).toBe("fibery_openmausbot2");
+    expect(mountedMcpServerName("fibery", new Set(["fibery"]))).toBe("fibery_socialcoffee_agent");
+    expect(mountedMcpServerName("fibery", new Set(["fibery", "fibery_socialcoffee_agent"]))).toBe("fibery_socialcoffee_agent2");
   });
 });

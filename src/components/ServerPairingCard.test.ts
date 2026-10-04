@@ -36,7 +36,7 @@ describe("pairing devices from a hosted server's settings", () => {
     expect(pairingBlockedReason({ kind: "unauthenticated", error: "pair" })).toBeNull();
     const html = renderToStaticMarkup(createElement(ServerPairingCard, { initialSession: chatOnly }));
     expect(html).toContain("data-server-pairing-chat-only");
-    expect(html).toContain("openmausbot pair");
+    expect(html).toContain("sc-agent pair");
     expect(html).not.toContain("Create pairing code");
     const admin = renderToStaticMarkup(createElement(ServerPairingCard, { initialSession: { ...chatOnly, scopes: ["admin", "client"] } }));
     expect(admin).toContain("Create pairing code");
@@ -55,22 +55,22 @@ describe("pairing devices from a hosted server's settings", () => {
     expect(html).toContain("data-server-pairing-portal");
     expect(html).toContain("organization&#x27;s Admin");
     expect(html).not.toContain("Create pairing code");
-    expect(html).not.toMatch(/pairing code from|openmausbot pair/);
+    expect(html).not.toMatch(/pairing code from|sc-agent pair/);
     expect(html).toContain("Signed-in devices");
     // no code to show here: focus goes to the card, never to a device's Sign out
     expect(html).not.toContain("data-phone-pairing-action");
     const member = renderToStaticMarkup(createElement(ServerPairingCard, { initialSession: { ...admin, scopes: ["client"] }, initialPairingCodes: false }));
     expect(member).toContain("data-server-pairing-chat-only");
-    expect(member).not.toContain("openmausbot pair");
+    expect(member).not.toContain("sc-agent pair");
   });
 
-  it("on an OMB Cloud home, which is personal, offers no chat-only choice, lists only the owner's devices, and says why in one line", () => {
+  it("on an SocialCoffeeAgent Cloud home, which is personal, offers no chat-only choice, lists only the owner's devices, and says why in one line", () => {
     const admin = { kind: "session" as const, id: "s", label: "Mac", scopes: ["admin", "client"], expiresAt: 1 };
     const cloud = renderToStaticMarkup(createElement(ServerPairingCard, { initialSession: admin, cloudHome: true }));
     expect(cloud).toContain("Create pairing code");
     expect(cloud).not.toContain("Chat and approvals only");
     expect(cloud).toContain("data-server-pairing-personal");
-    expect(cloud).toContain("OMB Cloud is personal: only your own devices can connect");
+    expect(cloud).toContain("SocialCoffeeAgent Cloud is personal: only your own devices can connect");
     const elsewhere = renderToStaticMarkup(createElement(ServerPairingCard, { initialSession: admin }));
     expect(elsewhere).toContain("Chat and approvals only");
     expect(elsewhere).not.toContain("data-server-pairing-personal");

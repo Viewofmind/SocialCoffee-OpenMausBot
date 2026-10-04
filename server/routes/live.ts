@@ -102,7 +102,7 @@ export function createLiveRoutes(deps: LiveRouteDeps): RouteHandler {
     if (method === "PATCH" && path === "/api/live/settings") {
       const parsed = settingsBody.safeParse(await bodyOf(req, readBody));
       if (!parsed.success) {
-        return json(res, 400, { error: "Those Live settings are not valid. The OpenAI key can only be changed on the computer that runs OpenMausBot." });
+        return json(res, 400, { error: "Those Live settings are not valid. The OpenAI key can only be changed on the computer that runs SocialCoffeeAgent." });
       }
       // as PUT /api/config: an empty patch is not saved (or broadcast)
       if (!Object.keys(parsed.data).length) return json(res, 400, { error: "nothing to save" });

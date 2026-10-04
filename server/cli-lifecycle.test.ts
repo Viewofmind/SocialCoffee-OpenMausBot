@@ -85,7 +85,7 @@ beforeEach(() => {
   mocks.tailscaleServeOff.mockResolvedValue(undefined);
   mocks.createTunnelAccount.mockReturnValue({ credentials: { status: "available", read: () => ({}) }, service: { retry: async () => ({}), restore: async () => ({}), dispose: vi.fn() } });
   mocks.describeTunnelAccount.mockReturnValue({ email: "fixture@example.test" });
-  mocks.tunnelAccess.mockReturnValue({ endpoint: "https://fixture.openmausbot.test" });
+  mocks.tunnelAccess.mockReturnValue({ endpoint: "https://fixture.socialcoffee-agent.test" });
   mocks.ensureCloudflared.mockResolvedValue("/fixture/cloudflared");
   mocks.guardianEntry.mockReturnValue("/fixture/guardian");
   mocks.createTunnelOrigin.mockReturnValue({ socketPath: join(dataDir, "fixture.sock") });
@@ -195,7 +195,7 @@ describe("CLI startup lifecycle", () => {
 
   it("reopens a matching desktop workspace even when its server PID differs from the lease owner", async () => {
     writeFileSync(join(dataDir, "environment-id"), workspaceId);
-    writeFileSync(join(dataDir, "openmausbot-server.lease"), JSON.stringify({
+    writeFileSync(join(dataDir, "socialcoffee-agent-server.lease"), JSON.stringify({
       version: 1, pid: process.pid, host: hostname(), token: workspaceId, createdAt: Date.now(),
     }));
     vi.stubEnv("OMB_DATA_DIR", process.env.OMB_DATA_DIR);
@@ -248,9 +248,9 @@ describe("CLI startup lifecycle", () => {
     const expiresAt = Date.now() + 300_000;
     const pairingUrl = `${origin}/pair#code=${code}`;
     // A real server mints both encodings of one window; Android can only scan
-    // the openmausbot:// one (android/core Connection.kt).
+    // the socialcoffee-agent:// one (android/core Connection.kt).
     const credential = `omb_pair_${"a".repeat(43)}`;
-    const inviteUrl = `openmausbot://pair?address=${encodeURIComponent(origin)}&token=${credential}&name=fixture`;
+    const inviteUrl = `socialcoffee-agent://pair?address=${encodeURIComponent(origin)}&token=${credential}&name=fixture`;
     let healthRequests = 0;
     const fetcher = vi.fn(async (url: string | URL | Request, init?: RequestInit) => {
       const address = String(url);
@@ -265,7 +265,7 @@ describe("CLI startup lifecycle", () => {
         // the public address with --public-url and must build both from that.
         return Response.json({ code, url: null, expiresAt, credential, serverName: "fixture", hint: "set OMB_PUBLIC_URL" });
       }
-      expect(address).toMatch(/\/\.well-known\/openmausbot\/environment$/);
+      expect(address).toMatch(/\/\.well-known\/socialcoffee-agent\/environment$/);
       expect(init?.method).not.toBe("POST");
       expect(init?.body).toBeUndefined();
       return Response.json({ environmentId: workspaceId });
@@ -285,7 +285,7 @@ describe("CLI startup lifecycle", () => {
     expect(output).toContain(`web browser:   ${pairingUrl}`);
     expect(output).toMatch(/[▀▄█]/);
     expect(output).toContain(`Or open ${origin}/pair on your phone and enter the code.`);
-    expect(output).toContain("On Android, open the OpenMausBot app and scan the QR with its pairing scanner.");
+    expect(output).toContain("On Android, open the SocialCoffeeAgent app and scan the QR with its pairing scanner.");
     // The QR rendered for an Android phone must be the app-scheme invite, not
     // the https link its scanner rejects.
     expect(output).toContain(qrToString(inviteUrl));
