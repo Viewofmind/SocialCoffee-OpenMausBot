@@ -8376,7 +8376,7 @@ describe("harness HTTP API", () => {
       expect((await api("POST", `/api/bots/${bot.id}/messages`, { text: "hello" })).status).toBe(202);
       const system = (await readJsonFileWhenReady<{ systemPrompt: string }>(fakeClaudeDump, 15_000)).systemPrompt;
       expect(system).toContain(roster);
-      expect(system).not.toContain("SC_AGENT STATUS");
+      expect(system).not.toContain("SOCIALCOFFEEAGENT STATUS");
     } finally {
       await api("POST", `/api/bots/${bot.id}/interrupt`);
       await api("DELETE", `/api/bots/${bot.id}`);

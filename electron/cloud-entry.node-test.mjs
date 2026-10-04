@@ -27,7 +27,7 @@ test("the Cloud protocol is a fixed action without URL routing or credentials", 
   for (const value of [null, undefined, {}, ["socialcoffee-agent://cloud"], "", "socialcoffee-agent://cloud/", "socialcoffee-agent://cloud?", "socialcoffee-agent://cloud#",
     "socialcoffee-agent://cloud?code=ABCDE-FGHJK", "socialcoffee-agent://cloud#code=ABCD-EFGH-JKLM", "socialcoffee-agent://cloud?url=https://home.example",
     "socialcoffee-agent://cloud/pair", "socialcoffee-agent://user@cloud", "socialcoffee-agent://cloud:443", "socialcoffee-agent://cloud.evil", "socialcoffee-agent://CLOUD",
-    "SC_AGENT://cloud", "socialcoffee-agent:cloud", "socialcoffee-agent:///cloud", "https://cloud", " socialcoffee-agent://cloud", "socialcoffee-agent://cloud ",
+    "SOCIALCOFFEE-AGENT://cloud", "socialcoffee-agent:cloud", "socialcoffee-agent:///cloud", "https://cloud", " socialcoffee-agent://cloud", "socialcoffee-agent://cloud ",
     "socialcoffee-agent://%63loud", "socialcoffee-agent://organization", "socialcoffee-agent://install?url=https://github.com/x/y"]) {
     assert.equal(isCloudDeepLink(value), false, String(value));
   }
