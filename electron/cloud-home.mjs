@@ -1,5 +1,5 @@
-// The person's OMB Cloud Pro machine, as their Cloud session reports it
-// (docs/cloud-pro.md; openmaus-cloud docs/consumer-cloud.md). Pure:
+// The person's SocialCoffeeAgent Cloud Pro machine, as their Cloud session reports it
+// (docs/cloud-pro.md; socialcoffee-agent-cloud docs/consumer-cloud.md). Pure:
 // cloud-account.mjs validates the Admin's answers with it, main.mjs lists the
 // machine under Servers and connects to it.
 //
@@ -85,7 +85,7 @@ export function cloudPlanDisk(state) {
 }
 
 /** The person's Cloud address, remembered for their account while a check
- * with OMB Cloud is pending or has failed, so the Server menu still knows
+ * with SocialCoffeeAgent Cloud is pending or has failed, so the Server menu still knows
  * "My Cloud" is theirs. Forgotten on sign-out or another account. */
 export function rememberedCloudHome(previous, state) {
   const accountId = state?.account?.id ?? null;

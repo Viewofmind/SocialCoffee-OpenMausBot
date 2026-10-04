@@ -181,7 +181,7 @@ test("another server behind the Cloud's address (a replaced machine) ends lendin
   assert.equal(home.connects.length, 1);
 });
 
-test("signing out of OMB Cloud ends lending at once and cancels an action already running", async t => {
+test("signing out of SocialCoffeeAgent Cloud ends lending at once and cancels an action already running", async t => {
   const { home, sharing, driver, leases, setCloud } = await lendingFixture(t);
   await sharing.saveCloud(env, { folders: [], screen: true });
   await connected(sharing, 1, home);

@@ -1,8 +1,8 @@
-// openmausbot://cloud: "Open in the app" on the person's Cloud page
-// (docs/cloud-pro.md). Like openmausbot://organization it is an action, not a
+// socialcoffee-agent://cloud: "Open in the app" on the person's Cloud page
+// (docs/cloud-pro.md). Like socialcoffee-agent://organization it is an action, not a
 // router: it never carries an address, code or credential. Main answers it by
-// opening Settings → OMB Cloud, which signs in or connects from there.
-export const CLOUD_DEEP_LINK = "openmausbot://cloud";
+// opening Settings → SocialCoffeeAgent Cloud, which signs in or connects from there.
+export const CLOUD_DEEP_LINK = "socialcoffee-agent://cloud";
 
 export const isCloudDeepLink = value => value === CLOUD_DEEP_LINK;
 export function takeCloudDeepLink(argv) {

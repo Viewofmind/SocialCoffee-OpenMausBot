@@ -1,19 +1,19 @@
 {
-  "name": "openmausbot",
+  "name": "socialcoffee-agent",
   "private": true,
   "version": "0.1.95",
   "description": "A local-first chat app for running a team of AI agents.",
-  "homepage": "https://github.com/milind-soni/OpenMausBot",
+  "homepage": "https://github.com/Viewofmind/SocialCoffee-OpenMausBot",
   "repository": {
     "type": "git",
-    "url": "https://github.com/milind-soni/OpenMausBot.git"
+    "url": "https://github.com/Viewofmind/SocialCoffee-OpenMausBot.git"
   },
   "author": {
-    "name": "Milind Soni",
-    "email": "46266943+milind-soni@users.noreply.github.com"
+    "name": "SocialCoffee DigiTech Pvt Ltd",
+    "email": "gunjan@socialcoffee.in"
   },
   "license": "Apache-2.0",
-  "desktopName": "com.openmausbot.app.desktop",
+  "desktopName": "in.socialcoffee.agent",
   "type": "module",
   "main": "electron/main.mjs",
   "engines": {
@@ -27,12 +27,13 @@
     "check:contrast": "node scripts/check-skin-contrast.mjs",
     "i18n:check": "node scripts/generate-locale.mjs --check",
     "dev": "vite",
-    "docs:dev": "pnpm --filter @openmausbot/docs dev",
-    "docs:build": "pnpm --filter @openmausbot/docs build",
-    "docs:preview": "pnpm --filter @openmausbot/docs preview",
+    "docs:dev": "pnpm --filter @socialcoffee-agent/docs dev",
+    "docs:build": "pnpm --filter @socialcoffee-agent/docs build",
+    "docs:preview": "pnpm --filter @socialcoffee-agent/docs preview",
     "companion": "node --experimental-strip-types companion/src/index.ts",
-    "omb": "node --experimental-strip-types server/openmausbot.ts",
-    "pair": "node --experimental-strip-types server/openmausbot.ts pair",
+    "sc-agent": "node --experimental-strip-types server/sc-agent.ts",
+    "omb": "node scripts/omb-alias.mjs",
+    "pair": "node --experimental-strip-types server/sc-agent.ts pair",
     "dev:server": "node --experimental-strip-types server/index.ts",
     "mcp": "node --experimental-strip-types scripts/mcp-server.ts",
     "control:omb": "node --experimental-strip-types scripts/control-omb.ts",
@@ -79,10 +80,10 @@
     "broker:check": "pnpm broker:types && tsc -p cloudflare/composio-broker/tsconfig.json",
     "broker:test": "vitest run --config cloudflare/composio-broker/vitest.config.ts",
     "broker:deploy": "wrangler deploy --config cloudflare/composio-broker/wrangler.jsonc",
-    "control-plane:types": "pnpm --filter @openmausbot/control-plane types",
-    "control-plane:check": "pnpm --filter @openmausbot/control-plane check",
-    "control-plane:test": "pnpm --filter @openmausbot/control-plane test",
-    "control-plane:dry-run": "pnpm --filter @openmausbot/control-plane dry-run"
+    "control-plane:types": "pnpm --filter @socialcoffee-agent/control-plane types",
+    "control-plane:check": "pnpm --filter @socialcoffee-agent/control-plane check",
+    "control-plane:test": "pnpm --filter @socialcoffee-agent/control-plane test",
+    "control-plane:dry-run": "pnpm --filter @socialcoffee-agent/control-plane dry-run"
   },
   "dependencies": {
     "@clack/prompts": "1.7.0",

@@ -1,7 +1,7 @@
 // Copy this computer here, the desktop's half (docs/copy-workspace.md;
 // server/cloud-move-http.ts is the receiving server's). One action copies this
 // computer's workspace to a server the person owns and added in this app, their
-// OMB Cloud included, by one code path:
+// SocialCoffeeAgent Cloud included, by one code path:
 //
 //   1. this computer's server exports its ordinary encrypted workspace backup
 //      (the backup policy decides what travels: never a credential, sign-in,
@@ -38,7 +38,7 @@ const MAX_PART_BYTES = 64 * 1024 ** 2;
 const MIN_PART_BYTES = 512 * 1024;
 const SPACE_MARGIN = 256 * 1024 ** 2;
 const GB = 1024 ** 3;
-/** A Cloud whose disk grows does so in steps of this size (openmaus-cloud VOLUME_EXTEND). */
+/** A Cloud whose disk grows does so in steps of this size (socialcoffee-agent-cloud VOLUME_EXTEND). */
 const DISK_STEP_GB = 10;
 // A failed upload keeps its archive this long, so Try again continues it.
 const REUSE_MS = 30 * 60_000;
@@ -483,13 +483,13 @@ export function createCloudMove({ localRequest, fetchImpl = fetch, tempRoot, ava
         // The Cloud's launcher always starts it again; a server's does when
         // it is one of ours (server/restart.ts), and otherwise it installs at its next start.
         fail("restart_timeout", target?.kind === "cloud" ? "Your Cloud is taking longer than usual to restart. Check it again in a few minutes."
-          : `${There()} hasn't come back yet. If it doesn't start again on its own, start OpenMausBot there; it finishes installing the copy when it starts.`);
+          : `${There()} hasn't come back yet. If it doesn't start again on its own, start SocialCoffeeAgent there; it finishes installing the copy when it starts.`);
       }
     }
   }
 
   /** The Cloud only: the plan's disk can hold the copy, but today's disk
-   * cannot. Ask OMB Cloud to grow it now, then wait until the Cloud has the room. */
+   * cannot. Ask SocialCoffeeAgent Cloud to grow it now, then wait until the Cloud has the room. */
   async function makeRoom(dest, session, fit, signal) {
     publish({ phase: "growing", action: "move" });
     const details = { freeBytes: fit.freeBytes, neededBytes: fit.neededBytes, maxBytes: fit.maxBytes };

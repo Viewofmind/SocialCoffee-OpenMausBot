@@ -1,7 +1,7 @@
 import { createManagedDesktopStore } from "./managed-desktop.mjs";
 import { CLOUD_MACHINE_CONNECTABLE, parseCloudPurchase, parseCloudSummary, parsePairingGrant } from "./cloud-home.mjs";
 
-export const CLOUD_ORIGIN = "https://cloud.openmausbot.com";
+export const CLOUD_ORIGIN = "https://cloud.socialcoffee.in";
 const TOKEN = /^omc_[A-Za-z0-9_-]{43}$/;
 const CODE = /^[A-HJ-NP-Z2-9]{5}-[A-HJ-NP-Z2-9]{5}$/;
 const PRIVATE_CODE = /^[A-Za-z0-9_-]{43}$/;
@@ -24,7 +24,7 @@ const MAX_ENROLL_SECONDS = 1800;
 export function cloudOrigin(value = CLOUD_ORIGIN, fixture = false) {
   const url = new URL(value);
   if (value !== url.origin || (value !== CLOUD_ORIGIN && !(fixture && url.protocol === "http:" && ["127.0.0.1", "[::1]"].includes(url.hostname)))) {
-    throw new Error("Invalid OMB Cloud address.");
+    throw new Error("Invalid SocialCoffeeAgent Cloud address.");
   }
   return value;
 }
@@ -35,7 +35,7 @@ export const createCloudAccountStore = createManagedDesktopStore;
 const text = (value, max) => typeof value === "string" && value.length > 0 && value.length <= max && !/[\x00-\x1f\x7f]/.test(value);
 const timestamp = value => Number.isSafeInteger(value) && value > 0;
 /** The paid plan last verified for this sign-in, kept beside the credential
- * for display only: what Settings shows while OMB Cloud cannot be asked, or
+ * for display only: what Settings shows while SocialCoffeeAgent Cloud cannot be asked, or
  * after this computer's sign-in has ended. It activates nothing, and is never
  * an entitlement. */
 function planHint(value) {
@@ -127,7 +127,7 @@ export function createCloudAccountClient({ store, openBrowser, platform, deviceN
       !(input.expiresAt === null || timestamp(input.expiresAt)) || !Number.isSafeInteger(input.version) || input.version < 0) throw new Error("Invalid Cloud entitlement.");
     const plan = input.plan === "free" ? "free" : "pro";
     if (input.status === "active" && (plan !== "pro" || input.expiresAt === null || input.expiresAt <= now())) throw new Error("Invalid active Cloud entitlement.");
-    if (newer && !newerPlans.has(input.plan)) { newerPlans.add(input.plan); warn(`[cloud] OMB Cloud sent plan "${input.plan}", newer than this app; treating it as paid.`); }
+    if (newer && !newerPlans.has(input.plan)) { newerPlans.add(input.plan); warn(`[cloud] SocialCoffeeAgent Cloud sent plan "${input.plan}", newer than this app; treating it as paid.`); }
     const tier = typeof input.tier === "string" && TIER.test(input.tier) ? input.tier : newer ? input.plan : undefined;
     return { plan, ...(tier ? { tier } : {}), status: input.status,
       expiresAt: input.expiresAt, version: input.version };
@@ -164,7 +164,7 @@ export function createCloudAccountClient({ store, openBrowser, platform, deviceN
   const signOut = () => forget();
   async function synchronize(stamp) {
     if (!grant || !current(stamp)) return state();
-    // A sign-in this computer holds lasts as long as OMB Cloud said; after
+    // A sign-in this computer holds lasts as long as SocialCoffeeAgent Cloud said; after
     // that, signing in again is the one next step (the plan is unaffected).
     if (grant.expiresAt <= now()) { stopTimer(); return publish(view("reauth-required", "expired")); }
     try {
@@ -285,7 +285,7 @@ export function createCloudAccountClient({ store, openBrowser, platform, deviceN
      * removed): forget it and start a new sign-in in one step, never showing
      * "signed out" in between. */
     async signInAgain() {
-      if (state().status !== "reauth-required") throw new Error("This computer is still signed in to OMB Cloud.");
+      if (state().status !== "reauth-required") throw new Error("This computer is still signed in to SocialCoffeeAgent Cloud.");
       publish({ status: "connecting" });
       const forgotten = await forget({ quiet: true });
       if (forgotten.status === "unavailable") return forgotten;
@@ -299,7 +299,7 @@ export function createCloudAccountClient({ store, openBrowser, platform, deviceN
     refresh, signOut,
     async openDashboard() { await openBrowser(`${origin}/cloud`); return state(); },
     homeTarget,
-    /** Ask OMB Cloud to grow this account's Cloud disk to `sizeGb` (at most
+    /** Ask SocialCoffeeAgent Cloud to grow this account's Cloud disk to `sizeGb` (at most
      * the plan's own maximum), for a move that needs the room now rather than
      * as the disk fills. `supported: false`: this Admin cannot do that yet. */
     async growDisk(sizeGb) {
