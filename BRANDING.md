@@ -160,7 +160,6 @@ they are not caused by the rename:
   `pnpm smoke:linux-update` step in `.github/workflows/package-linux.yml`.
 - SBOM property names in `scripts/generate-cua-sbom.mjs` stay `openmausbot:*`, so they match the
   unchanged `third_party/cua-driver/SBOM.cdx.json`.
-
 - **Signing:** Apple Developer ID and notarization, and a Windows code-signing certificate.
 - **Release channel:** set up an update feed on this fork before turning `publish` back on.
 - **Store listing:** new App Store and Play records under SocialCoffee DigiTech Pvt Ltd; then move
