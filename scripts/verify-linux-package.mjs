@@ -71,12 +71,10 @@ function requirePackageType(resources, label, expected) {
   }
 }
 
+// Publishing is disabled (`publish: null`), so no build may carry an updater feed.
 function requireUpdaterTarget(resources, label) {
-  const updateFile = path.join(resources, "app-update.yml");
-  requireFile(updateFile);
-  const update = readFileSync(updateFile, "utf8");
-  if (!/^owner: milind-soni$/m.test(update) || !/^repo: SocialCoffeeAgent$/m.test(update)) {
-    fail(`${label} app-update.yml does not point at Viewofmind/SocialCoffee-OpenMausBot`);
+  if (existsSync(path.join(resources, "app-update.yml"))) {
+    fail(`${label} carries app-update.yml, but publishing is disabled for this distribution`);
   }
 }
 
@@ -165,7 +163,7 @@ function verifyCompliance(licenses, label) {
   const registryIds = new Set();
   for (const component of registry) {
     const packageId = component.properties?.find(
-      (property) => property.name === "socialcoffee-agent:cargo:package-id",
+      (property) => property.name === "openmausbot:cargo:package-id",
     )?.value;
     if (typeof packageId !== "string" || !packageId.startsWith("registry+")) {
       fail(`${label} SBOM registry component has no exact Cargo package ID`);
