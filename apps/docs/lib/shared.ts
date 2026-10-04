@@ -4,7 +4,7 @@ export const docsContentRoute = '/llms.mdx/docs';
 export const appName = 'SocialCoffeeAgent Docs';
 
 export const gitConfig = {
-  user: 'milind-soni',
-  repo: 'SocialCoffeeAgent',
+  user: 'Viewofmind',
+  repo: 'SocialCoffee-OpenMausBot',
   branch: 'main',
 };
