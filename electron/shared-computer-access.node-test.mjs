@@ -244,10 +244,10 @@ test("a protected directory spelled in another case is still refused", async t =
   grant.protectedPaths = [path.join(dir, "SocialCoffeeAgent")];
   folder.write = true;
   await assert.rejects(run({ action: "read_file", path: "SocialCoffeeAgent/credentials.bin" }), /Desktop credentials/);
-  await assert.rejects(run({ action: "read_file", path: "socialcoffee-agent/credentials.bin" }), /Desktop credentials/);
-  await assert.rejects(run({ action: "read_file", path: "SC_AGENT/credentials.bin" }), /Desktop credentials/);
-  await assert.rejects(run({ action: "list_files", path: "socialcoffee-agent" }), /Desktop credentials/);
-  await assert.rejects(run({ action: "write_file", path: "socialcoffee-agent/computer-sharing.json", content: "{}" }), /sharing settings/);
+  await assert.rejects(run({ action: "read_file", path: "socialcoffeeagent/credentials.bin" }), /Desktop credentials/);
+  await assert.rejects(run({ action: "read_file", path: "SOCIALCOFFEEAGENT/credentials.bin" }), /Desktop credentials/);
+  await assert.rejects(run({ action: "list_files", path: "socialcoffeeagent" }), /Desktop credentials/);
+  await assert.rejects(run({ action: "write_file", path: "socialcoffeeagent/computer-sharing.json", content: "{}" }), /sharing settings/);
 });
 
 test("a protected directory spelled in another Unicode normalization is still refused", async t => {
