@@ -454,7 +454,7 @@ try {
     "usr",
     "share",
     "applications",
-    "in.socialcoffee.agent",
+    "in.socialcoffee.agent.desktop",
   );
   const scalableIcon = path.join(
     extracted,

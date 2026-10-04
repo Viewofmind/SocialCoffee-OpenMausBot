@@ -71,7 +71,7 @@ async function main() {
   // The bug shape: a version in the filename, and a launcher pinned to it.
   const launched = path.join(installDir, "SocialCoffeeAgent-0.0.1-x86_64.AppImage");
   copyFileSync(packaged, launched);
-  const desktopEntry = path.join(applications, "in.socialcoffee.agent");
+  const desktopEntry = path.join(applications, "in.socialcoffee.agent.desktop");
   writeFileSync(
     desktopEntry,
     `[Desktop Entry]\nName=SocialCoffeeAgent\nExec=${launched} %U\nType=Application\n`,
